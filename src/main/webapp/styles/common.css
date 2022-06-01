@@ -1,0 +1,47 @@
+.center-vertically {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+a.remove-link-underline {
+    text-decoration: none;
+}
+
+.center-items {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.center-text-vertically {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+}
+
+.show-it {
+    display: block;
+}
+
+
+
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+
+.retweet-qqqq-color {
+    color: #10d795;
+}

@@ -1,0 +1,78 @@
+@import url('values.css');
+
+#third-search-bar {
+    position: fixed;
+    flex: auto;
+    height: 50px;
+    background: whitesmoke;
+    width: 20.5% !important;
+
+    font-size: medium;
+}
+
+#third-search-bar-title {
+    font-size: 20px;
+    padding-left: 20px !important;
+}
+
+#third-body {
+    margin-top: var(--top-bar-top-margin);
+}
+
+.third-box {
+    /* margin: -5px; */
+    padding: 20px;
+    float: left;
+    /* padding-right: 40%; */
+    border: 1px solid gray;
+    border-radius: 10px;
+    margin-top: 20px;
+    width: 65%;
+    padding-bottom: 26px;
+}
+
+.third-box-title {
+    font-size: 25px;
+    font: bolder;
+    font-weight: 600;
+}
+
+.third-box-trending-hashtag {
+    /* font-size: 25px; */
+    font: bolder;
+    font-weight: 600;
+}
+
+.third-box-trending-hashtag-total-tweets {
+    font-size: 15px;
+    color: rgb(110, 110, 110);
+    margin-top: -20px;
+    font-size: 15px;
+}
+
+.third-box-trending-item {
+    margin-top: 10px;
+    cursor: pointer;
+    display: flex;
+    height: 50px;
+}
+
+
+.third-box-who-to-follow-item {
+    cursor: pointer;
+    display: flex;
+    margin-left: 0px;
+    height: 50px !important;
+    margin-top: 20px;
+}
+
+
+
+.dialog-test {
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    /* width: 50%; */
+    background-color:#F4FFEF;
+    border: 1px dotted black;
+    /* margin-left: 25%; margin-top: 10%; */
+}

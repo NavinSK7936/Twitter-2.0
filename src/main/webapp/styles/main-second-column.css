@@ -1,0 +1,91 @@
+@import url('values.css');
+
+#second-top-bar {
+    
+    position: sticky;
+    top: 0px;
+
+    height: 55px;
+
+    /* background: hsla(200, 100%, 0%, .4); */ /* NOTE: Applies a dark theme like twitter */
+    /* background: rgba(219, 207, 207, 0.4); */
+    background: rgb(255, 255, 255, 0.4);
+
+    backdrop-filter: blur(4px);
+
+}
+
+#second-top-bar-title {
+    font-size: 20px;
+    padding-left: 20px !important;
+}
+
+#second-column {
+    background-color: white;
+    width: 45% !important;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+
+#second-body {
+    margin-top: var(--top-bar-top-margin);
+}
+
+.tweet {
+    margin: 0px 10px;
+    padding: 20px;
+    border: 1px solid gray;
+    border-radius: 10px;
+}
+
+.tweet-in-list {
+    padding: 10px;
+    /* border-bottom: 1px solid gray; */
+    /* border-radius: 10px; */
+}
+
+.tweet-tweeter-name {
+    /* margin-bottom: -3px; */
+    font-size: 20px;
+    font: bolder;
+    font-weight: 600;
+    color: black;
+}
+
+.tweet-tweeter-id-name {
+    font-size: 15px;
+    font: bolder;
+    font-weight: 500;
+    color: rgb(110, 110, 110);
+}
+
+.tweet-time-span {
+    font-size: 15px;
+    font: bolder;
+    font-weight: 500;
+    color: rgb(110, 110, 110);
+}
+
+.tweet-icons {
+    width: 25px;
+    height: 25px;
+}
+
+.tweet-tool-icons {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.tweet-in-list-icons {
+    width: 20px;
+    height: 20px;
+}
+
+.major-tweet-quote {
+    font-weight: 500;
+}
+
+.major-tweet-timestamp {
+    color: gray;
+}

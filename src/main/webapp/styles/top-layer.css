@@ -1,0 +1,70 @@
+
+.top-layer-tweet-count-loader-skill {
+    width: 32px;
+    height: 32px;
+    position: relative;
+}
+
+.top-layer-tweet-count-loader-outer {
+    width: 32px;
+    height: 32px;
+    /* border: 1px solid rgb(110, 110, 110); */
+    border-radius: 50%;
+    padding: 4px;
+    background-color: rgb(168, 168, 191);
+
+    /* box-shadow: 1.2px 1.2px 2px -1.2px rgba(0, 0, 0, .15),
+                    -1.2px -1.2px 2px -.2px rgba(255, 255, 255, 0.7); */
+}
+
+.top-layer-tweet-count-loader-inner {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    /* border: 1px solid rgb(110, 110, 110); */
+    /* box-shadow: inset .8px .8px 1.2px -.2px rgba(0, 0, 0, .2),
+                inset -.8px -.8px 1.2px -.2px rgba(255, 255, 255, .7),
+                -.1px -.1px 0px rgba(255, 255, 255, 1),
+                .1px .1px 0px rgba(0, 0, 0, 0.15),
+                0px 2.4px 2px -2px rgba(0, 0, 0, .05) ; */
+}
+
+.top-layer-tweet-count-loader-skill-circle {
+    fill: none;
+    stroke: rgb(12, 114, 200);
+    stroke-width: 4px;
+    stroke-dasharray: 85;
+    stroke-dashoffset: 85;
+}
+
+.top-layer-tweet-count-loader-skill-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* [contentEditable=true]:empty:not(:focus):before{
+    content:attr(data-placeholder)
+} */
+[contenteditable="true"]:focus {
+    outline: none;
+}
+
+
+
+.top-layer-tweet-button-zero-text {
+    background-color: rgb(3, 14, 23) !important;
+    opacity: .17 !important;
+    cursor: no-drop !important;
+}
+
+
+.top-layer-tweet-who-can-reply-choice:hover {
+    border-radius: 10px;
+    background-color: rgb(29, 155, 240, 0.1);
+    /* background-color: rgb(230, 230, 230); */
+}

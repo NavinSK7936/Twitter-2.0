@@ -1,0 +1,54 @@
+:root {
+    /* --main-theme-color: rgb(0, 100, 200, 0.1); */
+    --main-theme-color: white;
+
+    --login-nav-bar-button-text-color: rgb(41, 78, 196);
+    --login-nav-bar-button-onclick-background-color: #D9E2ED;
+}
+
+.column {
+    float: left;
+    width: 33.33%;
+    padding: 10px;
+    height: 100%; /* Should be removed. Only for demonstration */
+    min-height: 100vh !important; 
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+    min-height: 100vh !important; 
+}
+
+.vertical-center {
+    min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+    min-height: 100vh; /* These two lines are counted as one :-)       */
+  
+    display: flex;
+    align-items: center;
+}
+
+.login-nav-bar-buttons {
+    font-size: 15px;
+}
+
+.login-nav-bar-on-click {
+    background-color: var(--main-theme-color) !important;
+    color: var(--login-nav-bar-button-text-color) !important;
+    font-size: 15px !important;
+    font-weight: bold !important;
+}
+
+.retweet-color {
+    color: rgb(20, 230, 76);
+}
+
+.tweet-like-color {
+    color: rgb(250, 1, 188);
+}
+
+.gray-110 {
+    color: rgb(110, 110, 110);
+}

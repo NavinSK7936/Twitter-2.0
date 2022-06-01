@@ -1,0 +1,19 @@
+.tweet-nav-bar-qqqq {
+    margin-top: 25px;
+}
+
+.tweet-nav-bar-qqqq-title-active {
+    font-size: 16px; font-weight: 600; color: black;
+}
+
+.tweet-nav-bar-qqqq-bottom-bar-active {
+    margin-top: 8px; border-bottom: 5px solid rgb(29, 155, 240); border-radius: 9999px;
+}
+
+.tweet-nav-bar-qqqq-title-inactive {
+    font-size: 14px; font-weight: 500; color: rgb(110, 110, 110);
+}
+
+.tweet-nav-bar-qqqq-bottom-bar-inactive {
+    display: none; margin-top: 8px; border-bottom: 5px solid rgb(29, 155, 240); border-radius: 9999px;
+}

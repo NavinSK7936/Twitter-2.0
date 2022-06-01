@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100vh !important;">
+    <head>
+        
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"> -->
+        <!-- <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"> -->
+
+
+
+        <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->
+    
+
+
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+        
+        <link rel="stylesheet" href="styles/main.css">
+        <link rel="stylesheet" href="styles/common.css">
+        <link rel="stylesheet" href="styles/top-layer.css">
+        <link rel="stylesheet" href="styles/explore-third-div.css">
+        <link rel="stylesheet" href="styles/main-first-column.css">
+        <link rel="stylesheet" href="styles/main-second-column.css">
+        <link rel="stylesheet" href="styles/main-third-column.css">
+        <link rel="stylesheet" href="styles/twitter-nav-bar-qqq.css">
+
+
+        <script type="text/javascript" src="scripts/common/common-ui-kit.js"></script>
+        <script type="text/javascript" src="scripts/first-column.js"></script>
+        <script type="text/javascript" src="scripts/common/top-layer-tweet.js"></script>
+        <script type="text/javascript" src="scripts/common/retweet-menu.js"></script>
+        <script type="text/javascript" src="scripts/common/search-util.js"></script>
+        <script type="text/javascript" src="scripts/common/auxiliary.js"></script>
+        <script type="text/javascript" src="scripts/common/top-bar.js"></script>
+        <script type="text/javascript" src="scripts/listener/qqqq.js"></script>
+        <script type="text/javascript" src="scripts/common/qqqq-div.js"></script>
+        <script type="text/javascript" src="scripts/common/const.js"></script>
+        <script type="text/javascript" src="scripts/common/ui-func.js"></script>
+        <script type="text/javascript" src="scripts/common/user-util.js"></script>
+        <script type="text/javascript" src="scripts/common/utils.js"></script>
+        <script type="text/javascript" src="scripts/explore-third-div.js"></script>
+
+
+        <title>Twitter</title>
+
+        <script>
+            function searchDropdownClick(event) {
+                event.stopPropagation();
+                $('#top-app-bar-search-input-field').focus();
+            }
+        </script>
+
+        <!-- File upload -->
+        <script>
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+
+                    function readFile(file) {
+                        return new Promise((resolve, reject) => {
+                            // Create file reader
+                            let reader = new FileReader()
+
+                            // Register event listeners
+                            reader.addEventListener("loadend", e => resolve(e.target.result))
+                            reader.addEventListener("error", reject)
+
+                            // Read file
+                            reader.readAsArrayBuffer(file)
+                        })
+                    }
+
+                    function getAsByteArray(file) {
+                        return new Uint8Array(readFile(file))
+                    }
+
+                    const byteFile = getAsByteArray(input.files[0]);
+
+                    console.log(byteFile);
+
+                    $.ajax({
+                        url: base_url + "user/pic1",
+                        type: 'POST',
+                        dataType: "text",
+                        data: { send: byteFile }, //String.fromCharCode.apply(null, byteFile) },
+                        success: function (send) {
+                            console.log('answer:', send);
+                        }, error: function(request, status, error) {
+                            console.log('pic1', request.responseText, status, error);
+                        }, complete: function() {
+                        }
+                    });
+
+                    // var reader = new FileReader();
+                    // reader.onload = function (e) {
+                    //     $('#imgTest').attr('src', e.target.result).width(150).height(200);
+                    //     console.log(e.target.result);
+
+                    //     var arrayBuffer = e.target.result,
+                    //         array = new Uint8Array(arrayBuffer),
+                    //         binaryString = String.fromCharCode.apply(null, array);
+                    //     console.log(binaryString);
+
+
+                    //     const sessionId = "1", cipherData = "11";
+
+                    //     // var myFormData = { sessionId: sessionId,
+                    //     //                     cipherData: cipherData,   // encrypted xmlData
+                    //     //                     payslip: input.files[0]};
+                    //     // var formData = new FormData();
+                    //     // for (var key in myFormData) {   // Just to make sure everything set correctly, I would recomment to do like this
+                    //     //     console.log(key, myFormData[key]);
+                    //     //     formData.append(key, myFormData[key]);
+                    //     // }
+                    //     // $.ajax({
+                    //     //     url : base_url + 'user/pic',
+                    //     //     type : 'POST',
+                    //     //     data : formData,    // Do not send it as - data: { formData: formData }
+                    //     //     processData: false, // Tell jquery to don't process the data
+                    //     //     contentType: false, // If you do not set it as false, most probably you would get 400 or 415 error
+                    //     //     success : function(data, status) {
+                    //     //         console.log(data, status);
+                    //     //     },
+                    //     //     failure : function(data) {
+                    //     //         console.log(data);
+                    //     //     }
+                    //     // });
+
+                    //     // $.ajax({
+                    //     //     url : base_url + 'user/pic',
+                    //     //     type : 'POST',
+                    //     //     data : input.files[0],    // Do not send it as - data: { formData: formData }
+                    //     //     processData: false, // Tell jquery to don't process the data
+                    //     //     contentType: false, // If you do not set it as false, most probably you would get 400 or 415 error
+                    //     //     success : function(data, status) {
+                    //     //         console.log(data, status);
+                    //     //     },
+                    //     //     failure : function(data) {
+                    //     //         console.log(data);
+                    //     //     }
+                    //     // });
+
+                    // };
+
+                    // reader.readAsDataURL(input.files[0]);
+                }
+            }
+        </script>
+
+        <!-- File upload -->
+        <script>
+            function addPhoto() {
+                var form = $('#imgFormId')[0];
+                var formData = new FormData(form);
+                $.ajax({
+                    type: 'POST',
+                    url: '',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+
+                    }
+
+                })
+            }
+        </script>
+
+    </head>
+
+    <body>
+
+        <div id="top-layer-tweet-who-can-reply-div" class="dropdown">
+                                
+            <div id="top-layer-tweet-who-can-reply" data-who-can-reply-choice="0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                data-isclicked="isRetweeted" style="cursor: pointer; display: flex; color: rgb(29, 155, 240); display: inline-flex;">
+                
+                <i id="top-layer-tweet-who-can-reply-main-icon" class="ri-earth-fill" style="color: rgb(29, 155, 240); position: relative;
+                                 font-size: 18px; font-weight: 600;"></i>
+                <div class="dropdown-item center-text-vertically"
+                        style="margin-left: 5px; font-size: 15px; font-weight: 550;"
+                        unselectable="on"
+                        onselectstart="return false;"
+                        onmousedown="return false;">
+                    <div id="top-layer-tweet-who-can-reply-string">Everyone can reply</div>
+                </div>
+
+            </div>
+
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"
+                style="padding: 10px 0px; border: 1px solid black; border-radius: 22px;
+                    -webkit-box-shadow:0 0 20px rgb(12, 114, 200); 
+                    -moz-box-shadow: 0 0 20px rgb(12, 114, 200); 
+                    box-shadow: 0 0 20px rgb(12, 114, 200);">
+                
+                <li role = "presentation" class="dropdown-header" onclick="event.stopPropagation()"
+                    style="display: block; font-size: 16px; font-weight: 600; padding-bottom: 15px; position: relative; padding-left: 15px;">
+                    <div style="color: black;">Who can reply?</div>
+                    <div style="font-size: 14px; font-weight: 450;">
+                        Choose who can reply to this Tweet.<br> Anyone mentioned can always reply.
+                    </div>
+                </li>
+                <li class="top-layer-tweet-who-can-reply-choice" data-who-can-reply-choice="0" style="position: relative; padding-left: 15px; padding-bottom: 10px; padding-top: 10px;">
+                    <div style="display: flex; cursor: pointer;">
+                        <div style="width: 40px; height: 40px; border-radius: 9999px; background-color: rgb(29, 155, 240); margin-right: 10px;">
+                            <i id="top-layer-tweet-who-can-reply-icons-0" class="ri-earth-fill" style="display: block; color: white;
+                                transform: translate(25%, 25%); font-size: 20px;"></i>
+                        </div>
+                        <div class="dropdown-item center-text-vertically" style="font-size: 16px; font-weight: 550;">
+                            Everyone
+                        </div>
+                    </div>
+                </li>
+                <li class="top-layer-tweet-who-can-reply-choice" data-who-can-reply-choice="1" style="position: relative; padding-left: 15px; padding-bottom: 10px; padding-top: 10px;">
+                    <div style="display: flex; cursor: pointer;">
+                        <div style="width: 40px; height: 40px; border-radius: 9999px; background-color: rgb(29, 155, 240); margin-right: 10px;">
+                            <i id="top-layer-tweet-who-can-reply-icons-1" class="fa fa-user" style="display: block; color: white;
+                                transform: translate(32%, 49%); font-size: 20px;"></i>
+                        </div>
+                        <div class="dropdown-item center-text-vertically" style="font-size: 16px; font-weight: 550;">
+                            People you follow
+                        </div>
+                    </div>
+                </li>
+                <li class="top-layer-tweet-who-can-reply-choice" data-who-can-reply-choice="2" style="position: relative; padding-left: 15px; padding-bottom: 10px; padding-top: 10px;">
+                    <div style="display: flex; cursor: pointer;">
+                        <div style="width: 40px; height: 40px; border-radius: 9999px; background-color: rgb(29, 155, 240); margin-right: 10px;">
+                            <i id="top-layer-tweet-who-can-reply-icons-2" class="ri-at-line" style="display: block; color: white;
+                                transform: translate(25%, 25%); font-size: 20px;"></i>
+                        </div>
+                        <div class="dropdown-item center-text-vertically" style="font-size: 16px; font-weight: 550;">
+                            Only People you mention
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            
+            <hr style="margin: 0; border-top: 1px solid rgb(99, 155, 240);">
+        </div>
+
+         <!-- TOP LAYER -->
+        <div id="top-layer-tweet" style="display: flex; visibility: hidden; position: fixed; background-color: rgba(63, 103, 138, 0.5); overflow: hidden; overflow-y: scroll;
+                top: 0; left: 0; width: 100%; height: 100%; z-index: 99; align-items: center; justify-content: center; ">
+
+            <div onclick="event.stopPropagation()" style="width: 40%; opacity: 1; background: rgb(255, 255, 255); border-radius: 20px;">
+                
+                <div id="top-layer-tweet-container" style="padding: 10px;" data-tweet-type="tweet">
+                    
+                    <div id="top-layer-tweet-close" style="margin: 0px 15px; margin-bottom: 5px;">
+                        <i class="ri-close-fill" style="cursor: pointer; font-size: 30px;"></i>
+                    </div>
+
+                    <!-- REPLY PARENT-DIV -->
+                    <div id="top-layer-tweet-reply" style="display: block; margin-bottom: 20px;">
+                        <div class="">
+                            <div style="display: flex; margin-bottom: 0px;">
+                                <div style="margin-right: 10px;">
+                                    <div style="margin-left: 5px;">
+                                        <img id="top-layer-tweet-reply-icon" style="width: 50px; height: 50px; border-radius: 50%;"
+                                            src="images/icon_doge.jpeg" alt="User Icon">
+                                    </div>
+                                    <div>
+                                        <div
+                                            style="height: 10px; border: 0.5px solid gray; width: 0; margin-left: 50%; margin-top: 2px;">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div style="width: 100%;">
+                                    
+                                    <div style="display: flex; align-items: center; margin-bottom: 3px;">
+                                        <div class="remove-link-underline"
+                                            style="font-size: 16px; font: bolder; font-weight: 650; color: black; margin-right: 5px;">
+                                            <span class="top-layer-tweet-reply-username">Navin SK</span>
+                                        </div>
+                                        <div class="remove-link-underline"
+                                            style="font-size: 14px; font-weight: 500; color: rgb(110, 110, 110);" href="#">
+                                            <span>@</span><span class="top-layer-tweet-reply-mention">NavinSK7936</span>
+                                        </div>
+                                        <span aria-hidden="true" style="margin: 0px 5px;">
+                                            <span>·</span>
+                                        </span>
+                                        <div class="remove-link-underline tweet-time-span" href="#" rel="noopener noreferrer" target="_blank">
+                                            <span class="top-layer-tweet-reply-tweet-timespan">20h</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="top-layer-tweet-reply-tweet-quote" style="margin-bottom: 8px; margin-right: 5px; font-size: 15px; font-weight: 520;">
+                                        First tweet LOL! First tweet LOL! First tweet LOL! First tweet LOL! First tweet LOL! First tweet LOL! First tweet LOL! First tweet LOL! First tweet LOL! First tweet LOL! First tweet LOL! First tweet LOL!
+                                    </div>
+
+                                    <div style="margin-top: 15px;">
+                                        <span style="font-size: 15px; font-weight: 500; color: rgb(110, 110, 110);">
+                                            Replying to
+                                        </span>
+                                        <span style="font-size: 14px; font-weight: 550; color: rgb(12, 114, 200);">
+                                            <span>@</span><span class="top-layer-tweet-reply-mention">NavinSK0000</span>
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TWEET-DIV -->
+                    <div style="display: flex;">
+                        <div style="margin-right: 15px; margin-left: 5px;">
+                            <img style="cursor: pointer; width: 50px; height: 50px; border-radius: 50%;"
+                                src="images/icon_doge.jpeg" alt="User Icon">
+                        </div>
+                        <div style="width: 100%; margin-top: 5px;">
+                            
+                            <div id="top-layer-tweet-input-field" contenteditable="true"
+                                style="display: none; width: 100%; font-size: 18px; font-weight: 550; margin-left: 5px; height: 100px; overflow-y: scroll; overflow-wrap: break-word;">
+                            </div>
+
+                            <div id="top-layer-tweet-input-placeholder" style="font-size: 20px; font-weight: 400; color: rgb(140, 110, 110); height: 100px;">
+                                Add a comment <!-- Tweet your reply-->
+                            </div>
+
+                            <!-- RETWEET -->
+                            <div id="top-layer-tweet-retweet" style="display: none; margin-bottom: -10px;">
+                                <div class="tweet-in-list">
+                                    <div style="display: flex;">
+                                        <div style="width: 100%;">
+                                            <div class="tweet-in-list" style="border: 1px solid black; border-radius: 10px;">
+                                                <div style="cursor: pointer; display: flex;">
+                                                    <div style="margin-right: 10px;">
+                                                        <img id="top-layer-tweet-retweet-icon" 
+                                                            style="width: 30px; height: 30px; border-radius: 50%;"
+                                                            src="images/icon_doge.jpeg" alt="User Icon">
+                                                    </div>
+                                                    <div style="width: 100%;">
+                                                        <div style="display: flex; align-items: center; margin-bottom: 3px;">
+                                                            <div style="cursor: pointer; font-size: 16px; font: bolder; font-weight: 650; color: black; margin-right: 5px;" href="#" role="link">
+                                                                <span class="top-layer-tweet-retweet-username">Navin SK</span>
+                                                            </div>
+                                                            <div style="cursor: pointer; font-size: 14px; font-weight: 500; color: rgb(110, 110, 110);" href="#" role="link">
+                                                                <span>@</span><span class="top-layer-tweet-retweet-mentionname">NavinSK7936<span>
+                                                            </div>
+                                                            <span aria-hidden="true" style="margin: 0px 5px;">
+                                                                <span>·</span>
+                                                            </span>
+                                                            <a class="remove-link-underline tweet-time-span" href="#" rel="noopener noreferrer" target="_blank" role="link">
+                                                                <span class="top-layer-tweet-retweet-timespan">6h</span>
+                                                            </a>
+                                                        </div>
+                        
+                                                        <div class="top-layer-tweet-retweet-quote" style="margin-bottom: 8px; margin-right: 5px; font-size: 14px; font-weight: 520;">
+                                                            This is happening, just stop it!!!This is happening, just stop it!!!This is happening, just stop it!!!This is happening, just stop it!!!
+                                                        </div>
+                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Everyone can reply -DIV -->
+                            <!-- <div id="top-layer-tweet-who-can-reply-div" style="display: block; overflow-y: auto; margin-top: 10px;">
+                                <div style="display: flex;">
+                                    <div id="top-layer-tweet-who-can-reply" data-who-can-reply-index="0" style="display: flex; cursor: pointer;">
+                                        
+                                        <div style="margin-left: 5px; margin-right: 5px;">
+                                            <i class="ri-arrow-down-s-line" style="color: rgb(12, 114, 200);"></i>
+                                        </div>
+
+                                        <div id="top-layer-tweet-who-can-reply-icons">
+                                            <i id="top-layer-tweet-who-can-reply-icons-0" class="ri-earth-fill" style="display: block; color: rgb(12, 114, 200);"></i>
+                                            <i id="top-layer-tweet-who-can-reply-icons-1" class="fa fa-user" style="display: none; color: rgb(12, 114, 200); margin-top: 4px;"></i>
+                                            <i id="top-layer-tweet-who-can-reply-icons-2" class="ri-at-line" style="display: none; color: rgb(12, 114, 200); font-weight: 600;"></i>
+                                        </div>
+
+                                        <div style="font-size: 14px; font-weight: 700; margin-top: 4px; color: rgb(12, 114, 200); margin-left: 5px; margin-top: 2px;"
+                                            unselectable="on"
+                                            onselectstart="return false;" 
+                                            onmousedown="return false;">
+                                            <span id="top-layer-tweet-who-can-reply-text">Everyone</span> <span>can reply</span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <hr style="margin: 0;">
+                            </div> -->
+
+                            
+
+                            <!-- BOTTOM-DIV -->
+                            <div style="display: flex;">
+                                <div style="position: absolute; right: 30%; display: flex; margin-top: 10px; margin-right: 20px;">
+                                    
+                                    <!-- BOTTOM-DIV-LOADER -->
+                                    <div id="top-layer-tweet-count-loader" style="display: none; padding-right: 10px; margin-top: 9px;">
+
+                                        <div class="top-layer-tweet-count-loader-skill">
+                                            <div class="top-layer-tweet-count-loader-outer">
+                                                <div class="top-layer-tweet-count-loader-inner">
+                                                </div>
+                                            </div>
+                        
+                                            <svg class="top-layer-tweet-count-loader-skill-svg" xmlns="http://www.w3.org/2000/svg" version="1.1" width="32px" height="32px">
+                                                <defs>
+                                                <linearGradient>
+                                                    <stop offset="0%" stop-color="#e91e63" />
+                                                    <stop offset="100%" stop-color="#673ab7" />
+                                                </linearGradient>
+                                                </defs>
+                                                <circle id="top-layer-tweet-count-loader-skill-circle-id" class="top-layer-tweet-count-loader-skill-circle" cx="16" cy="16" r="14" stroke-linecap="round" />
+                                            </svg>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- TWEET -->
+                                    <div id="top-layer-tweet-button"
+                                        style="cursor: pointer; border-radius: 9999px; padding: 10px 25px; background-color: rgb(26, 143, 238);
+                                                font-weight: 650; margin-left: 10px; margin-top: 5px;
+                                                color: white;"
+                                        class="top-layer-tweet-button-zero-text">Tweet</div>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 35px;">&nbsp;</div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="column" style="background-color: white; width: 25% !important;">
+
+                <div>
+                    <ul class="nav flex-column" style="margin-left: 50%; margin-right: 20px;">
+                        
+                        <li class="nav-item" style="margin-bottom: 50px;">
+                            <div>Twitter</div>
+                        </li>
+                        <div style="margin-top: 50px !important;"></div>
+                        
+                        <li id="first-home-button-id" class="nav-item">
+                            <div style="cursor: pointer;">
+                                <div style="display: flex;">
+                                    <i class="fa fa-home" style="transform: scale(2.0); margin-top: 10px;" aria-hidden="true"></i>
+                                    <a class="a-navs" style="margin-left: -1px;">Home</a>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li id="first-profile-button-id" class="nav-item" style="margin-top: 35px;">
+                            <div style="cursor: pointer;">
+                                <div style="display: flex;">
+                                    <i class="fa fa-user" style="transform: scale(2.0); margin-top: 10px;" aria-hidden="true"></i>
+                                    <a class="a-navs" style="margin-left: -1px;">Profile</a>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li>
+                            <div id="first-tweet-button-id" style="cursor: pointer; margin-top: 35px; margin-left: -22px;">
+                                <div style="background-color: rgb(29, 155, 240); color: white; padding: 12px 50px;
+                                    border: 1px solid white; border-radius: 25px;
+                                    font-size: 19px; font-weight: 600;
+                                    display: flex; justify-content: center; align-items: center;">Tweet</div>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+
+                <div style="position: fixed !important; bottom: 0; margin-left: 10%;" >
+                    <p>Username</p>
+                    <p>MentionName</p>
+                </div>
+                
+            </div>
+
+            <div id="second-column" class="column" style="padding: 0px;">
+
+                <!-- <div id="second-top-bar" style="display: flex;">
+                    <div style="display: flex; flex-direction: row; margin-bottom: 3px;">
+                        <div id="top-app-bar-back-button" style="margin: auto; margin-left: 15px; margin-right: 0px; display: none;">
+                            <a href="#" class="remove-link-underline" style="color: black;">
+                                <i href="#" class="ri-arrow-left-line" style="font-size: 20px; font-weight: 700; cursor: pointer;"></i>
+                            </a>
+                        </div>
+                        <div style="flex-direction: column; margin: auto; margin-left: 30px;">
+                            <a href="#" class="remove-link-underline" style="color: black;">
+                                <div id="top-app-bar-title" href="#" style="font-weight: 700; font-size: 20px; padding-top: 2px; cursor: pointer;">
+                                    Navin SK
+                                </div>
+                            </a>
+                            <a href="#" class="remove-link-underline" style="color: black;">
+                                <div id="top-app-bar-sub-title" href="#" style="display: none; font-size: 13px; font-weight: 550; color: rgb(110, 110, 110); cursor: pointer;">
+                                    11K Tweets
+                                </div>
+                            </a>
+                        </div>
+                        <div class="center-vertically" style="display: none; right: 1%;">
+                            <div id="top-app-bar-follow-button" style="border-radius: 9999px; border: 1px solid black; padding: 5px 15px; font-weight: 650; cursor: pointer;">
+                                Following
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div id="second-top-bar" style="margin: auto 0;">
+                    <div style="display: flex; flex-direction: row; margin-right: 0; height: 100%;">
+                        <div id="top-app-bar-back-button" style="display: block; cursor: pointer; margin: auto; margin-left: 15px; margin-right: 0px;">
+                            <a class="remove-link-underline" style="color: black;">
+                                <i class="ri-arrow-left-line" style="font-size: 20px; font-weight: 700;"></i>
+                            </a>
+                        </div>
+                        <div style="position: relative; flex-direction: column; margin: auto; margin-left: 30px; width: 75%;">
+                            <div style="display: block;">
+                                <div id="top-app-bar-title" style="font-weight: 700; font-size: 20px; padding-top: 2px;">
+                                    Navin SK
+                                </div>
+                                <div id="top-app-bar-sub-title" style="display: block; font-size: 13px; font-weight: 550; color: rgb(110, 110, 110);">
+                                    <span>11K</span> <span>Tweets</span>
+                                </div>
+                            </div>
+                            <!-- <div id="top-app-bar-search-box" style="display: block; margin-left: 40px;">
+                                <div id="top-app-bar-search-div" style="margin-top: 0px; display: flex; flex-direction: row; border: 1px solid rgb(12, 114, 200); border-radius: 9999px; width: 100%;">
+                                    <div style="margin: 5px 0; margin-left: 25px;">
+                                        <i class="ri-search-line" style="font-size: 20px; font-weight: 500;"></i>
+                                    </div>
+                                    <div style="margin: auto 0; margin-left: 20px; width: 80%;">
+                                        <input id="top-app-bar-search-input-field" type="text" placeholder="Search Twitter 2.0"
+                                            style="color-scheme: dark !important;
+                                            -webkit-text-size-adjust: 100%;
+                                            -webkit-tap-highlight-color: rgba(232, 230, 227, 0);
+                                            --darkreader-neutral-background: #131516;
+                                            --darkreader-neutral-text: #d8d4cf;
+                                            --darkreader-selection-background: #004daa;
+                                            --darkreader-selection-text: #e8e6e3;
+                                            --darkreader-inline-bgcolor: #000000;
+                                            pointer-events: auto;
+                                            -webkit-box-direction: normal;
+                                            white-space: pre-wrap;
+                                            overflow-wrap: break-word;
+                                            unicode-bidi: isolate;
+                                            border-color: #736b5e;
+                                            padding: 12px;
+                                            border-width: 0px;
+                                            border-radius: 0px;
+                                            outline-style: none;
+                                            font-family: inherit;
+                                            box-sizing: border-box;
+                                            appearance: none;
+                                            resize: none;
+                                            font-size: inherit;
+                                            text-align: left;
+                                            background-color: rgba(0, 0, 0, 0);
+                                            color: inherit;
+                                            padding: 0 0 !important;
+                                            margin: auto 0 !important;
+                                            font-size: 16px;
+                                            width: 100%;
+                                        ">
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div id="top-app-bar-search-box" style="display: none; margin-left: 40px;">
+                                <div id="top-app-bar-search-div" style="margin-top: 0px; display: flex; flex-direction: row; border: 1px solid rgb(12, 114, 200); border-radius: 9999px; width: 100%">
+                                    <div style="margin: auto 0; margin-left: 20px; width: 80%;">
+                                        <input id="top-app-bar-search-input-field" type="text" placeholder="Search Twitter 2.0" autocomplete="off"
+                                            style="color-scheme: dark !important;
+                                            -webkit-text-size-adjust: 100%;
+                                            -webkit-tap-highlight-color: rgba(232, 230, 227, 0);
+                                            --darkreader-neutral-background: #131516;
+                                            --darkreader-neutral-text: #d8d4cf;
+                                            --darkreader-selection-background: #004daa;
+                                            --darkreader-selection-text: #e8e6e3;
+                                            --darkreader-inline-bgcolor: #000000;
+                                            pointer-events: auto;
+                                            -webkit-box-direction: normal;
+                                            white-space: pre-wrap;
+                                            overflow-wrap: break-word;
+                                            unicode-bidi: isolate;
+                                            border-color: #736b5e;
+                                            padding: 12px;
+                                            border-width: 0px;
+                                            border-radius: 0px;
+                                            outline-style: none;
+                                            font-family: inherit;
+                                            box-sizing: border-box;
+                                            appearance: none;
+                                            resize: none;
+                                            font-size: inherit;
+                                            text-align: left;
+                                            background-color: rgba(0, 0, 0, 0);
+                                            color: inherit;
+                                            padding: 0 0 !important;
+                                            margin: auto 0 !important;
+                                            font-size: 16px;
+                                            width: 100%;
+                                        ">
+                                    </div>
+                                    <div id="top-bar-actual-search" style="margin: 5px 0; margin-left: 25px; cursor: pointer;">
+                                        <i class="ri-search-line" style="font-size: 20px; font-weight: 500;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="">
+                            <div style="display: flex; flex-direction: row; margin-right: 15px; height: 100%;">
+                                <div style="display: block; margin: auto; cursor: pointer; margin-left: 15px; margin-right: 0px;">
+                                    <div id="top-app-bar-follow-button" style="border-radius: 9999px; border: 1px solid black; padding: 5px 15px; font-weight: 650;">
+                                        Following
+                                    </div>
+                                </div>
+                                <div id="top-app-bar-search-button" style="display: block; cursor: pointer; margin: auto; margin-left: 15px; margin-right: 0px;">
+                                    <i class="ri-search-line" style="font-size: 20px; font-weight: 500;"></i>
+                                </div>
+                                <div id="top-app-bar-search-cancel-button" style="display: none; cursor: pointer; margin: auto; margin-left: 15px; margin-right: 0px;">
+                                    <i class="ri-close-circle-line" style="font-size: 20px; font-weight: 500;"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- rgba(219, 207, 207, 0.9); -->
+                    <div id="top-app-bar-search-dropdown" onclick="searchDropdownClick(event)" style="display: none;
+                        border: 1px solid rgb(12, 114, 200); border-radius: 10px;
+                        background-color: white;
+                        background: rgba(192, 200, 231, 0.999);
+                        backdrop-filter: blur(400px);
+                        height: 300px;
+                        width: 70%;
+                        margin-left: 105px;
+                        overflow: scroll;
+                        z-index: 100;
+                        ">
+                        <!-- KEEP max-height as '300px' when we have content else make it 'auto' -->
+
+                        <div id="top-app-bar-search-nothing-found" style="display: none;">
+                            <div style="margin: 40px auto; text-align: center;">
+                                <img style="width: 155px; height:155px; border-radius: 50%;" src="images/search-box-not-found.png" alt="User Icon">
+                                <div style="font-size: 22px; font-weight: 900;">NOTHING FOUND</div>
+                                <div style="font-size: 16px; font-weight: 500; color: rgb(110, 110, 110); white-space: pre;">Try to revise the search parameters.</div>
+                            </div>
+                        </div>
+
+                        <div style="display: block;">
+                            <div id="top-app-bar-search-parent-container" style="display: none;">
+                                <div id="top-app-bar-search-trending-bar" style="display: block;">
+                                    <div id="top-app-bar-search-trending-bar-title" style="font-size: 20px; font-weight: 700; margin-top: 0px; margin-left: 15px;">
+                                        In Trending
+                                    </div>
+                                    <div style="border-top: 1px solid rgb(12, 114, 200);">
+                                        <hr style="margin: 0 0; color: rgb(12, 114, 200);">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="top-app-bar-search-trending-container">
+
+                            </div>
+                            <div id="top-app-bar-search-loading-div" class="center-items" style="display: none;">
+                                <img class="center" src="images/twitter-spinner.gif" alt="this slowpoke moves" width="50"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="second-body">
+
+                </div>
+
+                <div id="second-body-bottom-dock">
+                    <div id="homeFeedsSpinnerId" style="width: 0%; margin: 0 auto; display: none;">
+                        <img src="images/twitter-spinner.gif" alt="this slowpoke moves" width="50"/>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="column" style="width: 30% !important;">
+
+                <div style="margin-bottom: 20px;"></div>
+
+                <div id="third-body">
+
+                    <div id="explore-filter-container" class="third-box" style="display: none; padding: 15px;">
+                        <div style="margin-bottom: 16px;">
+                            <div style="font-size: 20px; font-weight: 800;">Search filters</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 16px; font-weight: 700; margin-bottom: 10px;">People</div>
+                            <div class="explore-filter-people-container"
+                                style="border: 2px solid rgb(110, 110, 110); border-radius: 9999px; display: flex; cursor: pointer; transition: all 0.4s ease;">
+                                <div id="explore-filter-people-anyone-id" class="explore-filter-people-on"
+                                    style="border-top-left-radius: 9999px; border-bottom-left-radius: 9999px; width: 50%; text-align: center;">
+                                    <div class="explore-filter-people-text">Anyone</div>
+                                </div>
+                                <div id="explore-filter-people-you-follow-id"
+                                    style="border-top-right-radius: 9999px; border-bottom-right-radius: 9999px; width: 50%; text-align: center;">
+                                    <div class="explore-filter-people-text">You follow</div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div id="explore-filter-advanced-block" style="display: none; overflow: hidden;">
+    
+                            <div style="margin-top: 25px;">
+                                <div style="font-size: 16px; font-weight: 700; margin-bottom: 10px;">Replies</div>
+                                <div
+                                    style="margin: 0 10px; display:flex; justify-content: space-between; height: 22px; margin-top: 9px;">
+                                    <div
+                                        style="width: 75%; margin-bottom: 0px; font-size: 16px; font-weight: 600; color: rgb(110, 110, 110);">
+                                        Only show Replies</div>
+                                    <input name="explore-filter-only-replies-checkbox"
+                                        style="width: 25%; height: auto; outline: 0; border-width: 0 0 2px; border-color: rgb(110, 110, 110); text-align: center;"
+                                        placeholder="0" onfocus="this.placeholder = ''" onblur="this.placeholder = '0'"
+                                        type="checkbox" oninput="this.value = this.value < 0 ? 0 : this.value" />
+                                </div>
+                            </div>
+    
+                            <div style="margin-top: 25px;">
+                                <div style="font-size: 16px; font-weight: 700; margin-bottom: 10px;">Engagement</div>
+                                <div style="margin: 0 10px;">
+                                    <div style="display:flex; justify-content: space-between; height: 22px;">
+                                        <div
+                                            style="width: 75%; margin-bottom: 0px; font-size: 16px; font-weight: 600; color: rgb(110, 110, 110);">
+                                            Minimum replies</div>
+                                        <input id="explore-filter-min-replies" name="explore-filter-min-params" data-param="replies"
+                                            style="width: 25%; height: auto; outline: 0; border-width: 0 0 1px; border-color: rgb(110, 110, 110); text-align: center;"
+                                            placeholder="0" onfocus="this.placeholder = ''" onblur="this.placeholder = '0'"
+                                            type="number" oninput="this.value = this.value < 0 ? 0 : this.value" />
+                                    </div>
+                                    <div
+                                        style="display:flex; justify-content: space-between; height: 22px; margin-top: 9px;">
+                                        <div
+                                            style="width: 75%; margin-bottom: 0px; font-size: 16px; font-weight: 600; color: rgb(110, 110, 110);">
+                                            Minimum likes</div>
+                                        <input id="explore-filter-min-likes" name="explore-filter-min-params" data-param="likes"
+                                            style="width: 25%; height: auto; outline: 0; border-width: 0 0 1px; border-color: rgb(110, 110, 110); text-align: center;"
+                                            placeholder="0" onfocus="this.placeholder = ''" onblur="this.placeholder = '0'"
+                                            type="number" oninput="this.value = this.value < 0 ? 0 : this.value" />
+                                    </div>
+                                    <div
+                                        style="display:flex; justify-content :space-between; height: 22px; margin-top: 9px;">
+                                        <div
+                                            style="width: 75%; margin-bottom: 0px; font-size: 16px; font-weight: 600; color: rgb(110, 110, 110);">
+                                            Minimum retweets</div>
+                                        <input id="explore-filter-min-retweets" name="explore-filter-min-params" data-param="retweets"
+                                            style="width: 25%; height: auto; outline: 0; border-width: 0 0 1px; border-color: rgb(110, 110, 110); text-align: center;"
+                                            placeholder="0" onfocus="this.placeholder = ''" onblur="this.placeholder = '0'"
+                                            type="number" oninput="this.value = this.value < 0 ? 0 : this.value" />
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div style="margin-top: 25px;">
+                                <div style="font-size: 16px; font-weight: 700; margin-bottom: 10px;">Dates</div>
+                                <div style="margin: 0 20px;">
+                                    <div style="margin-bottom: 11px;">
+                                        <div
+                                            style="width: auto; margin-bottom: 3px; font-size: 15px; font-weight: 600; color: rgb(110, 110, 110);">
+                                            From</div>
+                                        <div style="display: flex; justify-content: center;">
+                                            <input id="explore-filter-from-date"
+                                                style="width: 90%; cursor: pointer; padding-left: 15px; border: 1px solid rgb(110, 110, 110); border-radius: 8px;"
+                                                type="date" min="2001-01-01" onfocus="(this.type='date')"
+                                                value="2001-01-01">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div
+                                            style="width: auto; margin-bottom: 3px; font-size: 15px; font-weight: 600; color: rgb(110, 110, 110);">
+                                            To</div>
+                                        <div style="display: flex; justify-content: center;">
+                                            <input id="explore-filter-to-date"
+                                                style="width: 90%; cursor: pointer; padding-left: 15px; border: 1px solid rgb(110, 110, 110); border-radius: 8px;"
+                                                type="date" min="2022-06-01" onfocus="(this.type='date')"
+                                                >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div id="explore-filter-advance-down-arrow" data-expanded="false"
+                            style="cursor: pointer; float: right; display: flex; height: 20px; margin-top: 20px;">
+                            <div id="explore-filter-advance-filter-label"
+                                style="font-size: 14px; font-weight: 600; color: rgb(12, 114, 200);">Show More</div>
+                            <a class="explore-filter-advance-filter-toggle-btn">
+                                <span class="explore-filter-advance-filter-arrow"></span>
+                            </a>
+                        </div>
+    
+                    </div>
+
+                    <div class="trending-box third-box">
+                        <div>
+                            <p class="third-box-title">#Trending</p>
+                        </div>
+                        <div class="third-box-trending-item">
+                            <div>
+                                <a style="font-size: 30px;">·</a>
+                            </div>
+                            <div style="padding-left: 15px; margin-top: 4px;">
+                                <p class="third-box-trending-hashtag">#India</p>
+                                <p class="third-box-trending-hashtag-total-tweets" style="margin-top: -20px; font-size: 15px; color: gray;">24 Tweets</p>
+                            </div>
+                        </div>
+                        <div class="third-box-trending-item">
+                            <div>
+                                <a style="font-size: 30px;">·</a>
+                            </div>
+                            <div style="padding-left: 15px; margin-top: 4px;">
+                                <p class="third-box-trending-hashtag">#India</p>
+                                <p class="third-box-trending-hashtag-total-tweets" style="margin-top: -20px; font-size: 15px; color: gray;">24 Tweets</p>
+                            </div>
+                        </div>
+                        <div class="third-box-trending-item">
+                            <div>
+                                <a style="font-size: 30px;">·</a>
+                            </div>
+                            <div style="padding-left: 15px; margin-top: 4px;">
+                                <p class="third-box-trending-hashtag">#India</p>
+                                <p class="third-box-trending-hashtag-total-tweets">24 Tweets</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="third-box third-box-who-to-follow">
+                        <div>
+                            <p class="third-box-title">Who to follow</p>
+                        </div>
+                        <div class="third-box-who-to-follow-item">
+                            <div>
+                                <img style="width: 50px; height: 50px; border-radius: 50%;" src="images/icon_doge.jpeg" alt="User Icon">
+                            </div>
+                            <div style="padding-left: 15px; margin-top: 4px;">
+                                <p>Navin SK</p>
+                                <p style="margin-top: -20px; font-size: 15px; color: gray;">@NavinSK7936</p>
+                            </div>
+                        </div>
+                        <div class="third-box-who-to-follow-item">
+                            <div>
+                                <img style="width: 50px; height: 50px; border-radius: 50%;" src="images/icon_doge.jpeg" alt="User Icon">
+                            </div>
+                            <div style="padding-left: 15px; margin-top: 4px;">
+                                <p>Navin SK</p>
+                                <p style="margin-top: -20px; font-size: 15px; color: gray;">@NavinSK7936</p>
+                            </div>
+                        </div>
+                        <div class="third-box-who-to-follow-item">
+                            <div>
+                                <img style="width: 50px; height: 50px; border-radius: 50%;" src="images/icon_doge.jpeg" alt="User Icon">
+                            </div>
+                            <div style="padding-left: 15px; margin-top: 4px;">
+                                <p>Navin SK</p>
+                                <p style="margin-top: -20px; font-size: 15px; color: gray;">@NavinSK7936</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <script type="text/javascript" src="index.js"></script>
+
+    </body>
+</html>

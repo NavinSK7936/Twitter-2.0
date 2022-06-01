@@ -1,0 +1,98 @@
+.explore-filter-people-container:hover {
+    transform: scale(1.05);
+    margin-right: 6%;
+    margin-right: calc(5% + 10px);
+    margin-left: 5%;
+}
+
+.explore-filter-people-on {
+    background: rgb(12, 114, 200, 0.55);
+}
+
+.explore-filter-people-text:hover {
+    transform: scale(1.15);
+    transition: all 0.4s ease;
+}
+
+.explore-filter-advance-filter-toggle-btn {
+    position: relative;
+    /* display: block; */
+    /* background: #3890b3; */
+    color: white;
+    width: 15px;
+    /* padding: 10px; */
+    text-decoration: none;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+
+.explore-filter-advance-filter-arrow {
+    /* position: absolute; */
+    top: 10px;
+    right: 5px;
+}
+
+.explore-filter-advance-filter-arrow::before,
+.explore-filter-advance-filter-arrow::after {
+    position: relative;
+    content: '';
+    display: block;
+    width: 10px;
+    height: 1px;
+    background: rgb(12, 114, 200);
+    transition: 0.3s ease-in-out;
+}
+
+.explore-filter-advance-filter-arrow::before {
+    transform: rotate(45deg);
+}
+
+.explore-filter-advance-filter-arrow::after {
+    left: 6px;
+    top: -1px;
+    transform: rotate(-45deg);
+}
+
+.explore-filter-advance-filter-toggle-btn.active .explore-filter-advance-filter-arrow::before {
+    transform: rotate(-45deg);
+}
+
+.explore-filter-advance-filter-toggle-btn.active .explore-filter-advance-filter-arrow::after {
+    transform: rotate(45deg);
+}
+
+.explore-filter-advanced-block-open {
+    animation-name: advanced-block-open;
+    animation-duration: 0.1s;
+    animation-direction: normal;
+    animation-timing-function: linear;
+}
+
+@keyframes advanced-block-open {
+    0% {
+        height: 0;
+    }
+    100% {
+        height: 470px;
+    }
+}
+
+.explore-filter-advanced-block-close {
+    animation-name: advanced-block-close;
+    animation-duration: 0.1s;
+    animation-direction: normal;
+    animation-timing-function: step-start;
+}
+
+@keyframes advanced-block-close {
+
+    0% {
+        height: 1000px;
+    }
+    
+    100% {
+        height: 0;
+        display: none;
+    }
+}
