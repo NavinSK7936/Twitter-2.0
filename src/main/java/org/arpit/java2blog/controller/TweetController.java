@@ -194,8 +194,26 @@ public class TweetController {
 		@QueryParam("wildcard") String wildcard,
 		@QueryParam("start") int pageStart,
 		@QueryParam("size") int pageSize) {
-		
+
 		return service.getRecommendedHashtags(wildcard, pageStart, pageSize);
+		
+	}
+
+	@GET
+	@Path("hashtags/trending")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Map<String, Integer> getTrendingHashtags(@QueryParam("limit") int limit) {
+
+		return service.getTrendingHashtags(limit);
+		
+	}
+
+	@GET
+	@Path("mentions/trending")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Map<Integer, Integer> getTrendingMentions(@QueryParam("limit") int limit) {
+
+		return service.getTrendingMentions(limit);
 		
 	}
 	
@@ -281,21 +299,23 @@ public class TweetController {
 		@QueryParam("order") String order // TOP, RECENT
 		) {
 
-		// 	cfrom: qp.get('cfrom'), // anyone || only-followers
-        // creply: qp.get('creply'), // only-replies || both
-        // replies: qp.get('replies'),
-        // retweets: qp.get('retweets'),
-        // likes: qp.get('likes'),
-        // from: qp.get('from'),
-        // to: qp.get('to')
-
-		search = EncodingUtil.decodeURIComponent(search);
-
-		Object[] objs = {user_id, search, total_likes, total_replies, total_retweets, from, to, pageStart, pageSize, order, cfrom, creply};
-		for (Object obj: objs)
-			System.out.println(Arrays.asList(obj));
-
 		return service.getExploreQQQ(user_id, search, total_likes, total_replies, total_retweets, from, to, pageStart, pageSize, order, cfrom, creply);
+
+	}
+
+	@GET
+	@Path("texplore/people")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<TwitterUser> getExploreQQQPeople(@QueryParam("user_id") int user_id,
+		@QueryParam("q") String search,
+		@QueryParam("cfrom") String cfrom, // ANYONE || ONLY-FOLLOWERS
+		@QueryParam("creply") String creply, // ALL || ONLY-REPLIES
+		@DefaultValue("0") @QueryParam("likes") int total_likes, @DefaultValue("0") @QueryParam("replies") int total_replies, @DefaultValue("0") @QueryParam("retweets") int total_retweets,
+		@QueryParam("minTs") Timestamp minTimestamp, @QueryParam("from") String from, @QueryParam("to") String to,
+		@QueryParam("start") int pageStart, @QueryParam("size") int pageSize
+		) {
+
+		return service.getExploreQQQPeople(user_id, search, total_likes, total_replies, total_retweets, from, to, pageStart, pageSize, cfrom, creply);
 
 	}
 	

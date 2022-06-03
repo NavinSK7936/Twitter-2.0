@@ -131,8 +131,20 @@ function loadMore1(controller, user_id, search, filter) {
     // $('#explore-qqqq-container-' + controller.index).empty();
 
     if (controller.index == 2) {
+        console.log("tweet/texplore/people?user_id=" + user_id +
+                    "&q=" + search +
+                    "&cfrom=" + filter.cfrom +
+                    "&creply=" + filter.creply +
+                    "&likes=" + filter.likes +
+                    "&replies=" + filter.replies +
+                    "&retweets=" + filter.retweets +
+                    "&minTs=" + controller.minTS +
+                    "&from=" + filter.from +
+                    "&to=" + filter.to +
+                    "&start=" + controller.pageNo +
+                    "&size=" + (controller.pageSize+1));
         $.ajax({
-            url: base_url + "tweet/texplore?user_id=" + user_id +
+            url: base_url + "tweet/texplore/people?user_id=" + user_id +
                             "&q=" + search +
                             "&cfrom=" + filter.cfrom +
                             "&creply=" + filter.creply +
@@ -143,45 +155,33 @@ function loadMore1(controller, user_id, search, filter) {
                             "&from=" + filter.from +
                             "&to=" + filter.to +
                             "&start=" + controller.pageNo +
-                            "&size=" + (1) +
-                            "&order=" + (controller.index == 0 ? "TOP" : "RECENT")
+                            "&size=" + (controller.pageSize+1)
                             ,
             type: "GET",
             contentType: "application/json; charSet=UTF-8",
             dataType: "json",
             timeout: 2500,
-            success: function(tweetPieces) {
+            success: function(users) {
 
-                if (tweetPieces == null || tweetPieces.length == 0) {
+                if (users == null || users.length == 0) {
                     console.log("END REACHED DA!!! NO MORE TWEETS FOR EXPLORE AT " + controller.index + "!!!!");
                     endReached();
                     return;
                 }
 
-                console.log(tweetPieces);
+                for (const user of users) {
 
-                for (const tweetPiece of tweetPieces) {
+                    $('#explore-qqqq-container-' + controller.index).append(getUserAsPeople(user));
 
-                    if (tweetPiece['type'] == "QUOTED")
-                        $('#explore-qqqq-container-' + controller.index).append(getQuotedRetweet(tweetPiece['parent'], tweetPiece['child']));
-                    else if (tweetPiece['type'] == "RETWEET")
-                        $('#explore-qqqq-container-' + controller.index).append(getRetweet(user_id, tweetPiece['parent'], tweetPiece['child']));
-                    else if (tweetPiece['type'] == "REPLY")
-                        $('#explore-qqqq-container-' + controller.index).append(getReply(tweetPiece['parent'], tweetPiece['child']));
-                    else
-                        $('#explore-qqqq-container-' + controller.index).append(getSingleTweetForSecondColumnTweetsContainer(tweetPiece['child']['tweet'], tweetPiece['child']['user']));
-                    
                 }
-
-                console.log($('#exploreSpinnerId').is(':visible'));
 
                 controller.pageNo += controller.pageSize;
 
-                // if (tweetPieces.length <= controller.pageSize)
-                //     endReached();
+                if (users.length <= controller.pageSize)
+                    endReached();
 
             }, error: function(request, status, error) {
-                console.log('explore-' + controller.index, request.responseText, status, error);
+                console.log('explore-people-' + controller.index, request.responseText, status, error);
             }, complete: function() {
             }
         })

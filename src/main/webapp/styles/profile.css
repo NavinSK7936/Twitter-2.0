@@ -1,0 +1,22 @@
+.profile-following-div:hover {
+    transition: all .4s ease;
+    -webkit-transition: all .4s ease;
+
+    padding: 2px 10px;
+
+    font-size: 15px;
+    border-top: .005px solid rgba(180, 193, 201, 0.3);
+    border-left: .005px solid rgba(180, 193, 201, 0.3);
+
+    border-radius: 20px;
+
+    background-color: rgb(29, 155, 240, 0.3) !important;
+}
+
+.profile-following-div:not(:hover) {
+    transition: all .4s ease;
+    -webkit-transition: all .4s ease;
+
+    color: black;
+
+}

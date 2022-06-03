@@ -1,15 +1,17 @@
 function onHashtagClicked(event, hashtag) {
     event.stopPropagation();
     console.log(hashtag);
+
+    showExploreSection('p=explore&q=' + hashtag);
 }
 
 function onMentionClicked(event, user_id) {
     event.stopPropagation();
-    console.log(user_id);
+    takeToUserProfile(user_id);
 }
 
 
-const mentionPattern = /^\${{([0-9]+)}}$/
+const mentionPattern = /^.*\${{([0-9]+)}}.*$/
 
 function getIdFromMentionPattern(str) {
     var match = mentionPattern.exec(str)
@@ -73,6 +75,9 @@ function getResultWithHashtags(quote) {
 // The user obj is passed here
 function userInfoClicked(user_id) {
     console.log(user_id);
+
+
+
 }
 
 // Is meant to display the Tweet page, when clicked from a Tweet or something else

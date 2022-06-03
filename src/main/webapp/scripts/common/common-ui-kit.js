@@ -41,6 +41,108 @@ function takeToUserProfile(user_id) {
     
 }
 
+function exploreFollowButtonClick(element, event, user_id) {
+
+    event.stopPropagation();
+
+    element = $(element);
+
+    console.log('exploreFollowButtonClick', element.data('is-following'), element.children().text(), user_id);
+
+    if (!element.data('is-following')) {
+        $.ajax({
+            url: base_url + "user/follow?follower_id=" + getCurrentUserIdInLS() + "&followee_id=" + user_id,
+            type: "POST",
+            contentType: "application/json; charSet=UTF-8",
+            dataType: "json",
+            timeout: 2500,
+            success: function(res) {
+                console.log('exploreFollowButtonClick', true, res);
+            },
+            error: function(request, status, error) {
+                console.log('exploreFollowButtonClick-true', request.responseText, status, error);
+            }, complete: function() {
+            }
+        })
+        element.data('is-following', true);
+        element.children().first().text('Following');
+    } else {
+        $.ajax({
+            url: base_url + "user/unfollow?follower_id=" + getCurrentUserIdInLS() + "&unfollowee_id=" + user_id,
+            type: "DELETE",
+            contentType: "application/json; charSet=UTF-8",
+            dataType: "json",
+            timeout: 2500,
+            success: function(res) {
+                console.log('exploreFollowButtonClick', false, res);
+            },
+            error: function(request, status, error) {
+                console.log('exploreFollowButtonClick-false', request.responseText, status, error);
+            }, complete: function() {
+            }
+        })
+        element.data('is-following', false);
+        element.children().first().text('Follow');
+    }
+}
+
+function getUserAsPeople(user) {
+
+    function getFollowButton(user_id) {
+
+        if (user_id == +getCurrentUserIdInLS())
+            return ``;
+
+        var isFollowing = false;
+
+        $.ajax({
+            url: base_url + "user/isfollow?user_id=" + getCurrentUserIdInLS() + "&followee_id=" + user_id,
+            type: "GET",
+            async: false,
+            contentType: "application/json; charSet=UTF-8",
+            dataType: "json",
+            timeout: 2500,
+            success: function(res) {
+                isFollowing = res;
+            }, error: function(request, status, error) {
+                console.log('getUserAsPeople-isFollowing: ', request.responseText, status, error);
+            }, complete: function() {
+            }
+        })
+
+        return `
+            <div onclick="exploreFollowButtonClick(this, event, ` + user_id + `)" data-is-following="` + isFollowing + `" style="position: absolute; right: 30%; display: flex; margin-top: 0px; margin-right: 10px;">
+                <div style="border-radius: 9999px; border: 1px solid black; padding: 7px 15px; font-weight: 650; cursor: pointer;">
+                    ` + (isFollowing ? 'Following' : 'Follow') + `
+                </div>
+            </div>
+        `;
+    }
+
+    return `
+        <div onclick="takeToUserProfile(` + user['id'] + `)" style="margin: 10px; cursor: pointer;
+            margin-bottom: ` + (user['status'] == null ? '30' : '20') + `px;">
+            <div style="display: flex;">
+                <div style="margin-left: 5px;">
+                    <img style="width: 50px; height: 50px; border-radius: 50%; border: 1px solid black;"
+                        src="images/icon_doge.jpeg" alt="User Icon">
+                </div>
+                <div style="display: block; margin-left: 10px; cursor: pointer;">
+                    <div style="font-size: 16px; font-weight: 600;">` + user['user_name'] + `</div>
+                    <div style="color: rgb(110, 110, 110); font-weight: 500;">@` + user['mention_name'] + `</div>
+                    <div style="margin-top: 5px; font: Trebuchet MS, Helvetica, sans-serif; font-size: 16px; font-weight: 500; color: rgb(81, 119, 215);">` +
+                        getResultWithHashtags(user['status'])
+                    + `</div>
+                </div>
+                ` + getFollowButton(user['id']) + `
+            </div>
+        </div>
+        <hr style="margin: 0 0;">
+    `;
+
+}
+
+
 function getSingleTweetForSecondColumnTweetsContainer(tweet, user) {
     return `
         <div>

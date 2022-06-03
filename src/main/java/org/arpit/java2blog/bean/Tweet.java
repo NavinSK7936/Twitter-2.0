@@ -30,12 +30,13 @@ public class Tweet implements Serializable {
 	private int total_retweets;
 	private int total_replies;
 	private Timestamp created_at;
-	
+	private int source_label;
+
 	public Tweet() {
 	}
 
 	public Tweet(int id, int user_id, String quote, int total_likes, 
-			int total_retweets, int total_replies, Timestamp created_at) {
+			int total_retweets, int total_replies, Timestamp created_at, int source_label) {
 		super();
 		this.id = id;
 		this.user_id = user_id;
@@ -44,6 +45,7 @@ public class Tweet implements Serializable {
 		this.total_retweets = total_retweets;
 		this.total_replies = total_replies;
 		this.created_at = created_at;
+		this.source_label = source_label;
 	}
 
 	public int getId() {
@@ -102,6 +104,14 @@ public class Tweet implements Serializable {
 		this.created_at = created_at;
 	}
 
+	public int getSource_label() {
+		return source_label;
+	}
+
+	public void setSource_label(int source_label) {
+		this.source_label = source_label;
+	}
+
 	
 	
 	// TODO: Must sort it deeper
@@ -146,7 +156,7 @@ public class Tweet implements Serializable {
 	@Override
 	public String toString() {
 		return "Tweet [created_at=" + created_at + ", id=" + id + ", quote=" + quote + ", total_likes=" + total_likes
-				+ ", total_replies=" + total_replies + ", total_retweets=" + total_retweets + ", user_id=" + user_id
+				+ ", total_replies=" + total_replies + ", total_retweets=" + total_retweets + ", user_id=" + user_id + ", source_label=" + source_label
 				+ ", hashtags=" + getHashtags()
 				+ "]";
 	}

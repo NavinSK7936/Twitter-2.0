@@ -53,6 +53,14 @@ function followButtonClick(wt, user_id) {
     }
 }
 
+
+function initFollowerOnClick(user_id) {
+    $('.profile-following-div').click(function() {
+        showFollowerTopLayer(+$(this).data('index'), user_id);
+    })
+}
+
+
 $(function() {
 
     callDestructor();
@@ -135,13 +143,13 @@ $(function() {
                                 </div>
                             </div>
                             <div style="display: flex; margin-top: 10px;">
-                                <div style="cursor: pointer;">
+                                <div class="profile-following-div" data-index="0" style="cursor: pointer;">
                                     <span id="second-user-profile-followee-count-id" style="font-weight: 700;">` + user['total_followees'] + `</span>
-                                    <span style="color: rgb(110, 110, 110)">Following</span>
+                                    <span>Following</span>
                                 </div>
-                                <div style="cursor: pointer; margin-left: 20px;">
+                                <div class="profile-following-div" data-index="1" style="cursor: pointer; margin-left: 20px;">
                                     <span id="second-user-profile-follower-count-id" style="font-weight: 700;">` + user['total_followers'] + `</span>
-                                    <span id="second-user-profile-follower-span-id" style="color: rgb(110, 110, 110)">Follower` + (user['total_followers'] == 1 ? "" : "s") + `</span>
+                                    <span id="second-user-profile-follower-span-id">Follower` + (user['total_followers'] == 1 ? "" : "s") + `</span>
                                 </div>
                             </div>
                         </div>
@@ -151,22 +159,22 @@ $(function() {
                 `
                     <div id="second-column-user-tweet-nav-bar-qqqq">
                         <div class="center-items tweet-nav-bar-qqqq" role="group">
-                            <a id="tweet-nav-0" style="cursor: pointer;">
+                            <div id="tweet-nav-0" style="cursor: pointer;">
                                 <span id="second-column-user-tweet-nav-title-0" class="tweet-nav-bar-qqqq-title-inactive">All</span>
                                 <div id="second-column-user-tweet-nav-bottom-bar-0" class="tweet-nav-bar-qqqq-bottom-bar-inactive"></div>
-                            </a>
-                            <a id="tweet-nav-1" style="cursor: pointer;">
+                            </div>
+                            <div id="tweet-nav-1" style="cursor: pointer;">
                                 <span id="second-column-user-tweet-nav-title-1" class="tweet-nav-bar-qqqq-title-inactive">Retweets</span>
                                 <div id="second-column-user-tweet-nav-bottom-bar-1" class="tweet-nav-bar-qqqq-bottom-bar-inactive"></div>
-                            </a>
-                            <a id="tweet-nav-2" style="cursor: pointer;">
+                            </div>
+                            <div id="tweet-nav-2" style="cursor: pointer;">
                                 <span id="second-column-user-tweet-nav-title-2" class="tweet-nav-bar-qqqq-title-inactive">Replies</span>
                                 <div id="second-column-user-tweet-nav-bottom-bar-2" class="tweet-nav-bar-qqqq-bottom-bar-inactive"></div>
-                            </a>
-                            <a id="tweet-nav-3" style="cursor: pointer;">
+                            </div>
+                            <div id="tweet-nav-3" style="cursor: pointer;">
                                 <span id="second-column-user-tweet-nav-title-3" class="tweet-nav-bar-qqqq-title-inactive">Likes</span>
                                 <div id="second-column-user-tweet-nav-bottom-bar-3" class="tweet-nav-bar-qqqq-bottom-bar-inactive"></div>
-                            </a>
+                            </div>
                         </div>
                         <hr style="margin-top: -1px;">
                     </div>
@@ -225,6 +233,8 @@ $(function() {
             }
 
 
+            initFollowerOnClick(user_id);
+
 
             var prevId = 0;
 
@@ -236,7 +246,7 @@ $(function() {
 
                 document.getElementById("second-column-user-tweet-nav-title-" + prevId).style.fontSize = "14px";
                 document.getElementById("second-column-user-tweet-nav-title-" + prevId).style.fontWeight = "500";
-                document.getElementById("second-column-user-tweet-nav-title-" + prevId).style.color = "rgb(110, 110, 110)";                
+                document.getElementById("second-column-user-tweet-nav-title-" + prevId).style.color = "rgb(110, 110, 110)";   
                 $("#second-column-user-tweet-nav-bottom-bar-" + prevId).hide();
                 $("#profile-tweet-container-qqqq-" + prevId).hide();
 

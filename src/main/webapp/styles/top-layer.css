@@ -68,3 +68,9 @@
     background-color: rgb(29, 155, 240, 0.1);
     /* background-color: rgb(230, 230, 230); */
 }
+
+.top-app-bar-search-box-onfocus {
+    -webkit-box-shadow:0 0 20px rgb(12, 114, 200);
+    -moz-box-shadow: 0 0 20px rgb(12, 114, 200);
+    box-shadow: 0 0 20px rgb(12, 114, 200);
+}

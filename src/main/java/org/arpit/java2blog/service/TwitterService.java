@@ -21,6 +21,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.spacenine.twitter.AutoTweetGenerator;
+import com.spacenine.twitter.EncodingUtil;
 import com.spacenine.twitter.TwitterHashtagManipulator;
 import com.spacenine.twitter.TwitterUtil;
 import com.spacenine.twitter.Util;
@@ -36,7 +38,7 @@ import javafx.beans.property.ReadOnlyBooleanProperty;
 
 public class TwitterService {
 
-	private Connection con = null;
+	public Connection con = null;
 
 	private static boolean isServerLoadedFirstTime = false;
 
@@ -61,6 +63,7 @@ public class TwitterService {
 		
 		isServerLoadedFirstTime = true;
 		new TwitterHashtagManipulator(this).start();
+        new AutoTweetGenerator(this).start();
 
 	}
 
@@ -70,7 +73,7 @@ public class TwitterService {
 
 		try {
 			tweet = new Tweet(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getInt(6),
-					rs.getTimestamp(7));
+					rs.getTimestamp(7), rs.getInt(8));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -158,6 +161,22 @@ public class TwitterService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
+		// ADDS USER IN mention_trend_table
+		try {
+
+			String query = "INSERT INTO " + TwitterUtil.mention_trend_table + " (user_id) VALUES (?)";
+
+			PreparedStatement st = con.prepareStatement(query);
+
+			st.setInt(1, user.getId());
+
+			st.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 
 		return user;
 
@@ -352,12 +371,13 @@ public class TwitterService {
 		
 		try {
 
-			String query = "INSERT INTO " + TwitterUtil.tweetTable + "(user_id, quote) VALUES (?, ?)";
+			String query = "INSERT INTO " + TwitterUtil.tweetTable + "(user_id, quote, source_label) VALUES (?, ?, ?)";
 
 			PreparedStatement st = con.prepareStatement(query);
 
 			st.setInt(1, tweet.getUser_id());
 			st.setString(2, tweet.getQuote());
+			st.setInt(3, tweet.getSource_label());
 
 			st.executeUpdate();
 
@@ -1337,7 +1357,9 @@ public class TwitterService {
 	public Map<String, Integer> getRecommendedHashtags(String wildcard, int pageStart, int pageSize) {
 		
 		Map<String, Integer> ans = new LinkedHashMap<String, Integer>();
-		
+
+		wildcard = EncodingUtil.decodeURIComponent(wildcard);
+
 		try {
 			
 			String query = 
@@ -1365,7 +1387,7 @@ public class TwitterService {
 		try {
 			
 			String query = 
-					"SELECT * FROM " + TwitterUtil.userTable + " WHERE mention_name LIKE CONCAT('%', '" + wildcard + "', '%') ORDER BY LOCATE('" + wildcard + "', mention_name), total_followers DESC, total_tweets DESC LIMIT " + pageStart + ", " + pageSize;
+					"SELECT * FROM " + TwitterUtil.userTable + " WHERE mention_name LIKE CONCAT('%', '" + wildcard + "', '%') OR user_name LIKE CONCAT('%', '" + wildcard + "', '%') ORDER BY LOCATE('" + wildcard + "', mention_name), LOCATE('" + wildcard + "', user_name), total_followers DESC, total_tweets DESC LIMIT " + pageStart + ", " + pageSize;
 			
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(query);
@@ -1892,7 +1914,9 @@ SELECT * FROM tweet_table WHERE
 		String finalHashtags = "", finalMentions = "";
 		for (String word: search.split(" ")) {
 
-			if (word.charAt(0) == '#') {
+			if (word.isEmpty())
+				continue;
+			else if (word.charAt(0) == '#') {
 				finalHashtags += (finalHashtags.isEmpty() ? "" : "|") + word.substring(1);
 			} else if (word.charAt(0) == '@') {
 				finalMentions += (finalMentions.isEmpty() ? "" : "|") + word.substring(1);
@@ -1964,8 +1988,204 @@ SELECT * FROM tweet_table WHERE
 			e.printStackTrace();
 		}
 
+		return ans;
+		
+	}
+
+/*
+
+	SELECT followee_id FROM follower_table WHERE follower_id=1 AND followee_id IN (
+
+
+
+	SELECT id FROM user_table WHERE mention_name REGEXP @finalMentions
+
+	UNION
+
+
+	SELECT user_id FROM status_mention_table WHERE mention_id IN (SELECT id FROM user_table WHERE mention_name REGEXP @finalMentions)
+
+	UNION
+
+	SELECT user_id FROM tweet_table WHERE id IN (SELECT tweet_id FROM hash_tweet_table WHERE hashtag_id IN (SELECT id FROM hashtags_table WHERE hashtag REGEXP @finalHashtags))
+	
+
+	UNION
+
+
+	SELECT user_id FROM status_hash_table WHERE hashtag_id IN (SELECT id FROM hashtags_table WHERE hashtag REGEXP @finalHashtags)
+
+	UNION
+
+	SELECT user_id FROM tweet_table WHERE id IN (SELECT tweet_id FROM hash_tweet_table WHERE hashtag_id IN (SELECT id FROM hashtags_table WHERE hashtag REGEXP @finalHashtags))
+
+	)
+
+*/
+
+	public List<TwitterUser> getExploreQQQPeople(
+		int user_id,
+		String search,
+		int total_likes, int total_replies, int total_retweets,
+		String fromDate, String toDate,
+		int start, int size,
+		String cfrom, // ANYONE || ONLY-FOLLOWERS
+		String creply // ALL || ONLY-REPLIES
+	) {
+
+		List<TwitterUser> ans = new ArrayList<>();
+
+		if (search == null || search.isEmpty())
+			return ans;
+
+		String cFromFilter = cfrom.equals("ANYONE") ? "" :
+			cfrom.equals("ONLY-FOLLOWERS") ? "AND user_id IN (SELECT followee_id FROM follower_table WHERE follower_id=" + user_id + ")" : "";
+		
+		String cReplyFilter = creply.equals("ALL") ? "" :
+			creply.equals("ONLY-REPLIES") ? "AND id IN (SELECT reply_id FROM reply_table)" : "";
+
+
+		
+		String finalHashtags = "", finalMentions = "";
+		for (String word: search.split(" "))
+			if (word.isEmpty())
+				continue;
+			else if (word.charAt(0) == '#') {
+				finalHashtags += (finalHashtags.isEmpty() ? "" : "|") + word.substring(1);
+			} else if (word.charAt(0) == '@') {
+				finalMentions += (finalMentions.isEmpty() ? "" : "|") + word.substring(1);
+			}
+		finalHashtags = finalHashtags.isEmpty() ? " " : finalHashtags;
+		finalMentions = finalMentions.isEmpty() ? " " : finalMentions;
+
+
+
+		String limitBy = ~start == 0 || ~size == 0 ? "" : "LIMIT " + start + ", " + size;
+
+
+
+
+		String tweetFilter = 
+
+			"AND " +
+			"total_likes >= " + total_likes + " AND total_replies >= " + total_replies + " AND total_retweets >= " + total_retweets + " " +
+
+			"AND " +
+			"created_at >= '" + fromDate + "' AND created_at <= '" + toDate + "' " +
+
+			cFromFilter + " " +
+
+			cReplyFilter;
+
+
+
+
+		String query = 
+
+			"SELECT * FROM user_table WHERE id IN (" +
+		
+				"SELECT id FROM user_table WHERE mention_name REGEXP '" + finalMentions + "' " +
+
+				"UNION " +
+
+
+				"SELECT user_id FROM status_mention_table WHERE mention_id IN (SELECT id FROM user_table WHERE mention_name REGEXP '" + finalMentions + "') " +
+
+				"UNION " +
+
+				"SELECT user_id FROM tweet_table WHERE id IN (SELECT tweet_id FROM hash_tweet_table WHERE hashtag_id IN (SELECT id FROM hashtags_table WHERE hashtag REGEXP '" + finalHashtags + "')) " + tweetFilter + " " +
+
+
+				"UNION " +
+
+
+				"SELECT user_id FROM status_hash_table WHERE hashtag_id IN (SELECT id FROM hashtags_table WHERE hashtag REGEXP '" + finalHashtags + "') " +
+
+				"UNION " +
+
+				"SELECT user_id FROM tweet_table WHERE id IN (SELECT tweet_id FROM hash_tweet_table WHERE hashtag_id IN (SELECT id FROM hashtags_table WHERE hashtag REGEXP '" + finalHashtags + "')) " + tweetFilter + " " +
+
+			")" +
+
+			limitBy;
+
+		System.out.println(query);
+
+		try {
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(query);
+		
+			while (rs.next())
+				ans.add(getUserFromResultSet(rs));
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 		return ans;
 		
 	}
+
+	public Map<String, Integer> getTrendingHashtags(int limit) {
+
+		Map<String, Integer> ans = new LinkedHashMap<String, Integer>();
+
+		try {
+
+			String query = "SELECT hashtag, wcount FROM " + TwitterUtil.hashtagsTable + " ORDER BY wcount DESC, wlike DESC, wreply DESC, wretweet DESC LIMIT " + limit;
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(query);
+
+			while (rs.next())
+				ans.put(rs.getString(1), rs.getInt(2));
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return ans;
+
+	}
+
+	public Map<Integer, Integer> getTrendingMentions(int limit) {
+
+		Map<Integer, Integer> ans = new LinkedHashMap<Integer, Integer>();
+
+		try {
+
+			String query = "SELECT user_id, wcount FROM " + TwitterUtil.mention_trend_table + " ORDER BY wcount DESC, wlike DESC, wreply DESC, wretweet DESC LIMIT " + limit;
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(query);
+
+			while (rs.next())
+				ans.put(rs.getInt(1), rs.getInt(2));
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return ans;
+
+	}
+
+	public int getTotalUsers() {
+
+		try {
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM " + TwitterUtil.userTable);
+
+			if (rs.next())
+				return rs.getInt(1);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return -1;
+	}
+
 }

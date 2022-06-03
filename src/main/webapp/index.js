@@ -31,20 +31,11 @@ function justDoIt(toPush = true) {
 
     } else if (qp.get('p') == 'explore') {
 
-        // const exploreFilter = {
-        //     q: qp.get('q'),
-        //     cfrom: qp.get('cfrom'), // anyone || only-followers
-        //     creply: qp.get('creply'), // only-replies || both
-        //     replies: qp.get('replies'),
-        //     retweets: qp.get('retweets'),
-        //     likes: qp.get('likes'),
-        //     from: qp.get('from'),
-        //     to: qp.get('to')
-        // }
-
-        console.log('pop', decodeURIComponent(window.location.search.substring(1)));
-
         showExploreSection(decodeURIComponent(window.location.search.substring(1)), toPush ? 'push' : 'replace');
+
+    } else if (qp.get('p') == 'follower') {
+
+        showFollowerTopLayer(qp.get('i'), qp.get('id'));
 
     }
 
@@ -148,6 +139,19 @@ function showExploreSection(searchQuery, to = 'push') {
         window.history.pushState(null, "Explore", searchQuery);
     else if (to == 'replace')
         window.history.replaceState(null, "Explore", searchQuery);
+
+}
+
+function showFollowerTopLayer(index, user_id, to = 'push') {
+
+    $('#auxiliary-container').empty();
+
+    $('#auxiliary-container').load('html/profile-follower.html');
+
+    if (to == 'push')
+        window.history.pushState(null, "FollowerTopLayer", "?p=follower&id=" + user_id + "&i=" + index);
+    else if (to == 'replace')
+        window.history.replaceState(null, "FollowerTopLayer", "?p=follower&id=" + user_id + "&i=" + index);
 
 }
 

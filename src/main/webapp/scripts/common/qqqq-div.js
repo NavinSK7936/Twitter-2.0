@@ -9,7 +9,7 @@ function getReplyIconDiv(tweet_id, user_id, replyCount) {
 
 function getRetweetIconDiv(tweet_id, retweetCount, isRetweeted) {
     return `
-        <div class="dropdown">
+        <div class="dropdown" data-type="retweetIconDivQQQQ">
             <div id="retweet-dropdown-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                 ` + (isRetweeted ? ` class="retweet-qqqq-color" ` : ``) + `
                 style="cursor: pointer; display: flex;">

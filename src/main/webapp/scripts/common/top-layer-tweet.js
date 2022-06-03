@@ -10,11 +10,32 @@ $(function() {
 })
 
 function initTopLayer() {
+    
+    $('#top-layer-tweet-who-can-reply-div').click(function(event) {
+
+        event.stopPropagation();
+
+        if ($('#top-layer-tweet-who-can-reply-dropdown-menu').is(":hidden"))
+            $('#top-layer-tweet-who-can-reply').dropdown('toggle');
+
+    })
+
+    $('#top-layer-tweet-container').click((event) => {
+        
+        event.stopPropagation();
+
+        if (!$('#top-layer-tweet-who-can-reply-dropdown-menu').is(":hidden"))
+            $('#top-layer-tweet-who-can-reply').dropdown('toggle');
+
+    })
 
     const whoCanReplyStrings = ['Everyone', 'People you follow', 'Only People you mention'];
     const whoCanReplyIcons = ['ri-earth-fill', 'fa fa-user', 'ri-at-line'];
 
     $('.top-layer-tweet-who-can-reply-choice').click(function(event) {
+
+        event.stopPropagation();
+        $('#top-layer-tweet-who-can-reply').dropdown('toggle');
 
         const index = $(this).data('who-can-reply-choice');
 
@@ -30,7 +51,7 @@ function initTopLayer() {
         // top-layer-tweet-who-can-reply-choice
 
     })
- 
+                
     const tweetMaxChars = 280;
 
     $('#top-layer-tweet-input-field').empty();
@@ -53,10 +74,12 @@ function initTopLayer() {
 
         let len = Math.min(Math.floor(($(this).text().length * 85) / tweetMaxChars), 85);
 
+        console.log(len, $(this).text().length);
+
         showUI($('#top-layer-tweet-count-loader'));
 
         if ($(this).text().trim().length == 0) {
-            if (!$('#top-layer-tweet-button').hasClass('top-layer-tweet-button-zero-text') && $('#top-layer-tweet-container').data('tweet-type') != 'retweet')
+            if (!$('#top-layer-tweet-button').hasClass('top-layer-tweet-button-zero-text'))
                 $('#top-layer-tweet-button').addClass('top-layer-tweet-button-zero-text');
             showUI($('#top-layer-tweet-count-loader'), false);
         } else {
@@ -71,8 +94,75 @@ function initTopLayer() {
         
         $('#top-layer-tweet-count-loader-skill-circle-id').css('stroke-dashoffset', 85 - len);
     });
-
 }
+
+
+// function initTopLayer() {
+
+//     const whoCanReplyStrings = ['Everyone', 'People you follow', 'Only People you mention'];
+//     const whoCanReplyIcons = ['ri-earth-fill', 'fa fa-user', 'ri-at-line'];
+
+//     $('.top-layer-tweet-who-can-reply-choice').click(function(event) {
+
+//         const index = $(this).data('who-can-reply-choice');
+
+//         console.log(whoCanReplyIcons[index]);
+
+//         $('#top-layer-tweet-who-can-reply-main-icon').removeClass();
+//         $('#top-layer-tweet-who-can-reply-main-icon').addClass(whoCanReplyIcons[index]);
+
+//         $('#top-layer-tweet-who-can-reply-string').text(whoCanReplyStrings[index] + ' can reply');
+//         $('#top-layer-tweet-who-can-reply').data('-who-can-reply-choice', index);
+
+//         console.log($('#top-layer-tweet-who-can-reply').data('-who-can-reply-choice'));
+//         // top-layer-tweet-who-can-reply-choice
+
+//     })
+ 
+//     const tweetMaxChars = 280;
+
+//     $('#top-layer-tweet-input-field').empty();
+
+//     $('#top-layer-tweet-input-field').on('focusout', function() {
+//         console.log('out-io', $('#top-layer-tweet-input-field').text().length, '|' + $('#top-layer-tweet-input-field').text() + '|');
+//         if ($(this).text().length == 0) {
+//             showUI($(this), false);
+//             showUI($('#top-layer-tweet-input-placeholder'));
+//         }
+//     })
+
+//     $('#top-layer-tweet-input-placeholder').on('click', function(event) {
+//         showUI($(this), false);
+//         showUI($('#top-layer-tweet-input-field'));
+//         $('#top-layer-tweet-input-field').focus();
+//     })
+
+//     $('#top-layer-tweet-input-field').on('input keydown paste', function(event) {
+
+//         let len = Math.min(Math.floor(($(this).text().length * 85) / tweetMaxChars), 85);
+
+//         showUI($('#top-layer-tweet-count-loader'));
+
+//         if ($(this).text().trim().length == 0) {
+//             if (!$('#top-layer-tweet-button').hasClass('top-layer-tweet-button-zero-text') && $('#top-layer-tweet-container').data('tweet-type') != 'retweet')
+//                 $('#top-layer-tweet-button').addClass('top-layer-tweet-button-zero-text');
+//             showUI($('#top-layer-tweet-count-loader'), false);
+//         } else {
+//             $('#top-layer-tweet-button').removeClass('top-layer-tweet-button-zero-text');
+//         }
+
+//         if($(this).text().trim().length >= tweetMaxChars && event.keyCode != 8) {
+//             event.preventDefault();
+
+//             $(this).text($(this).text().substring(0, tweetMaxChars));
+//         }
+        
+//         $('#top-layer-tweet-count-loader-skill-circle-id').css('stroke-dashoffset', 85 - len);
+//     });
+
+// }
+
+
 
 // function initTopLayer() {
 
@@ -149,8 +239,12 @@ function setTopTweetLayer(replyTweetBox, retweetTweetBox) {
     showUI($('#top-layer-tweet-retweet'), false);
     showUI($('#top-layer-tweet-who-can-reply-div'));
     showUI($('#top-layer-tweet-input-placeholder'));
+    showUI($('#top-layer-tweet-count-loader'), false);
+    showUI($('#top-layer-tweet-input-field'), false);
     $('#top-layer-tweet-input-field').empty();
     $('#top-layer-tweet-button').addClass('top-layer-tweet-button-zero-text');
+
+    $('.top-layer-tweet-who-can-reply-choice[data-who-can-reply-choice="0"]').click();
 
 
     if (replyTweetBox != undefined) {

@@ -30,19 +30,17 @@
 
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
-
-        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
-
+        
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
+    
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        
 
         
         <link rel="stylesheet" href="styles/main.css">
+        <link rel="stylesheet" href="styles/profile.css">
         <link rel="stylesheet" href="styles/common.css">
         <link rel="stylesheet" href="styles/top-layer.css">
         <link rel="stylesheet" href="styles/explore-third-div.css">
@@ -197,7 +195,7 @@
 
     <body>
 
-        <div id="top-layer-tweet-who-can-reply-div" class="dropdown">
+        <!-- <div id="top-layer-tweet-who-can-reply-div" class="dropdown">
                                 
             <div id="top-layer-tweet-who-can-reply" data-who-can-reply-choice="0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                 data-isclicked="isRetweeted" style="cursor: pointer; display: flex; color: rgb(29, 155, 240); display: inline-flex;">
@@ -263,9 +261,15 @@
             </ul>
             
             <hr style="margin: 0; border-top: 1px solid rgb(99, 155, 240);">
+        </div> -->
+
+
+        <div id="auxiliary-container">
+
         </div>
 
-         <!-- TOP LAYER -->
+
+        <!-- TOP LAYER -->
         <div id="top-layer-tweet" style="display: flex; visibility: hidden; position: fixed; background-color: rgba(63, 103, 138, 0.5); overflow: hidden; overflow-y: scroll;
                 top: 0; left: 0; width: 100%; height: 100%; z-index: 99; align-items: center; justify-content: center; ">
 
@@ -386,38 +390,77 @@
                                 </div>
                             </div>
 
-                            <!-- Everyone can reply -DIV -->
-                            <!-- <div id="top-layer-tweet-who-can-reply-div" style="display: block; overflow-y: auto; margin-top: 10px;">
-                                <div style="display: flex;">
-                                    <div id="top-layer-tweet-who-can-reply" data-who-can-reply-index="0" style="display: flex; cursor: pointer;">
-                                        
-                                        <div style="margin-left: 5px; margin-right: 5px;">
-                                            <i class="ri-arrow-down-s-line" style="color: rgb(12, 114, 200);"></i>
-                                        </div>
-
-                                        <div id="top-layer-tweet-who-can-reply-icons">
-                                            <i id="top-layer-tweet-who-can-reply-icons-0" class="ri-earth-fill" style="display: block; color: rgb(12, 114, 200);"></i>
-                                            <i id="top-layer-tweet-who-can-reply-icons-1" class="fa fa-user" style="display: none; color: rgb(12, 114, 200); margin-top: 4px;"></i>
-                                            <i id="top-layer-tweet-who-can-reply-icons-2" class="ri-at-line" style="display: none; color: rgb(12, 114, 200); font-weight: 600;"></i>
-                                        </div>
-
-                                        <div style="font-size: 14px; font-weight: 700; margin-top: 4px; color: rgb(12, 114, 200); margin-left: 5px; margin-top: 2px;"
+                            <!-- Who can reply -DIV -->
+                            <div id="top-layer-tweet-who-can-reply-div" class="dropdown" style="margin-top: 10px;">
+                                <div id="top-layer-tweet-who-can-reply" class="dropdown-toggle" data-who-can-reply-choice="0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                    data-isclicked="isRetweeted" style="cursor: pointer; display: flex; color: rgb(29, 155, 240); display: inline-flex;">
+                                    <!-- <i class="fa fa-retweet" style="font-size: 20px;"></i> -->
+                                    <!-- <span id="count" style="margin-left: 10px; font-size: 14px; font-weight: 500;">12s5</span> -->
+                                    <i id="top-layer-tweet-who-can-reply-main-icon" class="ri-earth-fill" style="color: rgb(29, 155, 240); position: relative;
+                                                     font-size: 18px; font-weight: 600;"></i>
+                                    <div class="dropdown-item center-text-vertically"
+                                            style="margin-left: 5px; font-size: 15px; font-weight: 550;"
                                             unselectable="on"
-                                            onselectstart="return false;" 
+                                            onselectstart="return false;"
                                             onmousedown="return false;">
-                                            <span id="top-layer-tweet-who-can-reply-text">Everyone</span> <span>can reply</span>
-                                        </div>
-
+                                        <div id="top-layer-tweet-who-can-reply-string">Everyone can reply</div>
                                     </div>
                                 </div>
-                                <hr style="margin: 0;">
-                            </div> -->
-
+    
+                                <ul id="top-layer-tweet-who-can-reply-dropdown-menu" class="dropdown-menu" aria-labelledby="dropdownMenuButton1"
+                                    style="padding: 10px 0px; border: 1px solid black; border-radius: 22px;
+                                        -webkit-box-shadow:0 0 20px rgb(12, 114, 200); 
+                                        -moz-box-shadow: 0 0 20px rgb(12, 114, 200); 
+                                        box-shadow: 0 0 20px rgb(12, 114, 200);">
+                                    
+                                    <li role = "presentation" class="dropdown-header" onclick="event.stopPropagation()"
+                                        style="display: block; cursor: default; font-size: 16px; font-weight: 600; padding-bottom: 15px; position: relative; padding-left: 15px;">
+                                        <div style="color: black;">Who can reply?</div>
+                                        <div style="font-size: 14px; font-weight: 450;">
+                                            Choose who can reply to this Tweet.<br> Anyone mentioned can always reply.
+                                        </div>
+                                    </li>
+                                    <li class="top-layer-tweet-who-can-reply-choice" data-who-can-reply-choice="0" style="position: relative; padding-left: 15px; padding-bottom: 10px; padding-top: 10px;">
+                                        <div style="display: flex; cursor: pointer;">
+                                            <div style="width: 40px; height: 40px; border-radius: 9999px; background-color: rgb(29, 155, 240); margin-right: 10px;">
+                                                <i id="top-layer-tweet-who-can-reply-icons-0" class="ri-earth-fill" style="display: block; color: white;
+                                                    transform: translate(25%, 25%); font-size: 20px;"></i>
+                                            </div>
+                                            <div class="dropdown-item center-text-vertically" style="font-size: 16px; font-weight: 550;">
+                                                Everyone
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="top-layer-tweet-who-can-reply-choice" data-who-can-reply-choice="1" style="position: relative; padding-left: 15px; padding-bottom: 10px; padding-top: 10px;">
+                                        <div style="display: flex; cursor: pointer;">
+                                            <div style="width: 40px; height: 40px; border-radius: 9999px; background-color: rgb(29, 155, 240); margin-right: 10px;">
+                                                <i id="top-layer-tweet-who-can-reply-icons-1" class="fa fa-user" style="display: block; color: white;
+                                                    transform: translate(32%, 49%); font-size: 20px;"></i>
+                                            </div>
+                                            <div class="dropdown-item center-text-vertically" style="font-size: 16px; font-weight: 550;">
+                                                People you follow
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="top-layer-tweet-who-can-reply-choice" data-who-can-reply-choice="2" style="position: relative; padding-left: 15px; padding-bottom: 10px; padding-top: 10px;">
+                                        <div style="display: flex; cursor: pointer;">
+                                            <div style="width: 40px; height: 40px; border-radius: 9999px; background-color: rgb(29, 155, 240); margin-right: 10px;">
+                                                <i id="top-layer-tweet-who-can-reply-icons-2" class="ri-at-line" style="display: block; color: white;
+                                                    transform: translate(25%, 25%); font-size: 20px;"></i>
+                                            </div>
+                                            <div class="dropdown-item center-text-vertically" style="font-size: 16px; font-weight: 550;">
+                                                Only People you mention
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                
+                                <hr style="margin-top: 5px; margin-bottom: 10px; border-top: 1px solid rgb(99, 155, 240);">
+                            </div>
                             
-
                             <!-- BOTTOM-DIV -->
-                            <div style="display: flex;">
-                                <div style="position: absolute; right: 30%; display: flex; margin-top: 10px; margin-right: 20px;">
+                            <div style="display: flex; margin-top: 10px;">
+                                <div style="position: absolute; right: 30%; display: flex; margin-top: 0px; margin-right: 20px;">
                                     
                                     <!-- BOTTOM-DIV-LOADER -->
                                     <div id="top-layer-tweet-count-loader" style="display: none; padding-right: 10px; margin-top: 9px;">
@@ -450,21 +493,87 @@
                                 </div>
                             </div>
 
-                            <div style="margin-top: 35px;">&nbsp;</div>
+                            <div style="margin-top: 25px;">&nbsp;</div>
 
                         </div>
                     </div>
+
                 </div>
 
             </div>
         </div>
+        
 
         <div class="row">
 
             <div class="column" style="background-color: white; width: 25% !important;">
 
                 <div>
-                    <ul class="nav flex-column" style="margin-left: 50%; margin-right: 20px;">
+                    <ul class="nav flex-column" style="margin-left: 150px; margin-right: 20px; position: fixed; left: 0; top: 0;">
+                        
+                        <li class="nav-item" style="margin-bottom: 50px;">
+                            <div>Twitter</div>
+                        </li>
+                        <div style="margin-top: 50px !important;"></div>
+                        
+                        <li id="first-home-button-id" class="nav-item">
+                            <div style="cursor: pointer;">
+                                <div style="display: flex;">
+                                    <i class="fa fa-home" style="transform: scale(2.0); margin-top: 10px;" aria-hidden="true"></i>
+                                    <a class="a-navs" style="margin-left: -1px;">Home</a>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li id="first-profile-button-id" class="nav-item" style="margin-top: 35px;">
+                            <div style="cursor: pointer;">
+                                <div style="display: flex;">
+                                    <i class="fa fa-user" style="transform: scale(2.0); margin-top: 10px;" aria-hidden="true"></i>
+                                    <a class="a-navs" style="margin-left: -1px;">Profile</a>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li>
+                            <div id="first-tweet-button-id" style="cursor: pointer; margin-top: 35px; margin-left: -22px;">
+                                <div style="background-color: rgb(29, 155, 240); color: white; padding: 12px 50px;
+                                    border: 1px solid white; border-radius: 25px;
+                                    font-size: 19px; font-weight: 600;
+                                    display: flex; justify-content: center; align-items: center;">Tweet</div>
+                            </div>
+                        </li>
+    
+                    </ul>
+                </div>
+    
+                <div class="first-column-bottom-dock"
+                    style="position: fixed !important; bottom: 0; margin-left: 7%; margin-bottom: 20px; padding: 10px 15px; border-radius: 20px;">
+                    <div id="first-column-bottom-dock-spinner" style="margin-left: 50px; display: block;">
+                        <img src="images/twitter-spinner.gif" alt="this slowpoke moves" width="50">
+                    </div>
+                    <div id="first-column-bottom-user-container" style="display: none;">
+                        <div style="display: flex;">
+                            <div style="display: inline-block;">
+                                <img style="width: 50px; height: 50px; border-radius: 50%;" src="images/icon_doge.jpeg">
+                            </div>
+        
+                            <div style="display: block; margin-left: 10px; margin-top: 3px;">
+                                <div style="font-size: 16px; font-weight: 600;" class="current-user-name">username</div>
+                                <div style="color: rgb(110, 110, 110);">@<span class="current-mention-name">mention</span></div>
+                            </div>
+        
+                            <div class="center-text-vertically" style="margin-left: 20px;">
+                                <i class="ri-more-fill" style="font-size: 22px;"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+
+
+                <!-- <div>
+                    <ul class="nav flex-column" style="margin-left: 150px; margin-right: 20px; position: fixed; left: 0; top: 0;">
                         
                         <li class="nav-item" style="margin-bottom: 50px;">
                             <div>Twitter</div>
@@ -501,10 +610,19 @@
                     </ul>
                 </div>
 
-                <div style="position: fixed !important; bottom: 0; margin-left: 10%;" >
-                    <p>Username</p>
-                    <p>MentionName</p>
-                </div>
+                <div style="position: fixed !important; bottom: 0; margin-left: 7%; margin-bottom: 20px;">
+                    <div style="display: flex;">
+    
+                        <div style="display: inline-block;">
+                            <img style="width: 50px; height: 50px;" src="../images/icon_doge.jpeg">
+                        </div>
+                        <div style="display: block; margin-left: 10px; margin-top: 3px;">
+                            <div style="font-size: 16px; font-weight: 600;" id="first-column-bottom-dock-user-name">NavinSK</div>
+                            <div style="color: rgb(110, 110, 110);">@<span id="first-column-bottom-dock-mention-name">NavinSK7936</span></div>
+                        </div>
+                    </div>
+                    
+                </div> -->
                 
             </div>
 
@@ -538,6 +656,7 @@
                 </div> -->
 
                 <div id="second-top-bar" style="margin: auto 0;">
+                    
                     <div style="display: flex; flex-direction: row; margin-right: 0; height: 100%;">
                         <div id="top-app-bar-back-button" style="display: block; cursor: pointer; margin: auto; margin-left: 15px; margin-right: 0px;">
                             <a class="remove-link-underline" style="color: black;">
@@ -595,7 +714,8 @@
                                 </div>
                             </div> -->
                             <div id="top-app-bar-search-box" style="display: none; margin-left: 40px;">
-                                <div id="top-app-bar-search-div" style="margin-top: 0px; display: flex; flex-direction: row; border: 1px solid rgb(12, 114, 200); border-radius: 9999px; width: 100%">
+                                <div id="top-app-bar-search-div"
+                                    style="margin-top: 0px; display: flex; flex-direction: row; border: 1px solid rgb(12, 114, 200); border-radius: 9999px; width: 100%;">
                                     <div style="margin: auto 0; margin-left: 20px; width: 80%;">
                                         <input id="top-app-bar-search-input-field" type="text" placeholder="Search Twitter 2.0" autocomplete="off"
                                             style="color-scheme: dark !important;
@@ -655,17 +775,21 @@
 
                     </div>
                     <!-- rgba(219, 207, 207, 0.9); -->
+
                     <div id="top-app-bar-search-dropdown" onclick="searchDropdownClick(event)" style="display: none;
                         border: 1px solid rgb(12, 114, 200); border-radius: 10px;
                         background-color: white;
-                        background: rgba(192, 200, 231, 0.999);
+                        background: white;
                         backdrop-filter: blur(400px);
                         height: 300px;
                         width: 70%;
                         margin-left: 105px;
                         overflow: scroll;
-                        z-index: 100;
-                        ">
+                        z-index: 10;
+                        -webkit-box-shadow:0 0 20px rgb(12, 114, 200); -moz-box-shadow: 0 0 20px rgb(12, 114, 200); box-shadow: 0 0 20px rgb(12, 114, 200);
+                        "
+                        class=""
+                        >
                         <!-- KEEP max-height as '300px' when we have content else make it 'auto' -->
 
                         <div id="top-app-bar-search-nothing-found" style="display: none;">
@@ -676,13 +800,13 @@
                             </div>
                         </div>
 
-                        <div style="display: block;">
+                        <div style="display: block; margin-top: 7px;">
                             <div id="top-app-bar-search-parent-container" style="display: none;">
                                 <div id="top-app-bar-search-trending-bar" style="display: block;">
-                                    <div id="top-app-bar-search-trending-bar-title" style="font-size: 20px; font-weight: 700; margin-top: 0px; margin-left: 15px;">
+                                    <div id="top-app-bar-search-trending-bar-title" style="font-size: 20px; font-weight: 700; margin-top: 0px; margin-bottom: 5px; margin-left: 15px;">
                                         In Trending
                                     </div>
-                                    <div style="border-top: 1px solid rgb(12, 114, 200);">
+                                    <div style="border-top: 1px solid rgb(12, 114, 200); margin-bottom: 10px;">
                                         <hr style="margin: 0 0; color: rgb(12, 114, 200);">
                                     </div>
                                 </div>
@@ -695,6 +819,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
                 
                 <div id="second-body">

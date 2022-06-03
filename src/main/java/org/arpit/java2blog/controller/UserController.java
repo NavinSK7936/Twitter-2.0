@@ -35,8 +35,6 @@ import org.arpit.java2blog.service.TwitterService;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
-import netscape.javascript.JSObject;
-
 @Path("user")
 public class UserController {
 	

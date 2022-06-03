@@ -53,3 +53,23 @@ a.first-navs {
     font-size: 20px;
 
 }
+
+
+
+
+/* Bottom Dock */
+
+
+.first-column-bottom-dock:hover {
+    transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    cursor: pointer;
+    background-color: rgb(110, 110, 110, 0.1);
+}
+
+.first-column-bottom-dock:not(:hover) {
+
+    transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+
+}

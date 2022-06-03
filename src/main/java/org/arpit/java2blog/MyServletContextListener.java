@@ -4,6 +4,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
+import com.spacenine.twitter.AutoTweetGenerator;
 import com.spacenine.twitter.TwitterHashtagManipulator;
 
 import org.arpit.java2blog.service.TwitterService;
@@ -16,7 +17,7 @@ public class MyServletContextListener implements ServletContextListener {
         System.out.println("Hi!!! Server Started!!!");
 
         new TwitterHashtagManipulator(new TwitterService()).start();
-
+        
     }
 
     @Override

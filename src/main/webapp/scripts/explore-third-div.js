@@ -36,7 +36,7 @@ function initExploreFilterFromDiv() {
     exploreFilter.likes = +$('#explore-filter-min-retweets').val();
 
     exploreFilter.from = $('#explore-filter-from-date').val();
-    exploreFilter.to = $('#explore-filter-to-date').val();
+    exploreFilter.to = new Date(new Date().setDate((new Date($('#explore-filter-to-date').val()).getDate() + 1))).toISOString().split('T')[0];
 
 }
 
@@ -127,7 +127,7 @@ $(function() {
     })
 
     $('#explore-filter-to-date').on('change', function() {
-        exploreFilterDateChange('to', $(this).val())
+        exploreFilterDateChange('to', new Date(new Date().setDate((new Date($(this).val()).getDate() + 1))).toISOString().split('T')[0])
     })
 
 })

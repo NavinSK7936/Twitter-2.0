@@ -53,37 +53,37 @@ public class TwitterHashtagManipulator {
 			@Override
 			public void run() {
 
-                double weight;
+            //     double weight;
 
-                while (true) {
+            //     while (true) {
 
-                    Map<String, Double> hashtagsWeight = new HashMap<String, Double>();
+            //         Map<String, Double> hashtagsWeight = new HashMap<String, Double>();
 
-                    Timestamp currentTimestamp = currentTimestamp();
+            //         Timestamp currentTimestamp = currentTimestamp();
 
-                    String query = "SELECT * FROM " + TwitterUtil.tweetTable + " WHERE created_at >= '" + minimumTimestamp() + "'" ;
+            //         String query = "SELECT * FROM " + TwitterUtil.tweetTable + " WHERE created_at >= '" + minimumTimestamp() + "'";
 
-                    for (Tweet tweet: service.getTweetsForCustomQuery(query)) {
+            //         for (Tweet tweet: service.getTweetsForCustomQuery(query)) {
 
-                        for (String hashtag: tweet.getHashtags()) {
+            //             for (String hashtag: tweet.getHashtags()) {
 
-                            weight = hashtagsWeight.getOrDefault(hashtag, 1.0) * getWeight(currentTimestamp, tweet.getCreated_at());
+            //                 weight = hashtagsWeight.getOrDefault(hashtag, 1.0) * getWeight(currentTimestamp, tweet.getCreated_at());
 
-                            hashtagsWeight.put(hashtag, weight);
+            //                 hashtagsWeight.put(hashtag, weight);
 
-                            service.updateHashtagWeight(hashtag, weight);
+            //                 service.updateHashtagWeight(hashtag, weight);
                         
-                        }
+            //             }
 
-                    }
+            //         }
 
-                    // System.out.println(query);
-                    // System.out.println(hashtagsWeight);
+            //         // System.out.println(query);
+            //         // System.out.println(hashtagsWeight);
 
-                    try { Thread.sleep(10000); }
-                    catch (InterruptedException e) { e.printStackTrace(); }
+            //         try { Thread.sleep(10000); }
+            //         catch (InterruptedException e) { e.printStackTrace(); }
 
-                }
+            //     }
 			}
 
 		}).start();

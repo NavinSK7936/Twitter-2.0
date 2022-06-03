@@ -11,6 +11,19 @@
 
 var prevTopBarVals = null;
 
+function overlapPositionOfRetweetQQQQDiv(toOverlap= true) {
+        
+    if (toOverlap == false) {
+        // TO again show back Retweet in QQQQ to get hid
+        $('.dropdown[data-type="retweetIconDivQQQQ"]').css('position', 'relative');
+    } else {
+        // TO HIDE Retweet in QQQQ to show dropdown
+        $('.dropdown[data-type="retweetIconDivQQQQ"]').css('position', 'static');
+        $('.dropdown[data-type="retweetIconDivQQQQ"]').removeClass('open');
+    }
+    
+}
+
 $(function() {
 
     $('html').click(function(event) {
@@ -18,7 +31,12 @@ $(function() {
         const qp = getQueryKVMap(decodeURIComponent(window.location.search));
 
         if (qp.get('p') == 'explore') {
+            
             showUI($('#top-app-bar-search-dropdown'), false);
+            overlapPositionOfRetweetQQQQDiv(false);
+
+            // TO remove Highlight border on search
+            $('#top-app-bar-search-div').removeClass('top-app-bar-search-box-onfocus');
 
             return;
         }
@@ -35,7 +53,10 @@ $(function() {
         console.log(visible);
         if (!visible)
             return;
-        else if (currStr[0] == '@') {
+        else if (currStr == '') {
+            console.log();
+            trendingCallback();
+        } else if (currStr[0] == '@') {
             mentionCallback(currStr);
         } else if (currStr[0] == '#') {
             hashtagCallback(currStr);
@@ -45,9 +66,40 @@ $(function() {
         
     });
 
+    function trendingCallback() {
+        $.ajax({
+            url: base_url + "tweet/hashtags/trending?limit=" + 5,
+            type: "GET",
+            contentType: "application/json; charSet=UTF-8",
+            dataType: "json",
+            timeout: 2500,
+            success: function(hashtagsMap) {
+
+                const keys = Object.keys(hashtagsMap);
+
+                if (keys.length == 0) {
+                    showNoSearchResultsFound(true, true);
+                    return;
+                }
+
+                for (const key of keys.slice(0, keys.length > searchPageSize ? -1 : undefined))
+                    $('#top-app-bar-search-trending-container').append(getSearchHashCell(key, hashtagsMap[key]));
+
+                searchPageStart += searchPageSize;
+
+                if (keys.length <= searchPageSize)
+                    showNoSearchResultsFound(false, true);
+
+            }, error: function(request, status, error) {
+                console.log('top bar hashtag search:', request.responseText, status, error);
+            }, complete: function() {
+            }
+        })
+    }
+
     function hashtagCallback(currStr) {
         $.ajax({
-            url: base_url + "tweet/hashtags?wildcard=" + currStr.substring(1) + "&start=" + searchPageStart + "&size=" + (searchPageSize+1),
+            url: base_url + "tweet/hashtags?wildcard=" + encodeURIComponent(currStr.substring(1)) + "&start=" + searchPageStart + "&size=" + (searchPageSize+1),
             type: "GET",
             contentType: "application/json; charSet=UTF-8",
             dataType: "json",
@@ -78,7 +130,7 @@ $(function() {
 
     function mentionCallback(currStr) {
         $.ajax({
-            url: base_url + "user/rmentions?wildcard=" + currStr.substring(1) + "&start=" + searchPageStart + "&size=" + (searchPageSize+1),
+            url: base_url + "user/rmentions?wildcard=" + encodeURIComponent(currStr.substring(1)) + "&start=" + searchPageStart + "&size=" + (searchPageSize+1),
             type: "GET",
             contentType: "application/json; charSet=UTF-8",
             dataType: "json",
@@ -109,7 +161,12 @@ $(function() {
 
         event.stopPropagation();
         
-        const elem = $(this);
+        const elem = $('#top-app-bar-search-input-field');
+
+        console.log('focusin', elem);
+
+        // TO add Highlight border on search
+        $('#top-app-bar-search-div').addClass('top-app-bar-search-box-onfocus');
 
         if (elem.val() == '' || elem.data('oldVal') != elem.val()) {
 
@@ -123,14 +180,23 @@ $(function() {
             if (newVal.slice(-1) == ' ') {
                 currStr = '';
 
-                showUI($('#top-app-bar-search-dropdown'), false);
                 console.log('SPACE ENTERED');
+
+                showUI($('#top-app-bar-search-dropdown'), false);
+                overlapPositionOfRetweetQQQQDiv(false);
 
             } else if (elem.val() == '') {
 
                 console.log("EMPTY SEARCH");
+
+                $('#top-app-bar-search-trending-container').empty();
+                
                 showUI($('#top-app-bar-search-dropdown'));
+                overlapPositionOfRetweetQQQQDiv();
+
                 showUI($('#top-app-bar-search-parent-container'));
+                showUI($('#top-app-bar-search-trending-bar'));
+                showUI($('#top-app-bar-search-loading-div'));
 
             } else {
                 currStr = newVal.split(' ').at(-1);
@@ -140,7 +206,10 @@ $(function() {
                 $('#top-app-bar-search-trending-container').empty();
                 showUI($('#top-app-bar-search-nothing-found'), false);
                 showUI($('#top-app-bar-search-parent-container'), false);
+                
                 showUI($('#top-app-bar-search-dropdown'));
+                overlapPositionOfRetweetQQQQDiv();
+
                 showUI($('#top-app-bar-search-trending-bar'));
                 showUI($('#top-app-bar-search-loading-div'));
 
@@ -160,22 +229,31 @@ $(function() {
             setTopAppBar({ title: null, subTitle: null, showBackButton: true, showSearchBox: true, followText: null });
         }
 
+        // TO add Highlight border on search
+        $('#top-app-bar-search-div').addClass('top-app-bar-search-box-onfocus');
+
         showUI($('#top-app-bar-search-button'), false);
         showUI($('#top-app-bar-search-cancel-button'));
+        
         showUI($('#top-app-bar-search-dropdown'));
+        overlapPositionOfRetweetQQQQDiv();
 
         $('#top-app-bar-search-input-field').focus();
+
+        searchChanged(event);
+
     }
 
     function searchOnFocusOut(event) {
-
-        // console.log('Focus OUT', event.originalEvent);
 
         if ($('#top-app-bar-search-box').is(':visible') == false) {
             prevTopBarVals = null;
             return;
         }
 
+        // TO remove Highlight border on search
+        $('#top-app-bar-search-div').removeClass('top-app-bar-search-box-onfocus');
+        
         // if ($('#top-app-bar-search-dropdown').is(':visible')) {
         //     return;
         // }
@@ -185,7 +263,9 @@ $(function() {
         showUI($('#top-app-bar-search-box'), false);
         showUI($('#top-app-bar-search-button'));
         showUI($('#top-app-bar-search-cancel-button'), false);
+        
         showUI($('#top-app-bar-search-dropdown'), false);
+        overlapPositionOfRetweetQQQQDiv(false);
 
     }
 
@@ -193,10 +273,6 @@ $(function() {
         var elem = $(this);
         elem.data('oldVal', elem.val());
         elem.bind("propertychange change click keyup input paste", searchChanged);
-        // elem.bind('focusin', function(event) {
-        //     searchOnFocusIn(event);
-        // });
-        // elem.bind('focusout', searchOnFocusOut);
     });
 
     $('#top-app-bar-search-button').click(function(event) {
@@ -224,6 +300,7 @@ $(function() {
         console.log('lki@@', $('#top-app-bar-search-dropdown').is(':visible'));
         if ($('#top-app-bar-search-dropdown').is(':visible')) {
             showUI($('#top-app-bar-search-dropdown'), false);
+            overlapPositionOfRetweetQQQQDiv(false);
         }
         else
             history.back();
@@ -231,6 +308,9 @@ $(function() {
 
     $('#top-bar-actual-search').click(function(event) {
         event.stopPropagation();
+
+        // TO remove Highlight border on search
+        $('#top-app-bar-search-div').removeClass('top-app-bar-search-box-onfocus');
 
         showExploreSection('p=explore&q=' + $('#top-app-bar-search-input-field').val().trim());
 
@@ -243,10 +323,18 @@ $(function() {
         }
     });
 
+    $('#top-app-bar-search-input-field').on('click', function(event) {
+
+        console.log('input', event);
+    })
+
 })
 
 // title(null to hide), subTitle(null to hide), showBackButton, showSearchBox, followText(Follow or Following), showDropdown
 function setTopAppBar(c) {
+
+    if (c == null)
+        return;
 
 
     if (c.title) {
@@ -295,7 +383,9 @@ function setTopAppBar(c) {
     
     showUI($('#top-app-bar-search-button'));
     showUI($('#top-app-bar-search-cancel-button'), false);
+    
     showUI($('#top-app-bar-search-dropdown'), false);
+    overlapPositionOfRetweetQQQQDiv(false);
 
 
     $('#second-top-bar').data('top-bar-vals', c);
