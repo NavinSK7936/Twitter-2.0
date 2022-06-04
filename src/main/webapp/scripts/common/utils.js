@@ -83,3 +83,25 @@ function getQueryKVMap(search) {
 function getQueryValue(search, key) {
     return getQueryKVMap(search).get(key);
 }
+
+function removeQueryParam(...params) {
+
+    const qp = getQueryKVMap(window.location.search);
+
+    for (const key of qp.keys())
+        if (params.includes(key))
+            qp.delete(key);
+    
+    return qp;
+
+}
+
+function getSearchQueryFromMap(mp) {
+
+    var ans = '?';
+    for (const key of mp.keys())
+        ans += key + '=' + mp.get(key) + '&';
+    
+    return ans.slice(0, -1);
+
+}

@@ -67,6 +67,53 @@ public class TwitterService {
 
 	}
 
+
+	private boolean areUsersRelated(int from_user_id, int to_user_id) {
+
+		if (from_user_id == to_user_id)
+			return true;
+
+		try {
+
+			String query = "SELECT COUNT(*) FROM " + TwitterUtil.user_rel_table + " WHERE from_user=" + from_user_id + " AND to_user=" + to_user_id;
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(query);
+
+			if (rs.next())
+				return rs.getInt(1) == 1;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return true;
+	}
+
+	public boolean relateUsers(int from_user_id, int to_user_id) {
+
+		if (this.areUsersRelated(from_user_id, to_user_id))
+			return false;
+
+		try {
+
+			String query = "INSERT INTO " + TwitterUtil.user_rel_table + " VALUES(?, ?)";
+
+			PreparedStatement st = con.prepareStatement(query);
+
+			st.setInt(1, from_user_id);
+			st.setInt(2, to_user_id);
+
+			st.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return true;
+	}
+
+
 	private Tweet getTweetFromResultSet(ResultSet rs) {
 
 		Tweet tweet = null;
@@ -343,6 +390,9 @@ public class TwitterService {
 				
 			}
 		
+		// Relating Users in Mentions
+		for (Integer mention_id0: mentions)
+			relateUsers(user_id, mention_id0);
 		
 		try {
 
@@ -471,6 +521,9 @@ public class TwitterService {
 				st.setInt(2, tweet.getId());
 
 				st.executeUpdate();
+
+
+				this.relateUsers(tweet.getUser_id(), mention);
 				
 			}
 			
@@ -663,8 +716,9 @@ public class TwitterService {
 
 		if (retweet == null)
 			return null;
-
+		
 		this.incrementRetweet(parent_tweet_id, 1);
+		this.relateUsers(retweet.getUser_id(), getUserIdOfTweet(parent_tweet_id));
 
 		try {
 
@@ -764,6 +818,7 @@ public class TwitterService {
 			return null;
 
 		this.incrementReplyTweet(parent_tweet_id, 1);
+		this.relateUsers(replyTweet.getUser_id(), getUserIdOfTweet(parent_tweet_id));
 
 		try {
 
@@ -833,7 +888,8 @@ public class TwitterService {
 			return -3; //"The Follower is already following the Followe!!!";
 
 		int result = incrementFollowers(followee_id, 1);
-		incrementFollowees(follower_id, 1);
+		this.incrementFollowees(follower_id, 1);
+		this.relateUsers(follower_id, followee_id);
 
 		try {
 
@@ -977,7 +1033,8 @@ public class TwitterService {
 		else if (isTweetAlreadyLiked(tweet_id, user_id))
 			return "The tweet has already been liked by this user!!!";
 
-		incrementTweetLike(tweet_id, 1);
+		this.incrementTweetLike(tweet_id, 1);
+		this.relateUsers(user_id, getUserIdOfTweet(tweet_id));
 
 		try {
 
@@ -1166,6 +1223,26 @@ public class TwitterService {
 		
 	}
 	
+	public int getUserIdOfTweet(int tweet_id) {
+
+		try {
+
+			String query = "SELECT user_id FROM " + TwitterUtil.tweetTable + " WHERE id=" + tweet_id;
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(query);
+
+			if (rs.next())
+				return rs.getInt(1);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return -1;
+	}
+
+
 	public CompleteTweet getCompleteTweetWithReplies(int tweet_id) {
 		
 		if (!doesTweetExists(tweet_id))
@@ -2124,7 +2201,7 @@ SELECT * FROM tweet_table WHERE
 		}
 
 		return ans;
-		
+
 	}
 
 	public Map<String, Integer> getTrendingHashtags(int limit) {
@@ -2187,5 +2264,80 @@ SELECT * FROM tweet_table WHERE
 
 		return -1;
 	}
+
+
+	public List<TwitterUser> getFolloweesForProfileFollowerOf(int user_id, int follower_id, int pageStart, int pageSize) {
+
+		List<TwitterUser> ans = new ArrayList<>();
+
+		try {
+
+			String query = "SELECT * FROM " + TwitterUtil.userTable + " WHERE id IN (SELECT followee_id FROM " + TwitterUtil.followerTable + " WHERE follower_id=" + follower_id + ") " +
+							"ORDER BY id IN (SELECT followee_id FROM " + TwitterUtil.followerTable + " WHERE follower_id=" + user_id + ") DESC LIMIT " + pageStart + ", " + pageSize;
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(query);
+
+			while (rs.next())
+				ans.add(getUserFromResultSet(rs));
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return ans;
+
+	}
+
+	public List<TwitterUser> getFollowersForProfileFollowerOf(int user_id, int followee_id, int pageStart, int pageSize) {
+
+		List<TwitterUser> ans = new ArrayList<>();
+
+		try {
+
+			String query = "SELECT * FROM " + TwitterUtil.userTable + " WHERE id IN (SELECT follower_id FROM " + TwitterUtil.followerTable + " WHERE followee_id=" + followee_id + ") " +
+							"ORDER BY id IN (SELECT followee_id FROM " + TwitterUtil.followerTable + " WHERE follower_id=" + user_id + ") DESC LIMIT " + pageStart + ", " + pageSize;
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(query);
+
+			while (rs.next())
+				ans.add(getUserFromResultSet(rs));
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return ans;
+
+	}
+
+	public List<TwitterUser> getFollowersYouKnowFor(int user_id, int that_user_id, int pageStart, int pageSize) {
+
+		List<TwitterUser> ans = new ArrayList<>();
+
+		if (user_id == that_user_id)
+			return ans;
+
+		try {
+
+			String subquery = "SELECT followee_id FROM " + TwitterUtil.followerTable + " WHERE follower_id=" + that_user_id + " AND followee_id IN " +
+								"(SELECT to_user FROM " + TwitterUtil.user_rel_table + " WHERE from_user=" + user_id + ")";
+			String query = "SELECT * FROM " + TwitterUtil.userTable + " WHERE id IN (" + subquery + ") ORDER BY total_followers DESC LIMIT " + pageStart + ", " + pageSize;
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(query);
+
+			while (rs.next())
+				ans.add(getUserFromResultSet(rs));
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return ans;
+
+	}
+	
 
 }

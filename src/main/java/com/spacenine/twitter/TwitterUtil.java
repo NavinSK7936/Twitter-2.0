@@ -12,7 +12,7 @@ public final class TwitterUtil {
 	
 	public static final String user_meta_table = "user_meta_table", status_hash_table = "status_hash_table", status_mention_table = "status_mention_table";
 
-	public static final String mention_trend_table = "mention_trend_table";
+	public static final String mention_trend_table = "mention_trend_table", user_rel_table = "user_rel_table";
 	
 	public static final String RECENT_FEEDS = "recent", POPULAR_FEEDS = "popular", OLD_FEEDS = "old";
 	

@@ -1,8 +1,9 @@
 
 let destructor = null;
 
-function callDestructor(newDestructor = null) {
-    destructor?.();
+function callDestructor(newDestructor = null, toCall = true) {
+    if (toCall)
+        destructor?.();
     destructor = newDestructor;
 }
 
@@ -23,19 +24,13 @@ function justDoIt(toPush = true) {
             // NO id mentioned
         } else {
 
-            console.log(toPush, +qp.get('id'));
-
-            showUserProfile(toPush, +qp.get('id'));
+            showUserProfile(toPush, +qp.get('id'), qp.get('pfi'));
 
         }
 
     } else if (qp.get('p') == 'explore') {
 
         showExploreSection(decodeURIComponent(window.location.search.substring(1)), toPush ? 'push' : 'replace');
-
-    } else if (qp.get('p') == 'follower') {
-
-        showFollowerTopLayer(qp.get('i'), qp.get('id'));
 
     }
 
@@ -69,6 +64,8 @@ $(function() {
         // window.history.pushState('forward', null, './#forward');
     
         $(window).on('popstate', function() {
+
+            console.log('popstate', window.location);
 
             justDoIt(false);
 
@@ -116,14 +113,14 @@ function setHomePage(toPush = true, isStart = false) {
 
 }
 
-function showUserProfile(toPush = true, user_id = getCurrentUserIdInLS()) {
+function showUserProfile(toPush = true, user_id = getCurrentUserIdInLS(), index) {
 
     $('#second-body').empty();
 
     $('#second-body').load('html/profile.html');
 
     if (toPush)
-        window.history.pushState(null, "Home", "?p=profile&id=" + user_id);
+        window.history.pushState(null, "Profile", "?p=profile&id=" + user_id + (index != undefined ? "&pfi=" + index : ''));
 
 }
 
@@ -142,18 +139,7 @@ function showExploreSection(searchQuery, to = 'push') {
 
 }
 
-function showFollowerTopLayer(index, user_id, to = 'push') {
 
-    $('#auxiliary-container').empty();
-
-    $('#auxiliary-container').load('html/profile-follower.html');
-
-    if (to == 'push')
-        window.history.pushState(null, "FollowerTopLayer", "?p=follower&id=" + user_id + "&i=" + index);
-    else if (to == 'replace')
-        window.history.replaceState(null, "FollowerTopLayer", "?p=follower&id=" + user_id + "&i=" + index);
-
-}
 
 function logout() {
 

@@ -24,6 +24,8 @@ function getExplorePeopleFollowButton(user_id) {
     `;
 }
 
+style="margin-top: 0px; margin-right: 20px; margin-left: 70%;"
+
 function getPeopleCell(user) {
     return `
         <div style="padding: 10px;">

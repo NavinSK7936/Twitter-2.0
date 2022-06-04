@@ -54,18 +54,26 @@ function followButtonClick(wt, user_id) {
 }
 
 
-function initFollowerOnClick(user_id) {
-    $('.profile-following-div').click(function() {
-        showFollowerTopLayer(+$(this).data('index'), user_id);
-    })
-}
-
-
 $(function() {
 
-    callDestructor();
+    callDestructor(function() {
 
-    const user_id = getQueryValue(window.location.search, 'id');
+        $('#auxiliary-container').empty();
+
+    });
+
+    const uri = decodeURIComponent(window.location.search);
+    const qp = getQueryKVMap(uri);
+
+    const user_id = qp.get('id');
+    const profile_follower_index = qp.get('pfi');
+
+    if (profile_follower_index != undefined) {
+
+        showFollowerTopLayer(user_id, profile_follower_index);
+
+    }
+
     const isUserProfile = user_id == getCurrentUserIdInLS();
 
     profileFollowerButtonObserver?.disconnect();
@@ -77,6 +85,9 @@ $(function() {
         dataType: "json",
         timeout: 2500,
         success: function(user) {
+
+            if (user_id != getCurrentUserIdInLS())
+                relateUsers(+getCurrentUserIdInLS(), +user_id);
 
             setTopAppBar({ title: user['user_name'], subTitle: profileSubTitle(user['total_tweets']), showBackButton: true });
 
@@ -233,7 +244,27 @@ $(function() {
             }
 
 
-            initFollowerOnClick(user_id);
+
+
+
+            // Following
+            $('.profile-following-div[data-index="0"]').click(function() {
+
+                showFollowerTopLayer(user_id, 0);
+
+            })
+
+            // Followers
+            $('.profile-following-div[data-index="1"]').click(function() {
+
+                showFollowerTopLayer(user_id, 1);
+
+            })
+
+
+
+
+            
 
 
             var prevId = 0;
@@ -387,4 +418,17 @@ function loadMore(controller) {
         }, complete: function() {
         }
     })
+}
+
+
+
+
+function showFollowerTopLayer(user_id, index) {
+
+    window.history.replaceState(null, "showFollowerTopLayer", '?p=profile&id=' + user_id + "&pfi=" + index);
+
+    $('#auxiliary-container').empty();
+
+    $('#auxiliary-container').load('html/profile-follower.html');
+
 }

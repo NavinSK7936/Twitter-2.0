@@ -138,6 +138,55 @@ public class UserController {
 		
 	}
 
+	@POST
+	@Path("relate")
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean relateUsers(@QueryParam("from_user") int from_user, @QueryParam("to_user") int to_user) {
+		
+		return service.relateUsers(from_user, to_user);
+		
+	}
+
+	@GET
+	@Path("profile/followees")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<TwitterUser> getFolloweesForProfileFollowerOf(
+		@QueryParam("user_id") int user_id,
+		@QueryParam("follower_id") int follower_id, 
+		@QueryParam("start") int pageStart,
+		@QueryParam("size") int pageSize) {
+		
+		return service.getFolloweesForProfileFollowerOf(user_id, follower_id, pageStart, pageSize);
+		
+	}
+
+	@GET
+	@Path("profile/followers")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<TwitterUser> getFollowersForProfileFollowerOf(
+		@QueryParam("user_id") int user_id,
+		@QueryParam("followee_id") int followee_id, 
+		@QueryParam("start") int pageStart,
+		@QueryParam("size") int pageSize) {
+		
+		return service.getFollowersForProfileFollowerOf(user_id, followee_id, pageStart, pageSize);
+		
+	}
+
+	@GET
+	@Path("profile/followers/known")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<TwitterUser> getFollowersYouKnowFor(
+		@QueryParam("user_id") int user_id,
+		@QueryParam("that_id") int that_id, 
+		@QueryParam("start") int pageStart,
+		@QueryParam("size") int pageSize) {
+		
+		return service.getFollowersYouKnowFor(user_id, that_id, pageStart, pageSize);
+		
+	}
+	
+
 	@GET
 	@Path("db")
 	@Produces(MediaType.APPLICATION_JSON)
