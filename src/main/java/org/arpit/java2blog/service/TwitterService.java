@@ -120,7 +120,7 @@ public class TwitterService {
 
 		try {
 			tweet = new Tweet(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getInt(6),
-					rs.getTimestamp(7), rs.getInt(8));
+					rs.getTimestamp(7), rs.getInt(8), rs.getInt(9));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -421,13 +421,14 @@ public class TwitterService {
 		
 		try {
 
-			String query = "INSERT INTO " + TwitterUtil.tweetTable + "(user_id, quote, source_label) VALUES (?, ?, ?)";
+			String query = "INSERT INTO " + TwitterUtil.tweetTable + "(user_id, quote, source_label, who_can_reply) VALUES (?, ?, ?, ?)";
 
 			PreparedStatement st = con.prepareStatement(query);
 
 			st.setInt(1, tweet.getUser_id());
 			st.setString(2, tweet.getQuote());
 			st.setInt(3, tweet.getSource_label());
+			st.setInt(4, tweet.getWho_can_reply());
 
 			st.executeUpdate();
 
@@ -656,6 +657,8 @@ public class TwitterService {
 				tweet.setTotal_retweets(rs.getInt(5));
 				tweet.setTotal_replies(rs.getInt(6));
 				tweet.setCreated_at(rs.getTimestamp(7));
+				tweet.setSource_label(rs.getInt(8));
+				tweet.setWho_can_reply(rs.getInt(9));
 			}
 
 		} catch (SQLException e) {
@@ -963,7 +966,7 @@ public class TwitterService {
 
 	}
 
-	// Return total followers
+	// Returns total followers
 	private int incrementFollowers(int followee_id, int value) {
 
 		try {

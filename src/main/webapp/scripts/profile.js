@@ -140,7 +140,7 @@ $(function() {
                                 <span>@</span><span id="second-user-profile-mention-id">` + user['mention_name'] + `</span>
                             </div>
                             <div style="display: ` + (isUserProfile || user['status'] != null ? 'flex' : 'none') + `;">
-                                <div style="display: flex; font: Trebuchet MS, Helvetica, sans-serif; margin-top: 10px; font-weight: 500; color: rgb(81, 119, 215);">
+                                <div style="display: flex; font: Trebuchet MS, Helvetica, sans-serif; margin-top: 10px; font-weight: 500; color: rgb(81, 119, 215); word-break: break-all;">
                                     ` + '`<i id="second-user-profile-status-id">' + (isUserProfile && user['status'] == null ? "NO STATUS!!! CLICK TO ADD STATUS" : getResultWithHashtags(user['status'])) + '</i>`' + `
                                 </div>
                                 <div id="second-user-profile-status-edit-id" onclick="onStatusEditClicked()" style="display: ` + (isUserProfile ? `block` : `none`) + `; margin-top: 10px; margin-left: 20px; margin-right: 20px; cursor: pointer;">

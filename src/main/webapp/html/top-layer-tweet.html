@@ -1,0 +1,249 @@
+<!-- TOP LAYER -->
+<div id="top-layer-tweet" data-tweet-type="tweet|retweet|reply" style="display: flex; visibility: visible; position: fixed; background-color: rgba(63, 103, 138, 0.5);;
+top: 0; left: 0; width: 100%; height: 100%; z-index: 99; align-items: center; justify-content: center; overflow: auto;">
+
+    <div id="top-layer-tweet-container" data-tweet-type="" style="width: 40%; opacity: 1; background: white; border-radius: 20px;
+        /* This is the reason for not letting dropdown to overflow */
+        max-height: 80%;
+        overflow: auto;
+    ">
+
+        <div style="
+            position: sticky;
+            top: 0px;
+            z-index: 9999999;
+            width: 100%;
+            height: auto;
+            background: rgb(255, 255, 255, 0.4);
+            backdrop-filter: blur(4px);">
+            <div id="top-layer-tweet-close" style="display: inline-block; width: 5px; height: 5px;">
+                <i class="ri-close-fill" style="cursor: pointer; font-size: 30px;
+                    cursor: pointer; border-radius: 9999px; margin: auto; margin-left: 10px; margin-top: 4px;"></i>
+            </div>
+        </div>
+
+
+        <div style="display: flex;">
+
+            <!-- THE CONTAINER -->
+            <div id="top-layer-next-tweet-container" data-total-pieces="1" style="padding: 5px 10px; width: 100%;">
+
+                <div id="top-layer-tweet-piece-0" data-container-id="0" class="top-layer-tweet-piece-class" style="opacity: 1;">
+
+                    <!-- ACTUAL TWEET -->
+                    <div style="display: block; margin-bottom: 5px;">
+
+                        <div style="display: flex; margin-bottom: 3px;">
+                            <div style="margin-right: 10px; background: white; padding-bottom: 3px;">
+                                <div style="cursor: pointer;">
+                                    <img style="width: 50px; height: 50px; border-radius: 50%;" src="images/icon_doge.jpeg" alt="User Icon">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-left: 24px; margin-top: -40px; width: 100%; padding-right: 25px; min-height: 50px;">
+                            
+                            <div id="top-layer-next-util-item-container-0" style="padding-left: 33px; position: relative;">
+
+                                <div id="top-layer-tweet-input-field-onblur-placholder-0" class="top-layer-tweet-placeholder" data-placeholder="What's happening?"
+                                    style="display: none; width: 100%; font-size: 18px; font-weight: 550; margin-left: 5px;
+                                        cursor: text; word-break: break-word; padding-bottom: 15px;">
+                                </div>
+
+                                <!-- ($) INPUT FIELD -->
+                                <div id="top-layer-tweet-input-field" contenteditable="true"
+                                    class="top-layer-tweet-placeholder" data-placeholder="What's happening?"
+                                    style="display: block; width: 100%; font-size: 18px; font-weight: 550; margin-left: 5px;
+                                            cursor: text; word-break: break-word;">
+                                </div>
+
+                                <!-- ($) ENTIRE SUGGESTION DOCK -->
+                                <div id="top-layer-tweet-suggested-div" style="display: block;" class="dropdown">
+                                    <div id="top-layer-tweet-suggested" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                        class="dropdown-toggle"
+                                        style="display: flex; color: rgb(29, 155, 240); display: inline-flex; cursor: pointer;">
+                                        
+                                    </div>
+
+                                    <ul id="top-layer-tweet-suggested-dropdown-menu" class="dropdown-menu" aria-labelledby="dropdownMenuButton1"
+                                        style="
+                                            /* padding: 10px 0px; */
+                                            /* border: 1px solid black; border-radius: 22px; */
+                                            -webkit-box-shadow:0 0 20px rgb(12, 114, 200); 
+                                            -moz-box-shadow: 0 0 20px rgb(12, 114, 200); 
+                                            box-shadow: 0 0 20px rgb(12, 114, 200);">
+
+                                        <div id="top-layer-tweet-suggestions-slider" class="slider"
+                                            style="display: none; border: 0px solid black; border-radius: 9999px; margin-top: -5px;">
+                                            <div class="line"></div>
+                                            <div class="subline inc"></div>
+                                            <div class="subline dec"></div>
+                                        </div>
+
+                                        <div id="top-layer-tweet-suggestions-container"
+                                            style="display: block; position: relative; max-height: 200px; max-width: 200px; overflow-y: scroll;">
+
+                                            <!-- NO SUGGESTIONS FOUND -->
+                                            <!-- <li role = "presentation" class="dropdown-header" onclick="event.stopPropagation()"
+                                                style="display: none; font-size: 16px; font-weight: 600; position: relative; padding-left: 15px;">
+                                                
+                                                <div style="margin: 0 0; text-align: center;">
+                                                    <div style="display: inline-block;">
+                                                        <img style="width: 75px; height: 75px;" src="images/nothing-vadivel.png">
+                                                    </div>
+                                                    <div style="font-size: 13px; font-weight: 900; margin-top: 10px; color: black;">NO SUGGESTIONS FOUND</div>
+                                                    
+                                                </div>
+
+                                            </li> -->
+                                            
+                                            <li id="top-layer-tweet-suggestions-visiblity-block" style="display: block;">
+            
+                                                <hr style="margin: 0 0;">
+
+                                            </li>
+                                            
+
+                                        </div>
+                                        
+                                    </ul>
+                                    
+                                    <!-- <hr style="margin: 0; border-top: 1px solid rgb(99, 155, 240);"> -->
+                                </div>
+
+                                <!-- ($) ENTIRE BOTTOM DOCK -->
+                                <div id="top-layer-tweet-bottom-dock" style="display: block;">
+
+                                    <!-- Everyone can reply -DIV -->
+                                    <div id="top-layer-tweet-who-can-reply-div" class="dropdown">
+                                        <div id="top-layer-tweet-who-can-reply" data-who-can-reply-choice="0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                            class="dropdown-toggle"
+                                            data-isclicked="isRetweeted" style="cursor: pointer; display: flex; color: rgb(29, 155, 240); display: inline-flex;">
+                                            <!-- <i class="fa fa-retweet" style="font-size: 20px;"></i> -->
+                                            <!-- <span id="count" style="margin-left: 10px; font-size: 14px; font-weight: 500;">12s5</span> -->
+                                            <i id="top-layer-tweet-who-can-reply-main-icon" class="ri-earth-fill" style="color: rgb(29, 155, 240); position: relative;
+                                                            font-size: 18px; font-weight: 600;"></i>
+                                            <div class="dropdown-item center-text-vertically"
+                                                    style="margin-left: 5px; font-size: 15px; font-weight: 550;"
+                                                    unselectable="on"
+                                                    onselectstart="return false;"
+                                                    onmousedown="return false;">
+                                                <div id="top-layer-tweet-who-can-reply-string">Everyone can reply</div>
+                                            </div>
+                                        </div>
+
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"
+                                            style="padding: 10px 0px; border: 1px solid black; border-radius: 22px;
+                                                -webkit-box-shadow:0 0 20px rgb(12, 114, 200); 
+                                                -moz-box-shadow: 0 0 20px rgb(12, 114, 200); 
+                                                box-shadow: 0 0 20px rgb(12, 114, 200);">
+                                            
+                                            <li role = "presentation" class="dropdown-header" onclick="event.stopPropagation()"
+                                                style="display: block; font-size: 16px; font-weight: 600; padding-bottom: 15px; position: relative; padding-left: 15px;">
+                                                <div style="color: black;">Who can reply?</div>
+                                                <div style="font-size: 14px; font-weight: 450;">
+                                                    Choose who can reply to this Tweet.<br> Anyone mentioned can always reply.
+                                                </div>
+                                            </li>
+                                            <li class="top-layer-tweet-who-can-reply-choice" data-who-can-reply-choice="0" style="position: relative; padding-left: 15px; padding-bottom: 10px; padding-top: 10px;">
+                                                <div style="display: flex; cursor: pointer;">
+                                                    <div style="width: 40px; height: 40px; border-radius: 9999px; background-color: rgb(29, 155, 240); margin-right: 10px;">
+                                                        <i id="top-layer-tweet-who-can-reply-icons-0" class="ri-earth-fill" style="display: block; color: white;
+                                                            transform: translate(25%, 25%); font-size: 20px;"></i>
+                                                    </div>
+                                                    <div class="dropdown-item center-text-vertically" style="font-size: 16px; font-weight: 550;">
+                                                        Everyone
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="top-layer-tweet-who-can-reply-choice" data-who-can-reply-choice="1" style="position: relative; padding-left: 15px; padding-bottom: 10px; padding-top: 10px;">
+                                                <div style="display: flex; cursor: pointer;">
+                                                    <div style="width: 40px; height: 40px; border-radius: 9999px; background-color: rgb(29, 155, 240); margin-right: 10px;">
+                                                        <i id="top-layer-tweet-who-can-reply-icons-1" class="fa fa-user" style="display: block; color: white;
+                                                            transform: translate(32%, 49%); font-size: 20px;"></i>
+                                                    </div>
+                                                    <div class="dropdown-item center-text-vertically" style="font-size: 16px; font-weight: 550;">
+                                                        People you follow
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="top-layer-tweet-who-can-reply-choice" data-who-can-reply-choice="2" style="position: relative; padding-left: 15px; padding-bottom: 10px; padding-top: 10px;">
+                                                <div style="display: flex; cursor: pointer;">
+                                                    <div style="width: 40px; height: 40px; border-radius: 9999px; background-color: rgb(29, 155, 240); margin-right: 10px;">
+                                                        <i id="top-layer-tweet-who-can-reply-icons-2" class="ri-at-line" style="display: block; color: white;
+                                                            transform: translate(25%, 25%); font-size: 20px;"></i>
+                                                    </div>
+                                                    <div class="dropdown-item center-text-vertically" style="font-size: 16px; font-weight: 550;">
+                                                        Only People you mention
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        
+                                        <hr style="margin: 0; border-top: 1px solid rgb(99, 155, 240);">
+                                    </div>
+
+                                    <!-- BOTTOM-DIV -->
+                                    <div style="display: flex;">
+                                        <div style="position: absolute; right: 0%; display: flex; margin-top: 10px; margin-right: 10px;">
+                                            
+                                            <!-- BOTTOM-DIV-LOADER -->
+                                            <div id="top-layer-tweet-count-loader" style="display: none; padding-right: 10px; margin-top: 1px;">
+
+                                                <div class="top-layer-tweet-count-loader-skill">
+                                                    <div class="top-layer-tweet-count-loader-outer">
+                                                        <div id="top-layer-tweet-text-count-field" class="top-layer-tweet-count-loader-inner">
+                                                            
+                                                        </div>
+                                                    </div>
+                                
+                                                    <svg class="top-layer-tweet-count-loader-skill-svg" xmlns="http://www.w3.org/2000/svg" version="1.1" width="32px" height="32px">
+                                                        <defs>
+                                                            <linearGradient>
+                                                                <stop offset="0%" stop-color="#e91e63" />
+                                                                <stop offset="100%" stop-color="#673ab7" />
+                                                            </linearGradient>
+                                                        </defs>
+                                                        <circle id="top-layer-tweet-count-loader-skill-circle-id" class="top-layer-tweet-count-loader-skill-circle" cx="16" cy="16" r="14" stroke-linecap="round" />
+                                                    </svg>
+                                                </div>
+                
+                                            </div>
+
+                                            <!-- ADD ANOTHER TWEET BUTTON -->
+                                            <div id="top-layer-tweet-add-next-tweet-div" style="display: none; border-left: 1px solid rgb(70, 70, 70);">
+                                                <div id="top-layer-tweet-add-next-tweet-button" style="cursor: pointer; height: 25px; width: 25px; margin-top: 5px; margin-left: 10px; cursor: pointer;
+                                                    align-items: center; justify-content: center; flex-grow: 1; text-align: center;
+                                                    border: 1.3px solid black; border-radius: 50%; display: inline-block;">
+                                                    <i class="ri-add-fill" style="font-size: 17px; color: rgb(16, 138, 219); padding-left: 1px;"></i>
+                                                </div>
+                                            </div>
+
+                                            <!-- TWEET -->
+                                            <div id="top-layer-tweet-button"
+                                                style="cursor: pointer; border-radius: 9999px; padding: 4px 12px; background-color: rgb(26, 143, 238);
+                                                        font-weight: 650; margin: auto; margin-left: 10px; margin-top: 4px; right: 0;
+                                                        color: white;"
+                                                class="top-layer-tweet-button-zero-text">Tweet</div>
+                                            
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-top: 25px;">&nbsp;</div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script type="text/javascript" src="scripts/common/top-layer-tweet.js"></script>

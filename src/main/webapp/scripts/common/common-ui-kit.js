@@ -130,7 +130,7 @@ function getUserAsPeople(user) {
                 <div style="display: block; margin-left: 10px; cursor: pointer;">
                     <div style="font-size: 16px; font-weight: 600;">` + user['user_name'] + `</div>
                     <div style="color: rgb(110, 110, 110); font-weight: 500;">@` + user['mention_name'] + `</div>
-                    <div style="margin-top: 5px; font: Trebuchet MS, Helvetica, sans-serif; font-size: 16px; font-weight: 500; color: rgb(81, 119, 215);">` +
+                    <div style="margin-top: 5px; font: Trebuchet MS, Helvetica, sans-serif; font-size: 16px; font-weight: 500; color: rgb(81, 119, 215); word-break: break-all;">` +
                         getResultWithHashtags(user['status'])
                     + `</div>
                 </div>
@@ -168,7 +168,7 @@ function getSingleTweetForSecondColumnTweetsContainer(tweet, user) {
                             </a>
                         </div>
 
-                        <p id="single-tweet-tweet-id-" onclick="tweetInfoClicked('` + tweet + `')" style="cursor: pointer;">` + getResultWithHashtags(tweet['quote']) + `</p>
+                        <p id="single-tweet-tweet-id-" onclick="tweetInfoClicked('` + tweet + `')" style="cursor: pointer; word-break: break-all;">` + getResultWithHashtags(tweet['quote']) + `</p>
 
                         ` + getqqqq(tweet, user) + `
                         
@@ -204,7 +204,7 @@ function getQuotedRetweet(parent, child) {
                             </a>
                         </div>
 
-                        <p onclick="tweetInfoClicked('` + tweetInfoClicked(child['tweet']) + `')" style="cursor: pointer;">` + getResultWithHashtags(child['tweet']['quote']) + `</p>
+                        <p onclick="tweetInfoClicked('` + tweetInfoClicked(child['tweet']) + `')" style="cursor: pointer; word-break: break-all;">` + getResultWithHashtags(child['tweet']['quote']) + `</p>
 
                         <div class="tweet-in-list" style="border: 1px solid black; border-radius: 10px;">
                             <div style="cursor: pointer; display: flex;">
@@ -227,7 +227,7 @@ function getQuotedRetweet(parent, child) {
                                         </a>
                                     </div>
 
-                                    <p onclick="tweetInfoClicked('` + tweetInfoClicked(parent['tweet']) + `')" style="cursor: pointer; margin-bottom: 0;">` + getResultWithHashtags(parent['tweet']['quote']) + `</p>
+                                    <p onclick="tweetInfoClicked('` + tweetInfoClicked(parent['tweet']) + `')" style="cursor: pointer; margin-bottom: 0; word-break: break-all;">` + getResultWithHashtags(parent['tweet']['quote']) + `</p>
 
                                 </div>
                             </div>
@@ -282,7 +282,7 @@ function getRetweet(user_id, parent, child) {
                             </a>
                         </div>
 
-                        <p onclick="tweetInfoClicked('` + tweetInfoClicked(parent['tweet']) + `')" style="cursor: pointer; margin-bottom: 0;">` + getResultWithHashtags(parent['tweet']['quote']) + `</p>
+                        <p onclick="tweetInfoClicked('` + tweetInfoClicked(parent['tweet']) + `')" style="cursor: pointer; margin-bottom: 0; word-break: break-all;">` + getResultWithHashtags(parent['tweet']['quote']) + `</p>
 
                         <div style="margin-top: 10px;">
 
@@ -302,17 +302,14 @@ function getReply(parent, child) {
     return `
         <div>
             <div class="tweet-in-list">
-                <div style="display: flex; margin-bottom: 25px;">
-                    <div style="margin-right: 10px;">
-                        <div style="cursor: pointer;">
-                            <img style="width: 50px; height: 50px; border-radius: 50%;" src="images/icon_doge.jpeg" alt="User Icon">
+                <div style="display: block; margin-bottom: 5px;">
+                    <div style="display: flex; margin-bottom: 3px;">
+                        <div style="margin-right: 10px; background: white; padding-bottom: 3px;">
+                            <div style="cursor: pointer;">
+                                <img style="width: 50px; height: 50px; border-radius: 50%;" src="images/icon_doge.jpeg" alt="User Icon">
+                            </div>
                         </div>
-                        <div>
-                            <div style="height: 25px; border: 0.5px solid gray; width: 0; margin-left: 50%; margin-top: 2px;"></div>
-                        </div>
-                    </div>
-                    <div style="width: 100%;">
-                        <div style="display: flex; align-items: center; margin-bottom: 3px;">
+                        <div style="display: flex; margin-top: -20px; align-items: center; margin-bottom: 3px;">
                             <div onclick="takeToUserProfile(` + parent['user']['id'] + `)" style="cursor: pointer; font-size: 16px; font: bolder; font-weight: 650; color: black; margin-right: 5px;" href="#" role="link">
                                 <span>` + parent['user']['user_name'] + `</span>
                             </div>
@@ -326,10 +323,18 @@ function getReply(parent, child) {
                                 <span>` + getTimeSpanFromNow(parent['tweet']['created_at']) + `</span>
                             </a>
                         </div>
+                    </div>
+                    <div style="margin-left: 25px; margin-top: -20px; width: 100%; padding-right: 25px;">
+                        
+                        <div style="padding-left: 1px; border-left: 1.7px solid rgb(160, 160, 160);">
+                            <div style="padding-left: 32px; margin-top: -25px;">
+                                <p onclick="tweetInfoClicked('` + parent['tweet'] + `')" style="cursor: pointer; word-break: break-all;">` + getResultWithHashtags(parent['tweet']['quote']) + `</p>
+                            </div>
 
-                        <p onclick="tweetInfoClicked('` + tweetInfoClicked(parent['tweet']) + `')" style="cursor: pointer;">` + getResultWithHashtags(parent['tweet']['quote']) + `</p>
-
-                        ` + getqqqq(parent['tweet'], parent['user']) + `
+                            <div style="padding-left: 25px;">
+                                ` + getqqqq(parent['tweet'], parent['user']) + `
+                            </div>
+                        </div>
 
                     </div>
                 </div>
@@ -354,7 +359,7 @@ function getReply(parent, child) {
                                 </a>
                             </div>
 
-                            <p onclick="tweetInfoClicked('` + tweetInfoClicked(child['tweet']) + `')" style="cursor: pointer;">` + getResultWithHashtags(child['tweet']['quote']) + `</p>
+                            <p onclick="tweetInfoClicked('` + tweetInfoClicked(child['tweet']) + `')" style="cursor: pointer; word-break: break-all;">` + getResultWithHashtags(child['tweet']['quote']) + `</p>
 
                             ` + getqqqq(child['tweet'], child['user']) + `
 

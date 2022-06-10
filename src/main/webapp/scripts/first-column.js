@@ -1,6 +1,6 @@
 $(function() {
 
-    $('#first-tweet-button-id').click(() => setTopTweetLayer());
+    $('#first-tweet-button-id').click(() => showTopLayerTweet());
 
 
     $.ajax({

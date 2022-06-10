@@ -122,7 +122,7 @@ function replyClicked(user_id, tweet_id) {
 
     console.log(tweetBox);
 
-    setTopTweetLayer(tweetBox);
+    showTopLayerTweet(tweetBox);
 
 }
 

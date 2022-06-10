@@ -63,14 +63,69 @@
 }
 
 
-.top-layer-tweet-who-can-reply-choice:hover {
-    border-radius: 10px;
-    background-color: rgb(29, 155, 240, 0.1);
-    /* background-color: rgb(230, 230, 230); */
-}
 
 .top-app-bar-search-box-onfocus {
     -webkit-box-shadow:0 0 20px rgb(12, 114, 200);
     -moz-box-shadow: 0 0 20px rgb(12, 114, 200);
     box-shadow: 0 0 20px rgb(12, 114, 200);
+}
+
+
+
+
+
+
+
+
+.top-layer-tweet-suggestion-item:hover {
+    transition: all .4s ease;
+    -webkit-transition: all .4s ease;
+    background-color: rgb(29, 155, 240, 0.3);
+}
+.top-layer-tweet-suggestion-item:not(:hover) {
+    transition: all .4s ease;
+    -webkit-transition: all .4s ease;
+}
+
+
+
+
+
+
+
+
+
+.top-layer-tweet-placeholder:empty:before {
+    color: rgb(110, 110, 110);
+    content: attr(data-placeholder);
+}
+
+
+
+.tweet-reply-vertical-bar {
+    border-left: 1.7px solid rgb(160, 160, 160);
+}
+
+
+
+
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+#top-layer-tweet-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+#top-layer-tweet-container {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+
+
+
+.top-layer-tweet-who-can-reply-choice:hover {
+    border-radius: 10px;
+    background-color: rgb(29, 155, 240, 0.1);
+    /* background-color: rgb(230, 230, 230); */
 }

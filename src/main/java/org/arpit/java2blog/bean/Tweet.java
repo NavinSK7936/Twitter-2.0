@@ -31,12 +31,13 @@ public class Tweet implements Serializable {
 	private int total_replies;
 	private Timestamp created_at;
 	private int source_label;
+	private int who_can_reply;
 
 	public Tweet() {
 	}
 
 	public Tweet(int id, int user_id, String quote, int total_likes, 
-			int total_retweets, int total_replies, Timestamp created_at, int source_label) {
+			int total_retweets, int total_replies, Timestamp created_at, int source_label, int who_can_reply) {
 		super();
 		this.id = id;
 		this.user_id = user_id;
@@ -46,6 +47,7 @@ public class Tweet implements Serializable {
 		this.total_replies = total_replies;
 		this.created_at = created_at;
 		this.source_label = source_label;
+		this.who_can_reply = who_can_reply;
 	}
 
 	public int getId() {
@@ -112,6 +114,13 @@ public class Tweet implements Serializable {
 		this.source_label = source_label;
 	}
 
+	public int getWho_can_reply() {
+		return who_can_reply;
+	}
+
+	public void setWho_can_reply(int who_can_reply) {
+		this.who_can_reply = who_can_reply;
+	}
 	
 	
 	// TODO: Must sort it deeper

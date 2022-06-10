@@ -14,6 +14,7 @@ function justDoIt(toPush = true) {
     console.log(window.history);
     console.log(decodeURIComponent(window.location.search));
 
+
     if (qp.size == 0 || qp.get('p') == 'home') {
 
         setHomePage(toPush, qp.size == 0);
@@ -139,6 +140,32 @@ function showExploreSection(searchQuery, to = 'push') {
 
 }
 
+
+var topLayerReplyTweetBox = null, topLayerRetweetBox = null;
+
+function showTopLayerTweet(replyTweetBox = null, retweetBox = null) {
+
+    $('#auxiliary-container').empty();
+    $('#auxiliary-container').load('html/top-layer-tweet.html');
+
+    topLayerReplyTweetBox = replyTweetBox;
+    topLayerRetweetBox = retweetBox;
+
+    if (replyTweetBox != null) {
+        
+        window.history.pushState(null, "Top-Layer-Tweet", '?p=tweet&reply=' + replyTweetBox['tweet']['id']);
+
+    } else if (retweetBox != null) {
+        
+        window.history.pushState(null, "Top-Layer-Tweet", '?p=tweet&retweet=' + retweetBox['tweet']['id']);
+
+    } else {
+
+        window.history.pushState(null, "Top-Layer-Tweet", '?p=tweet');
+
+    }
+
+}
 
 
 function logout() {

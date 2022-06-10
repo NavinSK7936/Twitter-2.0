@@ -20,4 +20,10 @@ public final class TwitterUtil {
 													"Twitter for Terminal",
 													"Twitter for Web"
 												};
+
+	public static final String[] whoCanReply = {
+													"Everyone",
+													"People you follow",
+													"Only People you mention"
+												};
 }

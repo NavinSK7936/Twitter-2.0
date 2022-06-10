@@ -80,7 +80,9 @@ function retweetMenuItemsClick(element, tweet_id, event) {
             }
         })
 
-        setTopTweetLayer(undefined, tweetBox);
+        console.log(tweetBox);
+
+        showTopLayerTweet(undefined, tweetBox);
 
     }
 

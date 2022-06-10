@@ -163,8 +163,6 @@ $(function() {
         
         const elem = $('#top-app-bar-search-input-field');
 
-        console.log('focusin', elem);
-
         // TO add Highlight border on search
         $('#top-app-bar-search-div').addClass('top-app-bar-search-box-onfocus');
 
