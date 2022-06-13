@@ -33,6 +33,9 @@ function justDoIt(toPush = true) {
 
         showExploreSection(decodeURIComponent(window.location.search.substring(1)), toPush ? 'push' : 'replace');
 
+    } else if (qp.get('p') == 'tweet') {
+
+
     }
 
 }
@@ -153,15 +156,15 @@ function showTopLayerTweet(replyTweetBox = null, retweetBox = null) {
 
     if (replyTweetBox != null) {
         
-        window.history.pushState(null, "Top-Layer-Tweet", '?p=tweet&reply=' + replyTweetBox['tweet']['id']);
+        window.history.replaceState({ prevSearch: window.location.search }, "Top-Layer-Tweet", '?p=tweet&reply=' + replyTweetBox['tweet']['id']);
 
     } else if (retweetBox != null) {
         
-        window.history.pushState(null, "Top-Layer-Tweet", '?p=tweet&retweet=' + retweetBox['tweet']['id']);
+        window.history.replaceState({ prevSearch: window.location.search }, "Top-Layer-Tweet", '?p=tweet&retweet=' + retweetBox['tweet']['id']);
 
     } else {
 
-        window.history.pushState(null, "Top-Layer-Tweet", '?p=tweet');
+        window.history.replaceState({ prevSearch: window.location.search }, "Top-Layer-Tweet", '?p=tweet');
 
     }
 

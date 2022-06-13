@@ -188,9 +188,9 @@ function closeTopLayerTweet() {
 
     // $('#top-layer-tweet').css('visibility', 'hidden');
 
-    console.log('po');
+    $('#auxiliary-container').empty();
 
-    history.back();
+    window.history.replaceState(null, "Back-From-Top-Layer-Tweet", window.history.state.prevSearch);
 
 }
 
@@ -206,14 +206,71 @@ var suggestionPageNo, suggestionPageSize = 5;
 
 function initTopLayer() {
 
-// console.log("one");
-//     $('#top-layer-tweet').on('click', function() {
-//         closeTopLayerTweet()
-//     });
-// console.log("two");
+
     $('#top-layer-tweet-close').on('click', function() {
         closeTopLayerTweet()
     });
+
+
+    $('#top-layer-tweet-button').on('click', function(event) {
+
+        const tweets = [];
+
+        $(`#top-layer-tweet-input-field-onblur-placholder-${inputTweetController.curr_id}`).html($('#top-layer-tweet-input-field').html());
+
+        for (const item of inputTweetController.items) {
+
+            var text = $(`#top-layer-tweet-input-field-onblur-placholder-${item}`).text().replace(/\s+/g, " ");
+            var html = $(`#top-layer-tweet-input-field-onblur-placholder-${item}`).html().replace(/&nbsp;/g, " ");
+            var i = 0, j = 0, result = '';
+
+            for (; i < text.length; html = html.substring(j), j = 0) {
+
+                if (text[i] == html[j]) {
+                    result += text[i];
+                    i++; j++;
+                } else if (text[i] == '@' && html[j] == '<') {
+                    
+                    j = html.indexOf('data-id="') + 9, num = 0;
+
+                    while (html[j] != '"')
+                        num = num * 10 + +html[j++];
+                    result += '${{' + num + '}}';
+
+                    while (text[++i] != ' ');
+                    
+                    j = html.indexOf('</span>') + 7;
+
+                } else if (text[i] == '#' && html[j] == '<') {
+                    
+                    while (result += text[i], text[++i] != ' ');
+
+                    j = html.indexOf('</span>') + 7;
+                }
+            }
+
+            tweets.push(result);
+
+        }
+
+        const whoCanReply = $('#top-layer-tweet-who-can-reply').attr('data-who-can-reply-choice');
+        const qp = getQueryKVMap(decodeURIComponent(window.location.search));
+        
+
+        if (qp.get('retweet') != undefined) {
+
+        } else if (qp.get('reply') != undefined) {
+
+        } else {
+
+        }
+
+        console.log(whoCanReply, tweets);
+
+    })
+
+
+
 
 
 
@@ -306,21 +363,6 @@ function initTopLayer() {
 
     }
 
-
-
-    $('#top-layer-tweet-button').on('click', function(event) {
-
-        var tweets = [];
-
-        $(`#top-layer-tweet-input-field-onblur-placholder-${inputTweetController.curr_id}`).html($('#top-layer-tweet-input-field').html());
-
-        for (const item of inputTweetController.items) {
-
-            tweets.push($(`#top-layer-tweet-input-field-onblur-placholder-${item}`).text());
-
-        }
-        
-    })
 
 
 

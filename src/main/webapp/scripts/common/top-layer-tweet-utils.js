@@ -125,7 +125,7 @@ function getTopLayerRetweetPiece(retweetTweetBox) {
 
 function getMentionCellInTweetSuggestion(user_id, user_name, mention_name, isFollowing = false, img) {
     return `
-        <li onclick="thatClick(event, '@${mention_name}', ${user_id})" data-user-id="${user_id}" data-mention-name="@${mention_name}"
+        <li onclick="thatClick('@${mention_name}', ${user_id})" data-user-id="${user_id}" data-mention-name="@${mention_name}"
             style="display: block; position: relative;"
             class="top-layer-tweet-suggestions top-layer-tweet-suggestion-item">
 
@@ -160,7 +160,7 @@ function getMentionCellInTweetSuggestion(user_id, user_name, mention_name, isFol
 
 function getHashtagCellInTweetSuggestion(hashtag, extras = null) {
     return `
-        <li onclick="thatClick(event, '#${hashtag}')" data-hashtag="` + hashtag + `" style="display: block; position: relative;" class="top-layer-tweet-suggestions top-layer-tweet-suggestion-item">
+        <li onclick="thatClick('#${hashtag}')" data-hashtag="` + hashtag + `" style="display: block; position: relative;" class="top-layer-tweet-suggestions top-layer-tweet-suggestion-item">
             <div style="display: block; cursor: pointer; padding: 12px 15px;">
                 <div style="font-size: 15px; font-weight: 600;">
                     #` + hashtag + `

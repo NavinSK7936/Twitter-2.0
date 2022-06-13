@@ -130,7 +130,7 @@ function getUserAsPeople(user) {
                 <div style="display: block; margin-left: 10px; cursor: pointer;">
                     <div style="font-size: 16px; font-weight: 600;">` + user['user_name'] + `</div>
                     <div style="color: rgb(110, 110, 110); font-weight: 500;">@` + user['mention_name'] + `</div>
-                    <div style="margin-top: 5px; font: Trebuchet MS, Helvetica, sans-serif; font-size: 16px; font-weight: 500; color: rgb(81, 119, 215); word-break: break-all;">` +
+                    <div style="margin-top: 5px; font: Trebuchet MS, Helvetica, sans-serif; font-size: 16px; font-weight: 500; color: rgb(81, 119, 215); word-break: break-word;">` +
                         getResultWithHashtags(user['status'])
                     + `</div>
                 </div>
@@ -163,12 +163,12 @@ function getSingleTweetForSecondColumnTweetsContainer(tweet, user) {
                             <span aria-hidden="true" style="margin: 0px 5px;">
                                 <span>·</span>
                             </span>
-                            <a class="remove-link-underline tweet-time-span" style="cursor: pointer;" rel="noopener noreferrer" target="_blank" role="link">
+                            <div class="remove-link-underline tweet-time-span" style="cursor: pointer;" rel="noopener noreferrer" target="_blank" role="link">
                                 <span id="single-tweet-time-id-">` + getTimeSpanFromNow(tweet['created_at']) + `</span>
-                            </a>
+                            </div>
                         </div>
 
-                        <p id="single-tweet-tweet-id-" onclick="tweetInfoClicked('` + tweet + `')" style="cursor: pointer; word-break: break-all;">` + getResultWithHashtags(tweet['quote']) + `</p>
+                        <p onclick="tweetInfoClicked(` + tweet['id'] + `)" style="cursor: pointer; word-break: break-word;">` + getResultWithHashtags(tweet['quote']) + `</p>
 
                         ` + getqqqq(tweet, user) + `
                         
@@ -199,12 +199,12 @@ function getQuotedRetweet(parent, child) {
                             <span aria-hidden="true" style="margin: 0px 5px;">
                                 <span>·</span>
                             </span>
-                            <a class="remove-link-underline tweet-time-span" href="#" rel="noopener noreferrer" target="_blank" role="link">
+                            <div class="remove-link-underline tweet-time-span" href="#" rel="noopener noreferrer" target="_blank" role="link">
                                 <span>` + getTimeSpanFromNow(child['tweet']['created_at']) + `</span>
-                            </a>
+                            </div>
                         </div>
 
-                        <p onclick="tweetInfoClicked('` + tweetInfoClicked(child['tweet']) + `')" style="cursor: pointer; word-break: break-all;">` + getResultWithHashtags(child['tweet']['quote']) + `</p>
+                        <p onclick="tweetInfoClicked(` + child['tweet']['id'] + `)" style="cursor: pointer; word-break: break-word;">` + getResultWithHashtags(child['tweet']['quote']) + `</p>
 
                         <div class="tweet-in-list" style="border: 1px solid black; border-radius: 10px;">
                             <div style="cursor: pointer; display: flex;">
@@ -222,12 +222,12 @@ function getQuotedRetweet(parent, child) {
                                         <span aria-hidden="true" style="margin: 0px 5px;">
                                             <span>·</span>
                                         </span>
-                                        <a class="remove-link-underline tweet-time-span" href="#" rel="noopener noreferrer" target="_blank" role="link">
+                                        <div class="remove-link-underline tweet-time-span" href="#" rel="noopener noreferrer" target="_blank" role="link">
                                             <span>` + getTimeSpanFromNow(parent['tweet']['created_at']) + `</span>
-                                        </a>
+                                        </div>
                                     </div>
 
-                                    <p onclick="tweetInfoClicked('` + tweetInfoClicked(parent['tweet']) + `')" style="cursor: pointer; margin-bottom: 0; word-break: break-all;">` + getResultWithHashtags(parent['tweet']['quote']) + `</p>
+                                    <p onclick="tweetInfoClicked(` + parent['tweet']['id'] + `)" style="cursor: pointer; margin-bottom: 0; word-break: break-word;">` + getResultWithHashtags(parent['tweet']['quote']) + `</p>
 
                                 </div>
                             </div>
@@ -277,12 +277,12 @@ function getRetweet(user_id, parent, child) {
                             <span aria-hidden="true" style="margin: 0px 5px;">
                                 <span>·</span>
                             </span>
-                            <a class="remove-link-underline tweet-time-span" href="#" rel="noopener noreferrer" target="_blank" role="link">
+                            <div class="remove-link-underline tweet-time-span" href="#" rel="noopener noreferrer" target="_blank" role="link">
                                 <span id="tweet-source-label">` + getTimeSpanFromNow(parent['tweet']['created_at']) + `</span>
-                            </a>
+                            </div>
                         </div>
 
-                        <p onclick="tweetInfoClicked('` + tweetInfoClicked(parent['tweet']) + `')" style="cursor: pointer; margin-bottom: 0; word-break: break-all;">` + getResultWithHashtags(parent['tweet']['quote']) + `</p>
+                        <p onclick="tweetInfoClicked(` + parent['tweet']['id'] + `)" style="cursor: pointer; margin-bottom: 0; word-break: break-word;">` + getResultWithHashtags(parent['tweet']['quote']) + `</p>
 
                         <div style="margin-top: 10px;">
 
@@ -298,71 +298,77 @@ function getRetweet(user_id, parent, child) {
     `;
 }
 
+
 function getReply(parent, child) {
     return `
         <div>
             <div class="tweet-in-list">
                 <div style="display: block; margin-bottom: 5px;">
-                    <div style="display: flex; margin-bottom: 3px;">
-                        <div style="margin-right: 10px; background: white; padding-bottom: 3px;">
-                            <div style="cursor: pointer;">
-                                <img style="width: 50px; height: 50px; border-radius: 50%;" src="images/icon_doge.jpeg" alt="User Icon">
+                    <div style="display: block; margin-bottom: -2px;">
+                        <div style="display: flex; margin-bottom: 3px;">
+                            <div style="margin-right: 10px; background: white; padding-bottom: 3px;">
+                                <div style="cursor: pointer;">
+                                    <img style="width: 50px; height: 50px; border-radius: 50%;" src="images/icon_doge.jpeg" alt="User Icon">
+                                </div>
+                            </div>
+                            <div style="display: flex; margin-top: -20px; align-items: center; margin-bottom: 3px;">
+                                <div onclick="takeToUserProfile(` + parent['user']['id'] + `)" style="cursor: pointer; font-size: 16px; font: bolder; font-weight: 650; color: black; margin-right: 5px;" href="#" role="link">
+                                    <span>` + parent['user']['user_name'] + `</span>
+                                </div>
+                                <div style="cursor: pointer; font-size: 14px; font-weight: 500; color: rgb(110, 110, 110);" href="#" role="link">
+                                    <span>@</span><span>NavinSK7936<span>
+                                </span></span></div>
+                                <span aria-hidden="true" style="margin: 0px 5px;">
+                                    <span>·</span>
+                                </span>
+                                <div rel="noopener noreferrer" target="_blank" role="link">
+                                    <span>` + getTimeSpanFromNow(parent['tweet']['created_at']) + `</span>
+                                </div>
                             </div>
                         </div>
-                        <div style="display: flex; margin-top: -20px; align-items: center; margin-bottom: 3px;">
-                            <div onclick="takeToUserProfile(` + parent['user']['id'] + `)" style="cursor: pointer; font-size: 16px; font: bolder; font-weight: 650; color: black; margin-right: 5px;" href="#" role="link">
-                                <span>` + parent['user']['user_name'] + `</span>
+                        <div style="margin-left: 25px; margin-top: -20px; width: 100%; padding-right: 25px;">
+                            
+                            <div style="padding-left: 1px; border-left: 1.7px solid rgb(160, 160, 160); min-height: 40px;">
+                            
+                                <div style="padding-left: 32px; margin-top: -25px;">
+                                    <p onclick="tweetInfoClicked(` + parent['tweet']['id'] + `)" style="cursor: pointer; word-break: break-word;">` + getResultWithHashtags(parent['tweet']['quote']) + `</p>
+                                </div>
+                
+                                <div style="padding-left: 25px; padding-bottom: 15px;">
+                                    ` + getqqqq(parent['tweet'], parent['user']) + `
+                                </div>
+                
                             </div>
-                            <div onclick="takeToUserProfile(` + parent['user']['id'] + `)" style="cursor: pointer; font-size: 14px; font-weight: 500; color: rgb(110, 110, 110);" href="#" role="link">
-                                <span>@</span><span>` + parent['user']['mention_name'] + `<span>
-                            </div>
-                            <span aria-hidden="true" style="margin: 0px 5px;">
-                                <span>·</span>
-                            </span>
-                            <a class="remove-link-underline tweet-time-span" href="#" rel="noopener noreferrer" target="_blank" role="link">
-                                <span>` + getTimeSpanFromNow(parent['tweet']['created_at']) + `</span>
-                            </a>
+                
                         </div>
-                    </div>
-                    <div style="margin-left: 25px; margin-top: -20px; width: 100%; padding-right: 25px;">
-                        
-                        <div style="padding-left: 1px; border-left: 1.7px solid rgb(160, 160, 160);">
-                            <div style="padding-left: 32px; margin-top: -25px;">
-                                <p onclick="tweetInfoClicked('` + parent['tweet'] + `')" style="cursor: pointer; word-break: break-all;">` + getResultWithHashtags(parent['tweet']['quote']) + `</p>
-                            </div>
-
-                            <div style="padding-left: 25px;">
-                                ` + getqqqq(parent['tweet'], parent['user']) + `
-                            </div>
-                        </div>
-
                     </div>
                 </div>
-                <div style="border-radius: 10px;">
+                <div>
                     <div style="display: flex;">
                         <div style="cursor: pointer; margin-right: 10px;">
-                            <img style="width: 50px; height: 50px; border-radius: 50%;" src="images/icon_doge.jpeg" alt="User Icon">
+                            <img onclick="userInfoClicked(` + child['user']['id'] + `)" style="width: 50px; height: 50px; border-radius: 50%;" src="images/icon_doge.jpeg" alt="User Icon">
                         </div>
                         <div style="width: 100%;">
                             <div style="display: flex; align-items: center; margin-bottom: 3px;">
-                                <div onclick="takeToUserProfile(` + child['user']['id'] + `)" style="cursor: pointer; font-size: 16px; font: bolder; font-weight: 650; color: black; margin-right: 5px;" href="#" role="link">
+                                <div onclick="takeToUserProfile(` + child['user']['id'] + `)" style="cursor: pointer; font-size: 16px; font: bolder; font-weight: 650; color: black; margin-right: 5px;" role="link">
                                     <span>` + child['user']['user_name'] + `</span>
                                 </div>
                                 <div onclick="takeToUserProfile(` + child['user']['id'] + `)" style="cursor: pointer; font-size: 14px; font-weight: 500; color: rgb(110, 110, 110);" href="#" role="link">
                                     <span>@</span><span>` + child['user']['mention_name'] + `<span>
                                 </div>
+                                
                                 <span aria-hidden="true" style="margin: 0px 5px;">
                                     <span>·</span>
                                 </span>
-                                <a class="remove-link-underline tweet-time-span" href="#" rel="noopener noreferrer" target="_blank" role="link">
-                                    <span>` + getTimeSpanFromNow(child['tweet']['created_at']) + `</span>
-                                </a>
+                                <div class="remove-link-underline tweet-time-span" style="cursor: pointer;" rel="noopener noreferrer" target="_blank" role="link">
+                                    <span id="single-tweet-time-id-">` + getTimeSpanFromNow(child['tweet']['created_at']) + `</span>
+                                </div>
                             </div>
 
-                            <p onclick="tweetInfoClicked('` + tweetInfoClicked(child['tweet']) + `')" style="cursor: pointer; word-break: break-all;">` + getResultWithHashtags(child['tweet']['quote']) + `</p>
+                            <p onclick="tweetInfoClicked(` + child['tweet']['id'] + `)" style="cursor: pointer; word-break: break-word;">` + getResultWithHashtags(child['tweet']['quote']) + `</p>
 
                             ` + getqqqq(child['tweet'], child['user']) + `
-
+                            
                         </div>
                     </div>
                 </div>
