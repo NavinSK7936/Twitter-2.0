@@ -28,6 +28,7 @@ import com.spacenine.twitter.TwitterUtil;
 import com.spacenine.twitter.Util;
 
 import org.arpit.java2blog.bean.CompleteTweet;
+import org.arpit.java2blog.bean.Mention;
 import org.arpit.java2blog.bean.SingleTweet;
 import org.arpit.java2blog.bean.Tweet;
 import org.arpit.java2blog.bean.TweetBox;
@@ -1460,20 +1461,33 @@ public class TwitterService {
 		
 	}
 
-	public List<TwitterUser> getRecommendedMentions(String wildcard, int pageStart, int pageSize) {
+	public List<Mention> getRecommendedMentions(String wildcard, int user_id, int pageStart, int pageSize) {
 		
-		List<TwitterUser> ans = new ArrayList<>();
+		List<Mention> ans = new ArrayList<>();
 		
-		try {
+		try {			
 			
 			String query = 
-					"SELECT * FROM " + TwitterUtil.userTable + " WHERE mention_name LIKE CONCAT('%', '" + wildcard + "', '%') OR user_name LIKE CONCAT('%', '" + wildcard + "', '%') ORDER BY LOCATE('" + wildcard + "', mention_name), LOCATE('" + wildcard + "', user_name), total_followers DESC, total_tweets DESC LIMIT " + pageStart + ", " + pageSize;
-			
+					"SELECT id, user_name, mention_name FROM " + TwitterUtil.userTable + " WHERE mention_name LIKE CONCAT('%', '" + wildcard + "', '%') OR user_name LIKE CONCAT('%', '" + wildcard + "', '%') ORDER BY"
+						 + " LOCATE('" + wildcard + "', mention_name), LOCATE('" + wildcard + "', user_name),"
+						 + " (SELECT COUNT(*) FROM " + TwitterUtil.followerTable + " WHERE follower_id=" + user_id + " AND followee_id=id) DESC,"
+						 + " (SELECT COUNT(*) FROM " + TwitterUtil.user_rel_table + " WHERE from_user=" + user_id + " AND to_user=id) DESC,"
+						 + " total_followers DESC, total_tweets DESC"
+						 + " LIMIT " + pageStart + ", " + pageSize;
+
+			System.out.println(query);
+
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(query);
 			
-			while (rs.next())
-				ans.add(getUserFromResultSet(rs));
+			while (rs.next()) {
+
+				int followee_id = rs.getInt(1);
+				String followerQuery = "SELECT * FROM " + TwitterUtil.followerTable + " WHERE follower_id=" + user_id + " AND followee_id=" + followee_id;
+
+				ans.add(new Mention(followee_id, rs.getString(2), rs.getString(3), con.createStatement().executeQuery(followerQuery).next()));
+
+			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -2340,6 +2354,16 @@ SELECT * FROM tweet_table WHERE
 
 		return ans;
 
+	}
+
+
+	public List<Tweet> getParentTweets(int tweet_id) {
+
+		List<Tweet> ans = new ArrayList<>();
+
+		
+
+		return ans;
 	}
 	
 

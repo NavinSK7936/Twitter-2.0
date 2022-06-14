@@ -71,7 +71,7 @@ function getUserProfileFollowerCell(user, that_user_id) {
                         ` + getFollowButton(user['id']) + `
                     </div>
 
-                    <div style="font-size: 14px; font-weight: 480; margin-left: 75px;">` +
+                    <div style="font-size: 14px; font-weight: 480; margin-left: 75px; color: rgb(81, 119, 215)">` +
                         getResultWithHashtags(user['status'])
                     + `</div>
 
@@ -312,6 +312,8 @@ $(function() {
         document.getElementById("profile-follower-qqq-nav-title-" + currId).style.color = "black";
         $("#profile-follower-qqq-nav-bottom-bar-" + currId).show();
         $("#profile-follower-qqq-container-" + currId).show();
+
+        window.history.replaceState(null, "showFollowerTopLayer", '?p=profile&id=' + that_user_id + "&pfi=" + currId);
 
         prevId = currId;
 

@@ -11,6 +11,8 @@ $(function() {
 
     initTopLayer();
 
+    // setTopAppBar({ title: 'Home', showBackButton: false })
+
     setTopTweetLayer(topLayerReplyTweetBox, topLayerRetweetBox);
 
 })
@@ -207,6 +209,27 @@ var suggestionPageNo, suggestionPageSize = 5;
 function initTopLayer() {
 
 
+
+
+    mhSuggestionObserver?.disconnect();
+
+    mhSuggestionObserver = respondToVisibility(document.getElementById('top-layer-tweet-suggestions-visiblity-block'), visible => {
+        
+        console.log(visible);
+
+        if (!visible)
+            return;
+        
+        showUI($('#top-layer-tweet-suggestions-slider'));
+        showUI($('#top-layer-tweet-suggestions-visiblity-block'));
+
+        showTweetSuggestions();
+        
+    })
+
+
+
+
     $('#top-layer-tweet-close').on('click', function() {
         closeTopLayerTweet()
     });
@@ -255,11 +278,33 @@ function initTopLayer() {
 
         const whoCanReply = $('#top-layer-tweet-who-can-reply').attr('data-who-can-reply-choice');
         const qp = getQueryKVMap(decodeURIComponent(window.location.search));
-        
+
 
         if (qp.get('retweet') != undefined) {
 
         } else if (qp.get('reply') != undefined) {
+
+            $.ajax({
+                url: base_url + "tweet/reply?parent_tweet_id=" + qp.get('reply'),
+                type: "POST",
+                contentType: "application/json; charSet=UTF-8",
+                dataType: "json",
+                data: JSON.stringify({
+                    'user_id': getCurrentUserIdInLS(),
+                    'quote': tweets[0],
+                    'source_label': 1,
+                    'who_can_reply': whoCanReply
+                }),
+                timeout: 2500,
+                success: function(result) {
+        
+                    console.log('users-related', result);
+        
+                }, error: function(request, status, error) {
+                    console.log('reply-tweet', request.responseText, status, error);
+                }, complete: function() {
+                }
+            })
 
         } else {
 
@@ -269,23 +314,6 @@ function initTopLayer() {
 
     })
 
-
-
-
-
-
-
-    mhSuggestionObserver?.disconnect();
-
-    mhSuggestionObserver = respondToVisibility(document.getElementById('top-layer-tweet-suggestions-visiblity-block'), visible => {
-        
-        if (!visible)
-            return;
-        
-        showUI($('#top-layer-tweet-suggestions-slider'));
-        showTweetSuggestions();
-        
-    })
 
 
 
@@ -452,7 +480,7 @@ function initTopLayer() {
         let len = Math.min(Math.floor(($(this).text().length * 85) / tweetMaxChars), 85);
         
         currText = $('#top-layer-tweet-input-field').text(), word = currText.split(' ').at(-1), char = word.at(-1);
-        currHtml = $('#top-layer-tweet-input-field').html().replace(/&nbsp;/g, ' ');//.replace(/ /g, '_');
+        currHtml = $('#top-layer-tweet-input-field').html().replace(/&nbsp;/g, ' ');
 
 
 
@@ -606,7 +634,7 @@ function thatClick(text, id = -1) {
 }
 
 
-var mentions = ['navinsk', 'sk', 'gk', 'sivam', 'krishna', 'kannan', 'vel', 'king', 'rish', 'vin', 'in', 's', 'i', 'io', 'kio', 'ss', 'noi'];
+// var mentions = ['navinsk', 'sk', 'gk', 'sivam', 'krishna', 'kannan', 'vel', 'king', 'rish', 'vin', 'in', 's', 'i', 'io', 'kio', 'ss', 'noi'];
 var hashtags = ['selena', 'beiber', 'ok', 'nights', 'kite', 'yoyo', 'ogam', 'gk', 'sivam', 'krishna', 'kannan', 'vel', 'jit'];
 
 function showTweetSuggestions() {
@@ -615,53 +643,99 @@ function showTweetSuggestions() {
 
     if (word[0] == '@') {
 
-        setTimeout(() => {
+        $.ajax({
+            url: base_url + "user/rmentions?wildcard=" + word.substring(1) + "&user_id=" + getCurrentUserIdInLS() + "&start=" + suggestionPageNo + "&size=" + (suggestionPageSize+1),
+            type: "GET",
+            contentType: "application/json; charSet=UTF-8",
+            dataType: "json",
+            timeout: 2500,
+            success: function(mentions) {
 
-            // showUI($('#top-layer-tweet-suggestions-visiblity-block'), false);
-            showUI($('#top-layer-tweet-suggestions-slider'), false);
-        
-            for (var i = suggestionPageNo; i < suggestionPageNo + suggestionPageSize && i < mentions.length; i++) {
+                showUI($('#top-layer-tweet-suggestions-slider'), false);
+                showUI($('#top-layer-tweet-suggestions-container-placeholder'), false);
 
-                if (i)
-                    $(`#top-layer-tweet-suggestions-container>li:nth-child(` + i + `)`).after(getMentionCellInTweetSuggestion(i, mentions[i], mentions[i], Math.random() < 0.3));
-                else
-                    $('#top-layer-tweet-suggestions-container').prepend(getMentionCellInTweetSuggestion(i, mentions[i], mentions[i], Math.random() < 0.3));
+                if (mentions == null || mentions.length == 0) {
 
-            }
+                    showUI($('#top-layer-tweet-suggestions-container-placeholder'));
 
-            suggestionPageNo += suggestionPageSize;
+                    showUI($('#top-layer-tweet-suggestions-visiblity-block'), false);
 
-            console.log('git', suggestionPageNo, mentions.length);
-
-            if (suggestionPageNo >= mentions.length) {
-                showUI($('#top-layer-tweet-suggestions-visiblity-block'), false);
-            }
+                    return;
+                }
             
-        }, 500);
+                for (var i = 0; i < Math.min(suggestionPageSize, mentions.length); i++) {
+
+                    if (suggestionPageNo + i)
+                        $(`#top-layer-tweet-suggestions-container>li:nth-child(` + (suggestionPageNo + i) + `)`).after(getMentionCellInTweetSuggestion(mentions[i]['user_id'], mentions[i]['user_name'], mentions[i]['mention_name'], mentions[i]['is_following']));
+                    else
+                        $('#top-layer-tweet-suggestions-container').prepend(getMentionCellInTweetSuggestion(mentions[i]['user_id'], mentions[i]['user_name'], mentions[i]['mention_name'], mentions[i]['is_following']));
+
+                }
+
+                suggestionPageNo += suggestionPageSize;
+
+                console.log('git', suggestionPageNo, mentions.length);
+
+                if (mentions.length <= suggestionPageSize) {
+                    showUI($('#top-layer-tweet-suggestions-visiblity-block'), false);
+                }
+    
+            }, error: function(request, status, error) {
+                console.log('user/rmentions', request.responseText, status, error);
+            }, complete: function() {
+            }
+        })
 
     } else if (word[0] == '#') {
 
-        setTimeout(() => {
+        console.log(`|${word}|`);
 
-            showUI($('#top-layer-tweet-suggestions-slider'), false);
+        $.ajax({
+            url: base_url + "tweet/hashtags?wildcard=" + word.substring(1) + "&start=" + suggestionPageNo + "&size=" + (suggestionPageSize+1),
+            type: "GET",
+            contentType: "application/json; charSet=UTF-8",
+            dataType: "json",
+            timeout: 2500,
+            success: function(hashtags) {
 
-            for (var i = suggestionPageNo; i < suggestionPageNo + suggestionPageSize && i < hashtags.length; i++) {
-                
-                if (i)
-                    $(`#top-layer-tweet-suggestions-container>li:nth-child(` + i + `)`).after(getHashtagCellInTweetSuggestion(hashtags[i]));
-                else
-                    $('#top-layer-tweet-suggestions-container').prepend(getHashtagCellInTweetSuggestion(hashtags[i]));
+                showUI($('#top-layer-tweet-suggestions-slider'), false);
+                showUI($('#top-layer-tweet-suggestions-container-placeholder'), false);
 
+                hashtags = Object.keys(hashtags);
+
+                console.log(hashtags);
+
+                if (hashtags == null || hashtags.length == 0) {
+
+                    showUI($('#top-layer-tweet-suggestions-container-placeholder'));
+
+                    showUI($('#top-layer-tweet-suggestions-visiblity-block'), false);
+
+                    return;
+                }
+
+                for (var i = 0; i < Math.min(suggestionPageSize, hashtags.length); i++) {
+                    
+                    if (suggestionPageNo + i)
+                        $(`#top-layer-tweet-suggestions-container>li:nth-child(` + (suggestionPageNo + i) + `)`).after(getHashtagCellInTweetSuggestion(hashtags[i]));
+                    else
+                        $('#top-layer-tweet-suggestions-container').prepend(getHashtagCellInTweetSuggestion(hashtags[i]));
+
+                }
+
+                suggestionPageNo += suggestionPageSize;
+
+                console.log('git', suggestionPageNo, hashtags.length);
+
+                if (hashtags.length <= suggestionPageSize)
+                    showUI($('#top-layer-tweet-suggestions-visiblity-block'), false);
+    
+            }, error: function(request, status, error) {
+                console.log('tweet/hashtags', request.responseText, status, error);
+            }, complete: function() {
             }
+        })
 
-            suggestionPageNo += suggestionPageSize;
-
-            console.log('git', suggestionPageNo, hashtags.length);
-
-            if (suggestionPageNo >= hashtags.length)
-                showUI($('#top-layer-tweet-suggestions-visiblity-block'), false);
-
-        }, 500);
     }
 
 }

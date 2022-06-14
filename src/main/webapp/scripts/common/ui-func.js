@@ -82,8 +82,10 @@ function userInfoClicked(user_id) {
 
 // Is meant to display the Tweet page, when clicked from a Tweet or something else
 // The tweet obj is passed here
-function tweetInfoClicked(tweet) {
-    // console.log(tweet_id);
+function tweetInfoClicked(id) {
+    
+    
+
 }
 
 function replyClicked(user_id, tweet_id) {

@@ -107,7 +107,6 @@ function initFirstColumn(user_id) {
 function setHomePage(toPush = true, isStart = false) {
 
     $('#second-body').empty();
-
     $('#second-body').load('html/home.html');
 
     if (isStart)
@@ -120,7 +119,6 @@ function setHomePage(toPush = true, isStart = false) {
 function showUserProfile(toPush = true, user_id = getCurrentUserIdInLS(), index) {
 
     $('#second-body').empty();
-
     $('#second-body').load('html/profile.html');
 
     if (toPush)
@@ -131,7 +129,6 @@ function showUserProfile(toPush = true, user_id = getCurrentUserIdInLS(), index)
 function showExploreSection(searchQuery, to = 'push') {
 
     $('#second-body').empty();
-
     $('#second-body').load('html/explore.html');
 
     searchQuery = '?' + encodeURIComponent(searchQuery);
@@ -151,6 +148,7 @@ function showTopLayerTweet(replyTweetBox = null, retweetBox = null) {
     $('#auxiliary-container').empty();
     $('#auxiliary-container').load('html/top-layer-tweet.html');
 
+
     topLayerReplyTweetBox = replyTweetBox;
     topLayerRetweetBox = retweetBox;
 
@@ -167,6 +165,15 @@ function showTopLayerTweet(replyTweetBox = null, retweetBox = null) {
         window.history.replaceState({ prevSearch: window.location.search }, "Top-Layer-Tweet", '?p=tweet');
 
     }
+
+}
+
+function showTweet(id) {
+
+    $('#second-body').empty();
+    $('#second-body').load('html/tweet.html');
+
+    window.history.pushState(null, "Top-Layer-Tweet", '?p=tweet-info&id=' + id);
 
 }
 

@@ -164,10 +164,11 @@ public class Tweet implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Tweet [created_at=" + created_at + ", id=" + id + ", quote=" + quote + ", total_likes=" + total_likes
-				+ ", total_replies=" + total_replies + ", total_retweets=" + total_retweets + ", user_id=" + user_id + ", source_label=" + source_label
-				+ ", hashtags=" + getHashtags()
-				+ "]";
+		return "Tweet [created_at=" + created_at + ", id=" + id  + ", user_id=" + user_id + ", quote=" + quote
+				+ ", total_likes=" + total_likes + ", total_replies=" + total_replies + ", total_retweets=" + total_retweets
+			    + ", source_label=" + source_label + ", who_can_reply=" + who_can_reply
+				+ ", mentions=" + getMentions()
+				+ ", hashtags=" + getHashtags()+ "]";
 	}
 
 	

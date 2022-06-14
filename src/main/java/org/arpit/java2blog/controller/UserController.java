@@ -30,6 +30,7 @@ import javax.ws.rs.core.Response;
 
 import com.spacenine.rest.PATCH;
 
+import org.arpit.java2blog.bean.Mention;
 import org.arpit.java2blog.bean.TwitterUser;
 import org.arpit.java2blog.service.TwitterService;
 import org.codehaus.jettison.json.JSONArray;
@@ -129,12 +130,13 @@ public class UserController {
 	@GET
 	@Path("rmentions")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<TwitterUser> getRecommendedMentions(
+	public List<Mention> getRecommendedMentions(
 		@QueryParam("wildcard") String wildcard,
+		@QueryParam("user_id") int user_id,
 		@QueryParam("start") int pageStart,
 		@QueryParam("size") int pageSize) {
 		
-		return service.getRecommendedMentions(wildcard, pageStart, pageSize);
+		return service.getRecommendedMentions(wildcard, user_id, pageStart, pageSize);
 		
 	}
 

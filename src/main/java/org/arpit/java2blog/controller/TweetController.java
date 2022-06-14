@@ -139,7 +139,7 @@ public class TweetController {
 		
 		System.out.println(id + ": " + replyTweet);
 		
-		return service.addReplyTweet(id, replyTweet);
+		return replyTweet;// service.addReplyTweet(id, replyTweet);
 		
 	}
 	
@@ -316,6 +316,16 @@ public class TweetController {
 		) {
 
 		return service.getExploreQQQPeople(user_id, search, total_likes, total_replies, total_retweets, from, to, pageStart, pageSize, cfrom, creply);
+
+	}
+
+	@GET
+	@Path("parent/tweets")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Tweet> getParentTweets(@QueryParam("tweet_id") int tweet_id
+	) {
+
+		return service.getParentTweets(tweet_id);
 
 	}
 	
