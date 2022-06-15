@@ -82,9 +82,9 @@ function userInfoClicked(user_id) {
 
 // Is meant to display the Tweet page, when clicked from a Tweet or something else
 // The tweet obj is passed here
-function tweetInfoClicked(id) {
+function tweetInfoClicked(tweet_id) {
     
-    
+    showTweet(tweet_id);
 
 }
 

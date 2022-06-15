@@ -27,12 +27,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.spacenine.rest.PATCH;
 import com.spacenine.twitter.EncodingUtil;
 import com.spacenine.twitter.TwitterUtil;
 
 import org.arpit.java2blog.bean.CompleteTweet;
 import org.arpit.java2blog.bean.SingleTweet;
 import org.arpit.java2blog.bean.Tweet;
+import org.arpit.java2blog.bean.TweetBox;
 import org.arpit.java2blog.bean.TweetPiece;
 import org.arpit.java2blog.bean.TwitterUser;
 import org.arpit.java2blog.bean.Value;
@@ -45,7 +47,6 @@ public class TweetController {
 	private final TwitterService service = new TwitterService();
 
 	public TweetController() {
-		System.out.println("OKKKKKKKKKKKK");
 	}
 	
 	@POST
@@ -169,6 +170,25 @@ public class TweetController {
 	// 	return service.getFeedsFor(user_id, mode);
 		
 	// }
+
+	@GET
+	@Path("tweetbox")
+	@Produces(MediaType.APPLICATION_JSON)
+	public TweetBox getTweetBox(@QueryParam("tweet_id") int tweet_id) {
+		
+		return service.getTweetBox(tweet_id);
+		
+	}
+
+	@GET
+	@Path("rq")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Integer> getRQ(@QueryParam("tweet_id") int tweet_id) {
+		
+		return service.getRQ(tweet_id);
+		
+	}
+
 	
 	@GET
 	@Path("complete")
@@ -322,10 +342,34 @@ public class TweetController {
 	@GET
 	@Path("parent/tweets")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Tweet> getParentTweets(@QueryParam("tweet_id") int tweet_id
-	) {
+	public List<TweetBox> getParentTweets(@QueryParam("tweet_id") int tweet_id) {
 
 		return service.getParentTweets(tweet_id);
+
+	}
+
+	@GET
+	@Path("replies/tweets")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<TweetBox> getReplyTweets(
+		@QueryParam("tweet_id") int tweet_id,
+		@QueryParam("minTs") Timestamp minTimestamp,
+		@QueryParam("start") int pageStart, @QueryParam("size") int pageSize
+		) {
+
+		return service.getReplyTweets(tweet_id, minTimestamp, pageStart, pageSize);
+
+	}
+
+	@PATCH
+	@Path("who_can_reply")
+	@Produces(MediaType.APPLICATION_JSON)
+	public int setWhoCanReplyForTweet(
+		@QueryParam("tweet_id") int tweet_id,
+		@QueryParam("choice") int choice
+		) {
+		
+		return service.setWhoCanReplyForTweet(tweet_id, choice);
 
 	}
 	

@@ -10,3 +10,9 @@ const tweetMaxChars = 280;
 
 const whoCanReplyStrings = ['Everyone', 'People you follow', 'Only People you mention'];
 const whoCanReplyIcons = ['ri-earth-fill', 'fa fa-user', 'ri-at-line'];
+
+
+const whoCanReplyIconsTweetInfo = ['ri-earth-fill', 'ri-user-3-fill', 'ri-at-line'];
+
+
+const sourceLabels = ["Twitter for Terminal", "Twitter Web App"];

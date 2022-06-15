@@ -1929,6 +1929,13 @@ public class TwitterService {
 
 	}
 
+	public TweetBox getTweetBox(int tweet_id) {
+
+		Tweet tweet = getTweetForId(tweet_id);
+		return new TweetBox(getUser(tweet.getUser_id()), tweet);
+		
+	}
+
 	public String getMentionNameFromId(int id) {
 		
 		try {
@@ -2357,14 +2364,112 @@ SELECT * FROM tweet_table WHERE
 	}
 
 
-	public List<Tweet> getParentTweets(int tweet_id) {
+	public List<TweetBox> getParentTweets(int tweet_id) {
 
-		List<Tweet> ans = new ArrayList<>();
+		Tweet tweet = null;
+		List<TweetBox> ans = new ArrayList<>();
 
-		
+		while (true) {
+			
+			try {
+
+				String query = "SELECT tweet_id FROM " + TwitterUtil.replyTable + " WHERE reply_id=" + tweet_id;
+
+				Statement st = con.createStatement();
+				ResultSet rs = st.executeQuery(query);
+
+				System.out.println(query);
+
+				if (!rs.next())
+					break;
+
+				tweet = getTweetForId(tweet_id = rs.getInt(1));
+				ans.add(0, new TweetBox(getUser(tweet.getUser_id()), tweet));
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
 
 		return ans;
 	}
+
+	public List<TweetBox> getReplyTweets(int tweet_id, Timestamp minTimestamp, int pageStart, int pageSize) {
+
+		Tweet tweet = null;
+		List<TweetBox> ans = new ArrayList<>();
+
+		try {
+			
+			String query = "SELECT * FROM " + TwitterUtil.tweetTable + " WHERE id IN (SELECT reply_id FROM " + TwitterUtil.replyTable + " WHERE tweet_id=" + tweet_id + ")"
+							+ " AND created_at <= '" + minTimestamp + "'"
+							+ " LIMIT " + pageStart + ", " + pageSize;
+
+			System.out.println(query);
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(query);
+
+			while (rs.next()) {
+				tweet = getTweetFromResultSet(rs);
+				ans.add(new TweetBox(getUser(tweet.getUser_id()), tweet));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return ans;
+	}
+
+
+	public List<Integer> getRQ(int tweet_id) {
+
+		List<Integer> ans = new ArrayList<Integer>() {{
+			add(0);
+			add(0);
+		}};
+
+		int index;
+
+		try {
+			
+			String query = "SELECT quote FROM " + TwitterUtil.tweetTable + " WHERE id IN (SELECT retweet_id FROM " + TwitterUtil.retweetTable + " WHERE tweet_id=" + tweet_id + ")";
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(query);
+
+			while (rs.next())
+				ans.set(index = (rs.getString(1) == null ? 0 : 1), ans.get(index) + 1);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return ans;
+	}
+
+
+    public int setWhoCanReplyForTweet(int tweet_id, int choice) {
+
+		try {
+
+			String query = "UPDATE " + TwitterUtil.tweetTable + " SET who_can_reply=? WHERE id=?";
+			
+			PreparedStatement st = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+			st.setInt(1, choice);
+			st.setInt(2, tweet_id);
+
+			st.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+        return 0;
+    }
 	
 
 }

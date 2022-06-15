@@ -36,6 +36,10 @@ function justDoIt(toPush = true) {
     } else if (qp.get('p') == 'tweet') {
 
 
+    } else if (qp.get('p') == 'tweet-info') {
+
+        showTweet(qp.get('id'));
+
     }
 
 }
@@ -171,7 +175,7 @@ function showTopLayerTweet(replyTweetBox = null, retweetBox = null) {
 function showTweet(id) {
 
     $('#second-body').empty();
-    $('#second-body').load('html/tweet.html');
+    $('#second-body').load('html/tweet-info.html');
 
     window.history.pushState(null, "Top-Layer-Tweet", '?p=tweet-info&id=' + id);
 

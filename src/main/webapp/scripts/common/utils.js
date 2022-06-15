@@ -72,6 +72,17 @@ function getTimestampFormattedValue(date) {
     return date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2) + " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2) + ":" + ("0" + date.getSeconds()).slice(-2);
 }
 
+
+function get12hrFormattedDateTime(timestamp) {
+
+    var matches = new Date(timestamp).toLocaleString().match(/^(\d+)\/(\d+)\/(\d+), (\d+):(\d+):(\d+)$/);
+
+    return {
+        time: `${matches[4]}:${matches[5]} ${'PA'[+(matches[4] < 12)]}M`,
+        date: `${monthNames[+matches[2]-1]} ${matches[1]}, ${matches[3]}`
+    };
+}
+
 function getQueryKVMap(search) {
     const qp = new Map();
     if (search.length)

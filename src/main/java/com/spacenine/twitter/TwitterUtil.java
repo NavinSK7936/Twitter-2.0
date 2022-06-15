@@ -18,7 +18,7 @@ public final class TwitterUtil {
 	
 	public static final String[] sourceLabels = {
 													"Twitter for Terminal",
-													"Twitter for Web"
+													"Twitter Web App"
 												};
 
 	public static final String[] whoCanReply = {

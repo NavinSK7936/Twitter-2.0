@@ -30,8 +30,6 @@ function getqqqq(tweet, user) {
         }
     })
 
-    // while (ans == null);
-
     return ans;
 }
 

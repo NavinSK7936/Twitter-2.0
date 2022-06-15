@@ -1,0 +1,271 @@
+function getqqqqTweetInfo(tweet, user) {
+
+    let ans = null;
+
+    $.ajax({
+        url: base_url + "tweet/iqqt?user_id=" + getCurrentUserIdInLS() + "&tweet_id="+ tweet['id'],
+        type: "GET",
+        async: false,
+        contentType: "application/json; charSet=UTF-8",
+        dataType: "json",
+        timeout: 2500,
+        success: function(res) {
+
+            const isRetweeted = res & 2, isLiked = res & 1;
+
+            ans =
+                `<div class="tweet-tool-icons" role="group" style="display: flex; align-items: center; margin: -5px 0;">` +
+                    getReplyIconDivForTweetInfo(tweet['id'], user['id']) +
+                    getRetweetIconDivForTweetInfo(tweet['id'], isRetweeted) +
+                    getLikeIconDivForTweetInfo(tweet['id'], isLiked) +
+                    getShareIconDivForTweetInfo(tweet['id']) + `
+                </div>`
+
+        }, error: function(request, status, error) {
+            console.log('getIQQTof: ' + tweet['id'] + "," + user['id'], request.responseText, status, error);
+        }, complete: function() {
+        }
+    })
+
+    return ans;
+}
+
+function getReplyIconDivForTweetInfo(tweet_id, user_id) {
+    return `
+        <div onclick="replyClicked(${user_id}, ${tweet_id})" style="cursor: pointer; display: flex;">
+            <i class="fa fa-reply" style="font-size: 18px;" aria-hidden="true"></i>
+        </div>
+    `;
+}
+
+function getRetweetIconDivForTweetInfo(tweet_id, isRetweeted) {
+    return `
+        <div class="dropdown" data-type="retweetIconDivQQQQ">
+            <div id="retweet-dropdown-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                ` + (isRetweeted ? ` class="retweet-qqqq-color" ` : ``) + `
+                style="cursor: pointer; display: flex;">
+                <i class="fa fa-retweet" style="font-size: 20px;"></i>
+            </div>
+            <div class="dropdown-menu" aria-labelledby="retweet-dropdown-menu" style="background-color: white; border: 1px solid black; border-radius: 15px;
+                -webkit-box-shadow:0 0 20px rgb(12, 114, 200); 
+                -moz-box-shadow: 0 0 20px rgb(12, 114, 200); 
+                box-shadow: 0 0 20px rgb(12, 114, 200);">
+
+                <div data-retweet-type="retweet" style="cursor: pointer; display: flex; margin: 11px 13px; margin-bottom: 15px;"
+                    data-is-retweeted="${isRetweeted}"
+                    onclick="retweetMenuItemsClick(this, ${tweet_id}, event)">
+                    <div style="margin-right: 10px;">
+                        <i style="font-size: 22px;" class="fa fa-retweet"></i>
+                    </div>
+                    <div style="display: flex;">
+                        <div class="center-text-vertically" style="text-align: center; font-size: 15px;">` + (isRetweeted ? "Undo " : "") + `Retweet</div>
+                    </div>
+                </div>
+
+                <div data-retweet-type="quote" style="cursor: pointer; display: flex; margin: 11px 13px; margin-top: 25px;"
+                    onclick="retweetMenuItemsClick(this, ${tweet_id}, event)">
+                    <div style="margin-left: 5px; margin-right: 11px;">
+                        <i style="font-size: 22px;" class="fa fa-pencil"></i>
+                    </div>
+                    <div style="display: flex;">
+                        <div class="center-text-vertically" style="text-align: center; font-size: 15px;">Quote Tweet</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function getLikeIconDivForTweetInfo(tweet_id, isLiked) {
+    return `
+        <div data-isclicked="${isLiked}" onclick="likeClicked(this, ${tweet_id})" style="cursor: pointer; display: flex; ${(isLiked ? "color: #fa2c8b" : "")};">
+            <i class="fa fa-heart" style="font-size: 18px;"></i>
+        </div>
+    `;
+}
+
+
+function getShareIconDivForTweetInfo(tweet_id) {
+    return `
+        <div onclick="shareClicked(${tweet_id})" style="font-size: 18px; cursor: pointer; display: flex;">
+            <i class="fa fa-share"></i>
+        </div>
+    `;
+}
+
+
+function getWhoCanReplyIcon(tweet_id) {
+    return `
+        <div style="display: flex; align-items: center;">
+            <div style="margin: 0 5px;">·</div>
+            <div>
+                <div id="tweet-info-who-can-reply-div" class="dropdown" style="display: block;">
+                    <div id="tweet-info-who-can-reply" data-who-can-reply-choice="0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                        class="dropdown-toggle"
+                        data-isclicked="isRetweeted" style="position: relative; cursor: pointer; display: flex; color: rgb(29, 155, 240); display: inline-flex;">
+                        
+                        <i id="tweet-info-who-can-reply-main-icon" class="ri-earth-fill" style="color: rgb(29, 155, 240); position: relative;
+                                        font-size: 18px; font-weight: 600;"></i>
+                        <div class="dropdown-item center-text-vertically"
+                                style="margin-left: 5px; font-size: 15px; font-weight: 550;"
+                                unselectable="on"
+                                onselectstart="return false;"
+                                onmousedown="return false;">
+                        </div>
+                    </div>
+
+                    <ul id="tweet-info-who-can-reply-choice-container" class="dropdown-menu" aria-labelledby="dropdownMenuButton1"
+                        style="padding: 10px 0px; border: 1px solid black; border-radius: 22px;
+                            -webkit-box-shadow:0 0 20px rgb(12, 114, 200); 
+                            -moz-box-shadow: 0 0 20px rgb(12, 114, 200); 
+                            box-shadow: 0 0 20px rgb(12, 114, 200);">
+                        
+                        <li role="presentation" class="dropdown-header" onclick="event.stopPropagation()"
+                            style="display: block; font-size: 16px; font-weight: 600; padding-bottom: 15px; position: relative; padding-left: 15px;">
+                            <div style="color: black;">Who can reply?</div>
+                            <div style="font-size: 14px; font-weight: 450;">
+                                Choose who can reply to this Tweet.<br> Anyone mentioned can always reply.
+                            </div>
+                        </li>
+                        <li onclick="tweetInfoWhoCanReplyChoiceClikced(0, ${tweet_id})" style="position: relative; padding-left: 15px; padding-bottom: 10px; padding-top: 10px;">
+                            <div style="display: flex; cursor: pointer;">
+                                <div style="width: 40px; height: 40px; border-radius: 9999px; background-color: rgb(29, 155, 240); margin-right: 10px;">
+                                    <i id="tweet-info-who-can-reply-icons-0" class="ri-earth-fill" style="display: block; color: white;
+                                        transform: translate(25%, 25%); font-size: 20px;"></i>
+                                </div>
+                                <div class="dropdown-item center-text-vertically" style="font-size: 16px; font-weight: 550;">
+                                    Everyone
+                                </div>
+                            </div>
+                        </li>
+                        <li onclick="tweetInfoWhoCanReplyChoiceClikced(1, ${tweet_id})" style="position: relative; padding-left: 15px; padding-bottom: 10px; padding-top: 10px;">
+                            <div style="display: flex; cursor: pointer;">
+                                <div style="width: 40px; height: 40px; border-radius: 9999px; background-color: rgb(29, 155, 240); margin-right: 10px;">
+                                    <i id="tweet-info-who-can-reply-icons-1" class="fa fa-user" style="display: block; color: white;
+                                        transform: translate(32%, 49%); font-size: 20px;"></i>
+                                </div>
+                                <div class="dropdown-item center-text-vertically" style="font-size: 16px; font-weight: 550;">
+                                    People you follow
+                                </div>
+                            </div>
+                        </li>
+                        <li onclick="tweetInfoWhoCanReplyChoiceClikced(2, ${tweet_id})" style="position: relative; padding-left: 15px; padding-bottom: 10px; padding-top: 10px;">
+                            <div style="display: flex; cursor: pointer;">
+                                <div style="width: 40px; height: 40px; border-radius: 9999px; background-color: rgb(29, 155, 240); margin-right: 10px;">
+                                    <i id="tweet-info-who-can-reply-icons-2" class="ri-at-line" style="display: block; color: white;
+                                        transform: translate(25%, 25%); font-size: 20px;"></i>
+                                </div>
+                                <div class="dropdown-item center-text-vertically" style="font-size: 16px; font-weight: 550;">
+                                    Only People you mention
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+
+
+function showRelevantUsersForTweetInfo(users) {
+
+    $('#third-body').prepend(`
+        <div id="tweet-info-relevant-people-third-box" style="float: left; border: 1px solid gray; border-radius: 10px; margin-top: 20px; width: 65%; padding-bottom: 26px;">
+            <div style="padding: 20px; padding-bottom: 0;">
+                <p class="third-box-title">Relevant People</p>
+            </div>
+        </div>
+    `)
+
+    for (const user_id of users) {
+        $.ajax({
+            url: base_url + "user?id=" + user_id,
+            type: "GET",
+            contentType: "application/json; charSet=UTF-8",
+            dataType: "json",
+            timeout: 2500,
+            success: function(user) {
+    
+                $('#tweet-info-relevant-people-third-box').append(getRelevantUserCell(user, +getCurrentUserIdInLS()))
+    
+            }, error: function(request, status, error) {
+                console.log('showRelevantUsersForTweetInfo: ' + user_id, request.responseText, status, error);
+            }, complete: function() {
+            }
+        })
+    }
+
+}
+
+function getRelevantUserCell(user, that_user_id) {
+
+    function getFollowButton(user_id) {
+
+        if (user_id == +getCurrentUserIdInLS())
+            return ``;
+
+        var isFollowing = false;
+
+        $.ajax({
+            url: base_url + "user/isfollow?user_id=" + getCurrentUserIdInLS() + "&followee_id=" + user_id,
+            type: "GET",
+            async: false,
+            contentType: "application/json; charSet=UTF-8",
+            dataType: "json",
+            timeout: 2500,
+            success: function(res) {
+                isFollowing = res;
+            }, error: function(request, status, error) {
+                console.log('getUserAsPeople-isFollowing: ', request.responseText, status, error);
+            }, complete: function() {
+            }
+        })
+
+        return `
+            <div onclick="exploreFollowButtonClick(this, event, ` + user_id + `)" data-is-following="` + isFollowing + `"
+                style="right: 1%; position: absolute; display: flex; margin-top: 5px; margin-right: 10px; cursor: pointer;">
+                <div style="border-radius: 9999px; border: 1px solid black; padding: 5px 15px; font-weight: 650;">
+                    ` + (isFollowing ? 'Following' : 'Follow') + `
+                </div>
+            </div>
+        `;
+
+    }
+
+    return `
+        <div style="padding-top: 15px;">
+                            
+            <div onclick="takeToUserProfileFromProfileFollower(` + user['id'] + `, ` + that_user_id + `)" style="display: flex; cursor: pointer;">
+
+                <div style="width: 100%;">
+
+                    <div style="display: flex; position: relative;">
+                        <div style="margin-left: 15px;">
+                            <img style="width: 50px; height: 50px; border-radius: 50%; border: 1px solid black;"
+                                src="images/icon_doge.jpeg" alt="User Icon">
+                        </div>
+                        <div style="margin-left: 10px;">
+                            <div style="cursor: pointer; font-size: 16px; font: bolder; font-weight: 650; color: black;" href="#" role="link">
+                                <span id="tweet-time">` + user['user_name'] + `</span>
+                            </div>
+                            <div style="cursor: pointer; font-size: 15px; font-weight: 500; color: rgb(110, 110, 110);" href="#" role="link">
+                                <span>@</span><span id="tweet-time">` + user['mention_name'] + `</span>
+                            </div>
+                        </div>
+                        ` + getFollowButton(user['id']) + `
+                    </div>
+
+                    <div style="font-size: 14px; font-weight: 480; margin-left: 75px; color: rgb(81, 119, 215)">` +
+                        getResultWithHashtags(user['status'])
+                    + `</div>
+
+                </div>
+            </div>
+
+        </div>
+    `;
+
+}
