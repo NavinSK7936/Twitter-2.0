@@ -1617,7 +1617,7 @@ public class TwitterService {
 
 	public TweetBox getParentIfRetweet(int retweet_id) {
 
-		TweetBox ans = null;
+		System.out.println(retweet_id);
 
 		try {
 			
@@ -1626,13 +1626,15 @@ public class TwitterService {
 			
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(query);
+
+			System.out.println(query);
 			
 			if (rs.next()) {
 
 				Tweet tweet = this.getTweetFromResultSet(rs);
 				TwitterUser tweetUser = this.getUser(tweet.getUser_id());
 				
-				ans = new TweetBox(tweetUser, tweet);
+				return new TweetBox(tweetUser, tweet);
 				
 			}
 			
@@ -1640,7 +1642,7 @@ public class TwitterService {
 			e.printStackTrace();
 		}
 
-		return ans;
+		return null;
 	}
 
 	public TweetBox getParentIfReply(int reply_id) {
@@ -1910,7 +1912,7 @@ public class TwitterService {
 
 	}
 
-	public boolean isFollowing(String user_id, String followee_id) {
+	public boolean isFollowing(int user_id, int followee_id) {
 		
 		try {
 
@@ -2470,6 +2472,26 @@ SELECT * FROM tweet_table WHERE
 		
         return 0;
     }
-	
+
+
+
+	public boolean canReplyThisTweet(int tweet_id, int user_id) {
+
+		Tweet tweet = getTweetForId(tweet_id);
+
+		if (tweet.getUser_id() == user_id)
+			return true;
+
+		switch (tweet.getWho_can_reply()) {
+			case 0:
+				return true;
+			case 1:
+				return isFollowing(tweet.getUser_id(), user_id);
+			case 2:
+				return tweet.getMentions().contains(user_id);
+		}
+
+		return false;
+	}
 
 }

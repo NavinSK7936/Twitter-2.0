@@ -22,7 +22,7 @@ function getqqqqTweetInfo(tweet, user) {
                 </div>`
 
         }, error: function(request, status, error) {
-            console.log('getIQQTof: ' + tweet['id'] + "," + user['id'], request.responseText, status, error);
+            console.log('getqqqqTweetInfo: ' + tweet['id'] + "," + user['id'], request.responseText, status, error);
         }, complete: function() {
         }
     })
@@ -31,11 +31,44 @@ function getqqqqTweetInfo(tweet, user) {
 }
 
 function getReplyIconDivForTweetInfo(tweet_id, user_id) {
-    return `
+
+    var ans = `
         <div onclick="replyClicked(${user_id}, ${tweet_id})" style="cursor: pointer; display: flex;">
-            <i class="fa fa-reply" style="font-size: 18px;" aria-hidden="true"></i>
+            <i class="fa fa-reply" style="font-size: 22px;" aria-hidden="true"></i>
         </div>
     `;
+
+    $.ajax({
+        url: base_url + `tweet/can_reply?tweet_id=${tweet_id}&user_id=${getCurrentUserIdInLS()}`,
+        type: "GET",
+        async: false,
+        contentType: "application/json; charSet=UTF-8",
+        dataType: "json",
+        timeout: 2500,
+        success: function(can_reply) {
+
+            if (!can_reply)
+                ans = `
+                    <div class="tooltip-9"
+                        style="cursor: no-drop; display: flex; justify-content: center; align-items: center; position: relative;">
+            
+                        <span class="tooltip-item-9"
+                            style="font-style: italic; font-weight: 550; position: absolute; top: -250%; background-color: white; padding: 8px 10px; box-shadow: rgb(12 114 200) 0px 0px 20px; border: 1px solid rgb(12, 114, 200); border-radius: 5px; overflow: hidden; white-space: nowrap;">
+                            You're not allowed to reply
+                        </span>
+            
+                        <i class="fa fa-reply" style="font-size: 22px; opacity: .4;" aria-hidden="true"></i>
+            
+                    </div>
+                `
+            
+        }, error: function(request, status, error) {
+            console.log('getReplyIconDivForTweetInfo-can_reply', request.responseText, status, error);
+        }, complete: function() {
+        }
+    })
+
+    return ans;
 }
 
 function getRetweetIconDivForTweetInfo(tweet_id, isRetweeted) {
@@ -44,7 +77,7 @@ function getRetweetIconDivForTweetInfo(tweet_id, isRetweeted) {
             <div id="retweet-dropdown-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                 ` + (isRetweeted ? ` class="retweet-qqqq-color" ` : ``) + `
                 style="cursor: pointer; display: flex;">
-                <i class="fa fa-retweet" style="font-size: 20px;"></i>
+                <i class="fa fa-retweet" style="font-size: 24px;"></i>
             </div>
             <div class="dropdown-menu" aria-labelledby="retweet-dropdown-menu" style="background-color: white; border: 1px solid black; border-radius: 15px;
                 -webkit-box-shadow:0 0 20px rgb(12, 114, 200); 
@@ -79,7 +112,7 @@ function getRetweetIconDivForTweetInfo(tweet_id, isRetweeted) {
 function getLikeIconDivForTweetInfo(tweet_id, isLiked) {
     return `
         <div data-isclicked="${isLiked}" onclick="likeClicked(this, ${tweet_id})" style="cursor: pointer; display: flex; ${(isLiked ? "color: #fa2c8b" : "")};">
-            <i class="fa fa-heart" style="font-size: 18px;"></i>
+            <i class="fa fa-heart" style="font-size: 22px;"></i>
         </div>
     `;
 }
@@ -87,7 +120,7 @@ function getLikeIconDivForTweetInfo(tweet_id, isLiked) {
 
 function getShareIconDivForTweetInfo(tweet_id) {
     return `
-        <div onclick="shareClicked(${tweet_id})" style="font-size: 18px; cursor: pointer; display: flex;">
+        <div onclick="shareClicked(${tweet_id})" style="font-size: 22px; cursor: pointer; display: flex;">
             <i class="fa fa-share"></i>
         </div>
     `;
@@ -96,9 +129,8 @@ function getShareIconDivForTweetInfo(tweet_id) {
 
 function getWhoCanReplyIcon(tweet_id) {
     return `
-        <div style="display: flex; align-items: center;">
-            <div style="margin: 0 5px;">·</div>
-            <div>
+        <div style="display: flex; align-items: center; margin: 10px 0 -10px;">
+            <div style="margin-left: 5px;">
                 <div id="tweet-info-who-can-reply-div" class="dropdown" style="display: block;">
                     <div id="tweet-info-who-can-reply" data-who-can-reply-choice="0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                         class="dropdown-toggle"
@@ -111,6 +143,7 @@ function getWhoCanReplyIcon(tweet_id) {
                                 unselectable="on"
                                 onselectstart="return false;"
                                 onmousedown="return false;">
+                                <div id="tweet-info-who-can-reply-string">Everyone can reply</div>
                         </div>
                     </div>
 
@@ -238,29 +271,29 @@ function getRelevantUserCell(user, that_user_id) {
     return `
         <div style="padding-top: 15px;">
                             
-            <div onclick="takeToUserProfileFromProfileFollower(` + user['id'] + `, ` + that_user_id + `)" style="display: flex; cursor: pointer;">
+            <div style="display: flex; cursor: pointer;">
 
                 <div style="width: 100%;">
 
                     <div style="display: flex; position: relative;">
                         <div style="margin-left: 15px;">
-                            <img style="width: 50px; height: 50px; border-radius: 50%; border: 1px solid black;"
+                            <img onclick="takeToUserProfile(${user['id']})" style="width: 50px; height: 50px; border-radius: 50%; border: 1px solid black;"
                                 src="images/icon_doge.jpeg" alt="User Icon">
                         </div>
                         <div style="margin-left: 10px;">
-                            <div style="cursor: pointer; font-size: 16px; font: bolder; font-weight: 650; color: black;" href="#" role="link">
-                                <span id="tweet-time">` + user['user_name'] + `</span>
+                            <div onclick="takeToUserProfile(${user['id']})" style="cursor: pointer; font-size: 16px; font: bolder; font-weight: 650; color: black;" href="#" role="link">
+                                <span>${user['user_name']}</span>
                             </div>
-                            <div style="cursor: pointer; font-size: 15px; font-weight: 500; color: rgb(110, 110, 110);" href="#" role="link">
-                                <span>@</span><span id="tweet-time">` + user['mention_name'] + `</span>
+                            <div onclick="takeToUserProfile(${user['id']})" style="cursor: pointer; font-size: 15px; font-weight: 500; color: rgb(110, 110, 110);" href="#" role="link">
+                                <span>@</span><span>${user['mention_name']}</span>
                             </div>
                         </div>
-                        ` + getFollowButton(user['id']) + `
+                        ${getFollowButton(user['id'])}
                     </div>
 
-                    <div style="font-size: 14px; font-weight: 480; margin-left: 75px; color: rgb(81, 119, 215)">` +
-                        getResultWithHashtags(user['status'])
-                    + `</div>
+                    <div style="font-size: 14px; font-weight: 480; margin-left: 75px; color: rgb(81, 119, 215)">
+                        ${getResultWithHashtags(user['status'])}
+                    </div>
 
                 </div>
             </div>
@@ -268,4 +301,103 @@ function getRelevantUserCell(user, that_user_id) {
         </div>
     `;
 
+}
+
+
+function getRetweetDivForFirstTweet(tweetbox, is_main) {
+    return `
+        <div class="tweet-in-list" style="border: 1px solid black; border-radius: 10px; ${is_main ? 'margin-top: 10px; margin-bottom: -5px' : 'margin-top: 0px; margin-bottom: 10px'};">
+            <div style="cursor: pointer; display: block;">
+                
+                <div style="display: flex; align-items: center; margin-bottom: 3px;">
+                    <div onclick="takeToUserProfile(${tweetbox['user']['id']})"
+                        style="margin-right: 7px;">
+                        <img style="width: 30px; height: 30px; border-radius: 50%;" src="images/icon_doge.jpeg" alt="User Icon">
+                    </div>
+                    <div onclick="takeToUserProfile(${tweetbox['user']['id']})"
+                        style="cursor: pointer; font-size: 15px; font: bolder; font-weight: 650; color: black; margin-right: 5px;">
+                        <span>${tweetbox['user']['user_name']}</span>
+                    </div>
+                    <div onclick="takeToUserProfile(${tweetbox['user']['id']})"
+                        style="cursor: pointer; font-size: 14px; font-weight: 500; color: rgb(110, 110, 110);">
+                        <span>@</span><span>${tweetbox['user']['mention_name']}<span>
+                    </div>
+                    <div style="margin: 0px 3px;">·</div>
+                    <div class="remove-link-underline" style="cursor: pointer; font-size: 13px; font-weight: 500; color: rgb(110, 110, 110);">
+                        ${getTimeSpanFromNow(tweetbox['tweet']['created_at'])}
+                    </div>
+                </div>
+                <div style="width: 100%;">
+                    
+                    <p onclick="tweetInfoClicked(${tweetbox['tweet']['id']})"
+                        style="font-size: 15px; font-weight: 500; cursor: pointer; margin-bottom: 0; word-break: break-word;">
+                        ${tweetbox['tweet']['quote']}
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+
+function getReplyDivForActualTweet(tweetbox) {
+    return `
+        <div>
+            <div style="margin: 10px 10px; margin-bottom: 5px;">
+
+                <div style="display: block; margin-bottom: 5px;">
+                    <div style="display: block; margin-bottom: -2px;">
+
+                        <div style="display: flex; margin-bottom: 3px;">
+                            <div style="margin-right: 10px; background: white; padding-bottom: 3px;">
+                                <div onclick="takeToUserProfile(${tweetbox['user']['id']}) style="cursor: pointer;">
+                                    <img style="width: 50px; height: 50px; border-radius: 50%;" src="images/icon_doge.jpeg" alt="User Icon">
+                                </div>
+                            </div>
+                            <div style="display: flex; margin-top: -20px; align-items: center; margin-bottom: 3px;">
+                                <span onclick="takeToUserProfile(${tweetbox['user']['id']})" style="margin-right: 5px; cursor: pointer; font-size: 16px; font: bolder; font-weight: 650; color: black;">
+                                    ${tweetbox['user']['mention_name']}
+                                </span>
+                                <span onclick="takeToUserProfile(${tweetbox['user']['id']})" style="cursor: pointer; font-size: 14px; font-weight: 500; color: rgb(110, 110, 110);">
+                                    @<span>${tweetbox['user']['user_name']}</span>
+                                </span>
+                                <span aria-hidden="true" style="margin: 0px 5px;">
+                                    <span>·</span>
+                                </span>
+                                <span class="tweet-time-span">
+                                    ${getTimeSpanFromNow(tweetbox['tweet']['created_at'])}
+                                </span>
+                            </div>
+                        </div>
+
+
+                        <div style="margin-left: 25px; margin-top: -20px; width: 100%; padding-right: 25px;">
+                            
+                            <div style="padding-left: 1px; min-height: 40px;
+                                /* border-left: 1.7px solid rgb(160, 160, 160); */
+                                ">
+                                
+                                <div style="padding-left: 32px; margin-top: -25px;">
+                                    <div onclick="tweetInfoClicked(${tweetbox['tweet']['id']})" style="cursor: pointer; word-break: break-all; padding-bottom: 10px; font-size: 15px;">
+                                        ${getResultWithHashtags(tweetbox['tweet']['quote'])}
+                                    </div>
+                                </div>
+
+                                <div style="padding-left: 25px; padding-bottom: 15px;">
+                                    ${getqqqq(tweetbox['tweet'], tweetbox['user'])}
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+            <!-- REMOVE IF A REPLY -->
+            <hr style="margin: 0; border: 1px solid black;">
+            
+        </div>
+    `;
 }

@@ -114,7 +114,7 @@ public class UserController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean isFollowing(@QueryParam("user_id") String user_id, @QueryParam("followee_id") String followee_id) {
 
-		return service.isFollowing(user_id, followee_id);
+		return service.isFollowing(Integer.parseInt(user_id), Integer.parseInt(followee_id));
 
 	}
 

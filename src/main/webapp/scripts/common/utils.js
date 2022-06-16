@@ -116,3 +116,11 @@ function getSearchQueryFromMap(mp) {
     return ans.slice(0, -1);
 
 }
+
+function getNthGrandChild(element, ...args) {
+
+    for (const arg of args)
+        element = element.children().eq(arg)
+    
+    return element;
+}

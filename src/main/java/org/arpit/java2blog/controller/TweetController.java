@@ -161,6 +161,17 @@ public class TweetController {
 		return service.getRepliesOf(id);
 		
 	}
+
+	@GET
+	@Path("parent/retweet")
+	@Produces(MediaType.APPLICATION_JSON)
+	public TweetBox getParentIfRetweet(@QueryParam("retweet_id") int retweet_id) {
+
+		System.out.println(retweet_id);
+		
+		return service.getParentIfRetweet(retweet_id);
+		
+	}
 	
 	// @GET
 	// @Path("feeds")
@@ -372,12 +383,17 @@ public class TweetController {
 		return service.setWhoCanReplyForTweet(tweet_id, choice);
 
 	}
-	
+
 	@GET
-	@Path("xxx")
+	@Path("can_reply")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String go() {
-		return "goooo";
+	public boolean canReplyThisTweet(
+		@QueryParam("tweet_id") int tweet_id,
+		@QueryParam("user_id") int user_id
+		) {
+
+		return service.canReplyThisTweet(tweet_id, user_id);
+
 	}
 
 }

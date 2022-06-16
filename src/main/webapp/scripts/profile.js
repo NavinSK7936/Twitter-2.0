@@ -365,8 +365,6 @@ function loadMore(controller) {
 
     function endReached() {
 
-        console.log("END DA " + controller.index);
-
         $('#profileFeedsSpinnerId').hide();
 
         $('#profile-tweet-container-qqqq-' + controller.index).append(
