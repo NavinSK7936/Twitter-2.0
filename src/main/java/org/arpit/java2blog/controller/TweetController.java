@@ -396,4 +396,44 @@ public class TweetController {
 
 	}
 
+	@GET
+	@Path("retweet/users")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<TwitterUser> getUsersWhoRetweeted(
+		@QueryParam("tweet_id") int tweet_id,
+		@QueryParam("after_user_id") @DefaultValue("-1") int after_user_id,
+		@QueryParam("page") int pageNo,
+		@QueryParam("size") int pageSize
+		) {
+
+		return service.getUsersWhoRetweeted(tweet_id, after_user_id, pageNo, pageSize);
+
+	}
+
+	@GET
+	@Path("like/users")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<TwitterUser> getUsersWhoLiked(
+		@QueryParam("tweet_id") int tweet_id,
+		@QueryParam("page") int pageNo,
+		@QueryParam("size") int pageSize
+		) {
+
+		return service.getUsersWhoLiked(tweet_id, pageNo, pageSize);
+
+	}
+
+	@GET
+	@Path("quotes")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Tweet> getQuotesForTweet(
+		@QueryParam("tweet_id") int tweet_id,
+		@QueryParam("page") int pageNo,
+		@QueryParam("size") int pageSize
+		) {
+
+		return service.getQuotesForTweet(tweet_id, pageNo, pageSize);
+
+	}
+
 }

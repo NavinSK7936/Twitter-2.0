@@ -711,6 +711,42 @@ public class TwitterService {
 
 	}
 
+	public void addInOnlyRetweetTable(int tweet_id, int retweet_id, int user_id) {
+		
+		try {
+
+			String query = "INSERT INTO " + TwitterUtil.only_retweet_table + " VALUES (?, ?, ?)";
+
+			PreparedStatement st = con.prepareStatement(query);
+
+			st.setInt(1, tweet_id);
+			st.setInt(2, retweet_id);
+			st.setInt(3, user_id);
+
+			st.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void deleteInOnlyRetweetTable(int retweet_id) {
+		
+		try {
+
+			String query = "DELETE FROM " + TwitterUtil.only_retweet_table + " WHERE retweet_id=" + retweet_id;
+
+			Statement st = con.createStatement();
+      		st.execute(query);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+
 	public Tweet addRetweet(int parent_tweet_id, Tweet retweet) {
 
 		if (!doesTweetExists(parent_tweet_id))
@@ -739,6 +775,9 @@ public class TwitterService {
 			e.printStackTrace();
 		}
 
+		if (retweet.getQuote() == null)
+			this.addInOnlyRetweetTable(parent_tweet_id, retweet.getId(), retweet.getUser_id());
+
 		return retweet;
 	}
 
@@ -762,6 +801,9 @@ public class TwitterService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
+		if (child_tweet.getQuote() == null)
+			this.deleteInOnlyRetweetTable(child_tweet.getId());
 
 		this.incrementRetweet(parent_tweet_id, -1);
 		this.deleteTweet(child_tweet);
@@ -2492,6 +2534,89 @@ SELECT * FROM tweet_table WHERE
 		}
 
 		return false;
+	}
+
+
+	public List<TwitterUser> getUsersWhoRetweeted(
+		int tweet_id,
+		int after_user_id,
+		int pageNo,
+		int pageSize
+	) {
+
+		List<TwitterUser> ans = new ArrayList<>();
+
+		try {
+
+			String query = 
+				"SELECT user_id FROM " + TwitterUtil.only_retweet_table + " WHERE tweet_id=" + tweet_id +
+				" AND retweet_id<(" + (~after_user_id != 0 ? "SELECT retweet_id FROM only_retweet_table WHERE user_id=" + after_user_id : "SELECT MAX(retweet_id)+1 FROM only_retweet_table") + ") ORDER BY retweet_id DESC" +
+				" LIMIT " + pageNo + ", " + pageSize;
+
+			System.out.println(query);
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(query);
+
+			while (rs.next())
+				ans.add(getUser(rs.getInt(1)));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return ans;
+	}
+
+	public List<TwitterUser> getUsersWhoLiked(
+		int tweet_id,
+		int pageNo,
+		int pageSize
+	) {
+
+		List<TwitterUser> ans = new ArrayList<>();
+
+		try {
+
+			String query = 
+				"SELECT user_id FROM " + TwitterUtil.likesTable + " WHERE tweet_id=" + tweet_id +
+				" LIMIT " + pageNo + ", " + pageSize;
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(query);
+
+			while (rs.next())
+				ans.add(getUser(rs.getInt(1)));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return ans;
+	}
+
+
+	public List<Tweet> getQuotesForTweet(int tweet_id, int pageNo, int pageSize) {
+		
+		List<Tweet> ans = new ArrayList<>();
+
+		try {
+
+			String query = 
+				"SELECT * FROM " + TwitterUtil.tweetTable + " WHERE id IN (SELECT retweet_id FROM " + TwitterUtil.retweetTable + " WHERE tweet_id=" + tweet_id + ") AND quote IS NOT NULL ORDER BY id DESC LIMIT " + pageNo + ", " + pageSize;
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(query);
+
+			while (rs.next())
+				ans.add(getTweetFromResultSet(rs));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return ans;
+
 	}
 
 }

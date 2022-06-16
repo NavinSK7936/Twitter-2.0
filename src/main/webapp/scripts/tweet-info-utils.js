@@ -13,13 +13,14 @@ function getqqqqTweetInfo(tweet, user) {
 
             const isRetweeted = res & 2, isLiked = res & 1;
 
-            ans =
-                `<div class="tweet-tool-icons" role="group" style="display: flex; align-items: center; margin: -5px 0;">` +
+            ans = `
+                <div class="tweet-tool-icons" role="group" style="display: flex; align-items: center; margin: -5px 0;">` +
                     getReplyIconDivForTweetInfo(tweet['id'], user['id']) +
                     getRetweetIconDivForTweetInfo(tweet['id'], isRetweeted) +
                     getLikeIconDivForTweetInfo(tweet['id'], isLiked) +
                     getShareIconDivForTweetInfo(tweet['id']) + `
-                </div>`
+                </div>
+            `;
 
         }, error: function(request, status, error) {
             console.log('getqqqqTweetInfo: ' + tweet['id'] + "," + user['id'], request.responseText, status, error);
@@ -396,7 +397,7 @@ function getReplyDivForActualTweet(tweetbox) {
             
             </div>
             <!-- REMOVE IF A REPLY -->
-            <hr style="margin: 0; border: 1px solid black;">
+            <hr style="margin: 0; border: .9px solid black;">
             
         </div>
     `;

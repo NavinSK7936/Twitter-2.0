@@ -6,7 +6,7 @@ public final class TwitterUtil {
 	
 	public static final String followerTable = "follower_table", tweetTable = "tweet_table", userTable = "user_table";
 	
-	public static final String likesTable = "likes_table", replyTable = "reply_table", retweetTable = "retweet_table";
+	public static final String likesTable = "likes_table", replyTable = "reply_table", retweetTable = "retweet_table", only_retweet_table = "only_retweet_table";
 
 	public static final String hashtagsTable = "hashtags_table", hash_tweet_table = "hash_tweet_table", mention_tweet_table = "mention_tweet_table";
 	

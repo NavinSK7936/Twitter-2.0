@@ -27,7 +27,7 @@ function relateUsers(from_user, to_user) {
 	})
 }
 
-function getUserProfileFollowerCell(user, that_user_id, showBreak) {
+function getUserProfileFollowerCell(user, that_user_id) {
 
     function getFollowButton(user_id) {
 
@@ -52,10 +52,10 @@ function getUserProfileFollowerCell(user, that_user_id, showBreak) {
         })
 
         return `
-            <div onclick="exploreFollowButtonClick(this, event, ` + user_id + `)" data-is-following="` + isFollowing + `"
+            <div onclick="exploreFollowButtonClick(this, event, ${user_id})" data-is-following="${isFollowing}"
                 style="right: 1%; position: absolute; display: flex; margin-top: 5px; margin-right: 10px; cursor: pointer;">
                 <div style="border-radius: 9999px; border: 1px solid black; padding: 5px 15px; font-weight: 650;">
-                    ` + (isFollowing ? 'Following' : 'Follow') + `
+                    ${(isFollowing ? 'Following' : 'Follow')}
                 </div>
             </div>
         `;
@@ -72,7 +72,7 @@ function getUserProfileFollowerCell(user, that_user_id, showBreak) {
     return `
         <div style="padding-top: 10px;">
                             
-            <div onclick="takeToUserProfileFromProfileFollower(` + user['id'] + `, ` + that_user_id + `)" style="display: flex; cursor: pointer;">
+            <div onclick="takeToUserProfileFromProfileFollower(${user['id']}, ${that_user_id})" style="display: flex; cursor: pointer;">
 
                 <div style="width: 100%;">
 
@@ -83,18 +83,18 @@ function getUserProfileFollowerCell(user, that_user_id, showBreak) {
                         </div>
                         <div style="margin-left: 10px;">
                             <div style="cursor: pointer; font-size: 16px; font: bolder; font-weight: 650; color: black;" href="#" role="link">
-                                <span id="tweet-time">` + user['user_name'] + `</span>
+                                <span id="tweet-time">${user['user_name']}</span>
                             </div>
                             <div style="cursor: pointer; font-size: 15px; font-weight: 500; color: rgb(110, 110, 110);" href="#" role="link">
-                                <span>@</span><span id="tweet-time">` + user['mention_name'] + `</span>
+                                <span>@</span><span id="tweet-time">${user['mention_name']}</span>
                             </div>
                         </div>
-                        ` + getFollowButton(user['id']) + `
+                        ${getFollowButton(user['id'])}
                     </div>
 
-                    <div style="font-size: 14px; font-weight: 480; margin-left: 75px; color: rgb(81, 119, 215)">` +
-                        getResultWithHashtags(user['status'])
-                    + `</div>
+                    <div style="font-size: 14px; font-weight: 480; margin-left: 75px; color: rgb(81, 119, 215)">
+                        ${getResultWithHashtags(user['status'])}
+                    </div>
 
                 </div>
             </div>

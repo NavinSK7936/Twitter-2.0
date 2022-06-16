@@ -40,6 +40,10 @@ function justDoIt(toPush = true) {
 
         showTweet(qp.get('id'));
 
+    } else if (qp.get('p') == 'quotes') {
+
+        showQuotedTweets(qp.get('id'));
+
     }
 
 }
@@ -178,6 +182,29 @@ function showTweet(id) {
     $('#second-body').load('html/tweet-info.html');
 
     window.history.pushState(null, "Top-Layer-Tweet", '?p=tweet-info&id=' + id);
+
+}
+
+
+
+// retweet && like
+function showRLTweetInfoTopLayer(tweet_id, rl) {
+
+    $('#auxiliary-container').empty();
+    $('#auxiliary-container').load('html/tweet-info-rl.html');
+
+    window.history.replaceState(null, "showRLTweetInfoTopLayer", '?p=tweet-info&id=' + tweet_id + "&rl=" + rl);
+
+}
+
+
+
+function showQuotedTweets(tweet_id) {
+
+    $('#second-body').empty();
+    $('#second-body').load('html/quote-tweet.html');
+
+    window.history.pushState(null, "Top-Layer-Tweet", '?p=quotes&id=' + tweet_id);
 
 }
 

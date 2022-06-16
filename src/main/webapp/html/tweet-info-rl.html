@@ -1,0 +1,46 @@
+
+<div id="tweet-info-rl-div" style="display: flex; visibility: visible; position: fixed; background-color: rgba(63, 103, 138, 0.5); overflow: hidden;
+top: 0; left: 0; width: 100%; height: 100%; z-index: 99; justify-content: center;">
+
+    <div onclick="event.stopPropagation()" style="width: 40%; opacity: 1; background: white; border-radius: 20px; margin-top: 2%; margin-bottom: 2%; overflow: hidden; overflow-y: scroll;">
+
+        <div style="position: sticky; top: 0px; height: auto; backdrop-filter: blur(4px); border-top-left-radius: 20px; border-top-right-radius: 20px;
+                    /* background: hsla(200, 100%, 0%, .4); */ /* NOTE: Applies a dark theme like twitter */
+                    background: rgb(255, 255, 255, .4); border-bottom: 1px solid rgb(210, 210, 210);
+                    ">
+
+            <div style="display: block; cursor: pointer;">
+
+                <div style="display: flex; flex-direction: row; margin-right: 0; height: 100%;">
+                    <div id="tweet-info-rl-back-button"
+                        style="display: block; margin: auto; margin-left: 15px; margin-right: 0px; margin-top: 12px;">
+                        <a class="remove-link-underline" style="color: black;">
+                            <i class="ri-close-fill" style="font-size: 25px; font-weight: 700;"></i>
+                        </a>
+                    </div>
+                    <div style="position: relative; flex-direction: column; margin: auto; margin-left: 30px; margin-top: 13px; width: 75%; margin-bottom: 15px;">
+                        <div style="display: block;">
+                            <div id="tweet-info-rl-title" style="font-weight: 700; font-size: 20px; padding-top: 2px;">
+                                Navin SK
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div id="tweet-info-rl-container">
+            
+            
+        </div>
+
+        <div id="tweet-info-rl-spinner" style="width: 0%; margin: 0 auto;">
+            <img src="images/twitter-spinner.gif" alt="this slowpoke moves" width="50"/>
+        </div>
+
+    </div>
+
+</div>
+<script type="text/javascript" src="scripts/tweet-info-rl.js"></script>

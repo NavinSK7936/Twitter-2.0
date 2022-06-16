@@ -1,6 +1,6 @@
 function showWhoRetweeted(tweet_id) {
 
-    console.log(0, tweet_id);
+    showRLTweetInfoTopLayer(tweet_id, 'retweet');
 
 }
 
@@ -12,6 +12,6 @@ function showQuotedTweets(tweet_id) {
 
 function showWhoLiked(tweet_id) {
 
-    console.log(2, tweet_id);
+    showRLTweetInfoTopLayer(tweet_id, 'like');
 
 }
