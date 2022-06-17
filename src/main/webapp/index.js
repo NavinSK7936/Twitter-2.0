@@ -133,7 +133,7 @@ function showUserProfile(toPush = true, user_id = getCurrentUserIdInLS(), index)
     $('#second-body').empty();
     $('#second-body').load('html/profile.html');
 
-    $('html, body').animate({scrollTop: 0}, 100);
+    window.scrollTo({top: 0});
 
     if (toPush)
         window.history.pushState(null, "Profile", "?p=profile&id=" + user_id + (index != undefined ? "&pfi=" + index : ''));

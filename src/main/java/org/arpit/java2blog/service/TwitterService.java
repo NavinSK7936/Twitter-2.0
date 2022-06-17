@@ -2647,17 +2647,6 @@ SELECT * FROM tweet_table WHERE
 
 
     public List<Tweet> addTweets(int retweet_id, List<Tweet> tweets) {
-        
-		System.out.println(Util.getHashtag("#line"));
-		System.out.println(Util.getHashtag("#jio"));
-		System.out.println(Util.getHashtag("#check"));
-		System.out.println(Util.getHashtag("#ui"));
-
-		for (Tweet tweet: tweets) {
-
-			System.out.println(tweet);
-
-		}
 
 		Tweet prevTweet = tweets.remove(0);
 
@@ -2667,16 +2656,10 @@ SELECT * FROM tweet_table WHERE
 			prevTweet = this.addTweet(prevTweet);
 		
 		
-		for (Tweet currTweet: tweets) {
-
+		for (Tweet currTweet: tweets)
 			prevTweet = this.addReplyTweet(prevTweet.getId(), currTweet);
-
-		}
 
 		return tweets;
     }
-
-
-	
 
 }
