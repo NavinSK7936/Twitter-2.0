@@ -131,15 +131,22 @@ public class Tweet implements Serializable {
 		if (quote == null)
 			return hashtags;
 
-		Stream<String> s = Arrays.stream(quote.split(" ")).filter(new Predicate<String>() {
-			@Override
-			public boolean test(String word) {
-				return word.startsWith("#");
-			}
-		});
+		// Stream<String> s = Arrays.stream(quote.split(" ")).filter(new Predicate<String>() {
+		// 	@Override
+		// 	public boolean test(String word) {
+		// 		return word.startsWith("#");
+		// 	}
+		// });
 		
-		for (Object hashtag: s.toArray())
-			hashtags.add((String) hashtag);
+		// for (Object hashtag: s.toArray())
+		// 	hashtags.add((String) hashtag);
+
+		String hashtag;
+		for (String word: quote.split(" ")) {
+			hashtag = Util.getHashtag(word);
+			if (hashtag != null)
+				hashtags.add("#" + hashtag);
+		}
 
 		return hashtags;
 

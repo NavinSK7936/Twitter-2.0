@@ -2596,20 +2596,24 @@ SELECT * FROM tweet_table WHERE
 	}
 
 
-	public List<Tweet> getQuotesForTweet(int tweet_id, int pageNo, int pageSize) {
-		
-		List<Tweet> ans = new ArrayList<>();
+	public List<TweetBox> getQuotesForTweet(int tweet_id, Timestamp minTimestamp, int pageNo, int pageSize) {
+
+		Tweet tweet;
+		List<TweetBox> ans = new ArrayList<>();
 
 		try {
 
 			String query = 
-				"SELECT * FROM " + TwitterUtil.tweetTable + " WHERE id IN (SELECT retweet_id FROM " + TwitterUtil.retweetTable + " WHERE tweet_id=" + tweet_id + ") AND quote IS NOT NULL ORDER BY id DESC LIMIT " + pageNo + ", " + pageSize;
+				"SELECT * FROM " + TwitterUtil.tweetTable + " WHERE id IN (SELECT retweet_id FROM " + TwitterUtil.retweetTable + " WHERE tweet_id=" + tweet_id + ")" +
+				" AND quote IS NOT NULL" +
+				" AND created_at <= '" + minTimestamp + "'" +
+				" ORDER BY id DESC LIMIT " + pageNo + ", " + pageSize;
 
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(query);
 
 			while (rs.next())
-				ans.add(getTweetFromResultSet(rs));
+				ans.add(new TweetBox(getUser((tweet = getTweetFromResultSet(rs)).getUser_id()), tweet));
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2618,5 +2622,61 @@ SELECT * FROM tweet_table WHERE
 		return ans;
 
 	}
+
+	public List<TwitterUser> getRecommendedUsers(int user_id, int size) {
+
+		List<TwitterUser> ans = new ArrayList<>();
+
+		try {
+
+			String query = "SELECT to_user FROM " + TwitterUtil.user_rel_table + " WHERE from_user=" + user_id + " ORDER BY to_user IN (SELECT followee_id FROM follower_table WHERE follower_id=" + user_id + ") LIMIT " + size;
+
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(query);
+
+			while (rs.next())
+				ans.add(getUser(rs.getInt(1)));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return ans;
+
+	}
+
+
+    public List<Tweet> addTweets(int retweet_id, List<Tweet> tweets) {
+        
+		System.out.println(Util.getHashtag("#line"));
+		System.out.println(Util.getHashtag("#jio"));
+		System.out.println(Util.getHashtag("#check"));
+		System.out.println(Util.getHashtag("#ui"));
+
+		for (Tweet tweet: tweets) {
+
+			System.out.println(tweet);
+
+		}
+
+		Tweet prevTweet = tweets.remove(0);
+
+		if (~retweet_id != 0)
+			prevTweet = this.addRetweet(retweet_id, prevTweet);
+		else
+			prevTweet = this.addTweet(prevTweet);
+		
+		
+		for (Tweet currTweet: tweets) {
+
+			prevTweet = this.addReplyTweet(prevTweet.getId(), currTweet);
+
+		}
+
+		return tweets;
+    }
+
+
+	
 
 }

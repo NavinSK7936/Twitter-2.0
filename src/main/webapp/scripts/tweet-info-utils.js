@@ -234,7 +234,7 @@ function showRelevantUsersForTweetInfo(users) {
 
 }
 
-function getRelevantUserCell(user, that_user_id) {
+function getRelevantUserCell(user) {
 
     function getFollowButton(user_id) {
 
@@ -292,7 +292,7 @@ function getRelevantUserCell(user, that_user_id) {
                         ${getFollowButton(user['id'])}
                     </div>
 
-                    <div style="font-size: 14px; font-weight: 480; margin-left: 75px; color: rgb(81, 119, 215)">
+                    <div style="font-size: 14px; font-weight: 480; margin-left: 75px; margin-right: 20px; color: rgb(81, 119, 215)">
                         ${getResultWithHashtags(user['status'])}
                     </div>
 

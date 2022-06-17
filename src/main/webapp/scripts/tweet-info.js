@@ -28,6 +28,7 @@ var tweetInfoRepliesSpinner = null;
 
 $(function() {
     
+    console.log(window.location.search);
 
     callDestructor(function() {
         $('#tweet-info-relevant-people-third-box').remove();

@@ -18,4 +18,19 @@ public class Util {
         }
 		return -1;
 	}
+
+    public static String getHashtag(String line) {
+
+        String pattern = "^#(.*)";
+
+        Matcher m = Pattern.compile(pattern).matcher(line);
+        
+        if (m.find()) {
+            m.group(0);
+            return m.group(1);
+        }
+        
+		return null;
+    }
+
 }

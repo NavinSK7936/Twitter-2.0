@@ -237,6 +237,21 @@ function initTopLayer() {
 
     $('#top-layer-tweet-button').on('click', function(event) {
 
+
+        $('#top-layer-tweet-container').prepend(`
+            <div style="display: flex; visibility: hidden; position: fixed;
+                width: 40%; height: 100%; z-index: 999;"></div>
+        `)
+
+        $('#top-layer-tweet-close').after(`
+            <div class="slider"
+                style="display: block; border: 0px solid black; border-radius: 9999px; margin-top: -5px;">
+                <div class="line"></div>
+                <div class="subline inc"></div>
+                <div class="subline dec"></div>
+            </div>
+        `)
+
         const tweets = [];
 
         $(`#top-layer-tweet-input-field-onblur-placholder-${inputTweetController.curr_id}`).html($('#top-layer-tweet-input-field').html());
@@ -272,7 +287,7 @@ function initTopLayer() {
                 }
             }
 
-            tweets.push(result);
+            tweets.push(result.replace(/[^\x00-\x7F]/g, "").replace(/\s+/g, ' ').replace(/&nbsp;/g, ' ').replace(/&#8205/g, ''));
 
         }
 
@@ -281,6 +296,25 @@ function initTopLayer() {
 
 
         if (qp.get('retweet') != undefined) {
+
+            $.ajax({
+                url: base_url + `tweet/tweets?retweet_id=${qp.get('retweet')}&user_id=${getCurrentUserIdInLS()}&source_label=1&who_can_reply=${whoCanReply}`,
+                type: "POST",
+                contentType: "application/json; charSet=UTF-8",
+                dataType: "json",
+                data: JSON.stringify(tweets),
+                timeout: 2500,
+                success: function(result) {
+
+                    console.log(tweets, result);
+
+                    closeTopLayerTweet();
+
+                }, error: function(request, status, error) {
+                    console.log('reply-tweet', request.responseText, status, error);
+                }, complete: function() {
+                }
+            })
 
         } else if (qp.get('reply') != undefined) {
 
@@ -298,7 +332,9 @@ function initTopLayer() {
                 timeout: 2500,
                 success: function(result) {
         
-                    console.log('users-related', result);
+                    console.log(tweets[0], result);
+
+                    closeTopLayerTweet();
         
                 }, error: function(request, status, error) {
                     console.log('reply-tweet', request.responseText, status, error);
@@ -308,9 +344,25 @@ function initTopLayer() {
 
         } else {
 
-        }
+            $.ajax({
+                url: base_url + `tweet/tweets?user_id=${getCurrentUserIdInLS()}&source_label=1&who_can_reply=${whoCanReply}`,
+                type: "POST",
+                contentType: "application/json; charSet=UTF-8",
+                dataType: "json",
+                data: JSON.stringify(tweets),
+                timeout: 2500,
+                success: function(result) {
 
-        console.log(whoCanReply, tweets);
+                    console.log(tweets, result);
+
+                    closeTopLayerTweet();
+
+                }, error: function(request, status, error) {
+                    console.log('reply-tweet', request.responseText, status, error);
+                }, complete: function() {
+                }
+            })
+        }
 
     })
 

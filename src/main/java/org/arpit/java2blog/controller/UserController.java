@@ -198,6 +198,18 @@ public class UserController {
 
 	}
 
+	@GET
+	@Path("recommended/users")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<TwitterUser> getRecommendedUsers(
+		@QueryParam("user_id") int user_id,
+		@QueryParam("size") int pageSize
+		) {
+
+		return service.getRecommendedUsers(user_id, pageSize);
+
+	}
+
 	@POST
 	@Path("pic")
 	public void getMsg(@FormParam("imgFileId") File file) {//HttpServletRequest request) {

@@ -7,9 +7,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -30,6 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.spacenine.rest.PATCH;
 import com.spacenine.twitter.EncodingUtil;
 import com.spacenine.twitter.TwitterUtil;
+import com.spacenine.twitter.Util;
 
 import org.arpit.java2blog.bean.CompleteTweet;
 import org.arpit.java2blog.bean.SingleTweet;
@@ -130,17 +138,6 @@ public class TweetController {
 	public Tweet undoRetweet(@QueryParam("parent_tweet_id") int parent_tweet_id, @QueryParam("user_id") int user_id) {
 		
 		return service.undoRetweet(parent_tweet_id, user_id);
-		
-	}
-	
-	@POST
-	@Path("reply")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Tweet addReplyTweet(@QueryParam("parent_tweet_id") int id,  Tweet replyTweet) {
-		
-		System.out.println(id + ": " + replyTweet);
-		
-		return replyTweet;// service.addReplyTweet(id, replyTweet);
 		
 	}
 	
@@ -426,13 +423,51 @@ public class TweetController {
 	@GET
 	@Path("quotes")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Tweet> getQuotesForTweet(
+	public List<TweetBox> getQuotesForTweet(
 		@QueryParam("tweet_id") int tweet_id,
+		@QueryParam("minTs") Timestamp minTimestamp,
 		@QueryParam("page") int pageNo,
 		@QueryParam("size") int pageSize
 		) {
 
-		return service.getQuotesForTweet(tweet_id, pageNo, pageSize);
+		return service.getQuotesForTweet(tweet_id, minTimestamp, pageNo, pageSize);
+
+	}
+
+	@POST
+	@Path("reply")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Tweet addReplyTweet(@QueryParam("parent_tweet_id") int id,  Tweet replyTweet) {
+		
+		System.out.println(id + ": " + replyTweet);
+
+		return service.addReplyTweet(id, replyTweet);
+		
+	}
+
+	@POST
+	@Path("tweets")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Tweet> addTweets(
+		@DefaultValue("-1") @QueryParam("retweet_id") final int retweet_id,
+		@QueryParam("user_id") final int user_id,
+		@QueryParam("source_label") final int source_label,
+		@QueryParam("who_can_reply") final int who_can_reply,
+		List<String> quotes
+		) {
+
+		List<Tweet> tweets = new ArrayList<>();
+
+		for (final String quote: quotes)
+
+			tweets.add(new Tweet() {{
+				setUser_id(user_id);
+				setQuote(quote);
+				setSource_label(source_label);
+				setWho_can_reply(who_can_reply);
+			}});
+
+		return service.addTweets(retweet_id, tweets);
 
 	}
 

@@ -78,7 +78,7 @@ function get12hrFormattedDateTime(timestamp) {
     var matches = new Date(timestamp).toLocaleString().match(/^(\d+)\/(\d+)\/(\d+), (\d+):(\d+):(\d+)$/);
 
     return {
-        time: `${matches[4]}:${matches[5]} ${'PA'[+(matches[4] < 12)]}M`,
+        time: `${+matches[4] < 13 ? matches[4] : +matches[4] - 12}:${matches[5]} ${'PA'[+(matches[4] < 12)]}M`,
         date: `${monthNames[+matches[2]-1]} ${matches[1]}, ${matches[3]}`
     };
 }

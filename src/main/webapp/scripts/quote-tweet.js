@@ -1,5 +1,9 @@
 $(function() {
 
+    callDestructor();
+
+    setTopAppBar({ title: 'Quoted Tweets', showBackButton: true });
+
     var controller = {
         pageNo: 0,
         pageSize: 5
@@ -9,14 +13,31 @@ $(function() {
     const qp = getQueryKVMap(uri);
 
     controller.tweet_id = qp.get('id');
+    controller.minTs = getTimestampFormattedValue(new Date());
 
-    const tweetInfoRLObserver = respondToVisibility(document.getElementById('quote-tweet-q-spinner'), visibile => {
+    $.ajax({
+        url: base_url + `tweet/tweetbox?tweet_id=${controller.tweet_id}`,
+        type: "GET",
+        contentType: "application/json; charSet=UTF-8",
+        dataType: "json",
+        timeout: 2500,
+        success: function(quotedBox) {
 
-        if (!visibile)
-            return;
+            controller.quotedBox = quotedBox;
 
-        loadMoreQuoteTweets(controller);
+            respondToVisibility(document.getElementById('quote-tweet-q-spinner'), visibile => {
+
+                if (!visibile)
+                    return;
         
+                loadMoreQuoteTweets(controller);
+                
+            })
+
+        }, error: function(request, status, error) {
+            console.log('loadMoreQuoteTweets-quotes', request.responseText, status, error);
+        }, complete: function() {
+        }
     })
 
 })
@@ -24,33 +45,37 @@ $(function() {
 
 function loadMoreQuoteTweets(controller) {
 
+    showUI($('#quote-tweet-q-spinner'), false);
+
     $.ajax({
-        url: base_url + `tweet/retweet/users?tweet_id=${controller.tweet_id}&after_user_id=${controller.after_user_id}&page=${controller.pageNo}&size=${controller.pageSize+1}`,
+        url: base_url + `tweet/quotes?tweet_id=${controller.tweet_id}&minTs=${controller.minTs}&page=${controller.pageNo}&size=${controller.pageSize+1}`,
         type: "GET",
         contentType: "application/json; charSet=UTF-8",
         dataType: "json",
         timeout: 2500,
-        success: function(users) {
+        success: function(tweetboxes) {
 
-            for (const user of users.slice(0, users.length > controller.pageSize ? -1 : undefined)) {
+            for (const tweetbox of tweetboxes.slice(0, tweetboxes.length > controller.pageSize ? -1 : undefined))
             
-                controller.after_user_id = user['id'];
-                $('#tweet-info-rl-container').append(getUserProfileTweetInfoCell(user, controller.tweet_id));
+                $('#quote-tweet-q-container').append(getQuotedRetweet(controller.quotedBox, tweetbox));
             
-            }
 
             controller.pageNo += controller.pageSize;
 
-            if (users.length <= controller.pageSize)
-                $('#tweet-info-rl-container').append(`<div style="height: 500px;"></div>`);
-            else
-                showUI($('#tweet-info-rl-spinner'));
+            if (tweetboxes.length <= controller.pageSize) {
+                showUI($('#quote-tweet-q-spinner'), false);
+                $('#quote-tweet-q-container').append(getContentEndPlaceholder({
+                    title: 'REACHED THE END',
+                    subTitle: ''
+                }));
+            } else
+                showUI($('#quote-tweet-q-spinner'));
 
 
         }, error: function(request, status, error) {
-            console.log('loadMoreForRLTweetInfo-retweets', request.responseText, status, error);
+            console.log('loadMoreQuoteTweets-quotes', request.responseText, status, error);
         }, complete: function() {
         }
     })
-    
+
 }

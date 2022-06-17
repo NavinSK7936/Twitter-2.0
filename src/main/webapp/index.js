@@ -204,7 +204,7 @@ function showQuotedTweets(tweet_id) {
     $('#second-body').empty();
     $('#second-body').load('html/quote-tweet.html');
 
-    window.history.pushState(null, "Top-Layer-Tweet", '?p=quotes&id=' + tweet_id);
+    window.history.pushState(null, "Quoted-Tweets", '?p=quotes&id=' + tweet_id);
 
 }
 
