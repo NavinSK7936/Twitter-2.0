@@ -11,9 +11,10 @@ function justDoIt(toPush = true) {
 
     const qp = getQueryKVMap(decodeURIComponent(window.location.search));
 
-    console.log(window.history);
-    console.log(decodeURIComponent(window.location.search));
 
+
+    window.scrollTo({top: 0, behavior: 'smooth'});
+    
 
     if (qp.size == 0 || qp.get('p') == 'home') {
 
@@ -35,6 +36,7 @@ function justDoIt(toPush = true) {
 
     } else if (qp.get('p') == 'tweet') {
 
+        showTopLayerTweet();
 
     } else if (qp.get('p') == 'tweet-info') {
 
@@ -117,6 +119,8 @@ function setHomePage(toPush = true, isStart = false) {
     $('#second-body').empty();
     $('#second-body').load('html/home.html');
 
+    window.scrollTo({top: 0, behavior: 'smooth'});
+
     if (isStart)
         window.history.replaceState(null, "Home", "?p=home");
     else if (toPush)
@@ -129,6 +133,8 @@ function showUserProfile(toPush = true, user_id = getCurrentUserIdInLS(), index)
     $('#second-body').empty();
     $('#second-body').load('html/profile.html');
 
+    $('html, body').animate({scrollTop: 0}, 100);
+
     if (toPush)
         window.history.pushState(null, "Profile", "?p=profile&id=" + user_id + (index != undefined ? "&pfi=" + index : ''));
 
@@ -138,6 +144,8 @@ function showExploreSection(searchQuery, to = 'push') {
 
     $('#second-body').empty();
     $('#second-body').load('html/explore.html');
+
+    window.scrollTo({top: 0, behavior: 'smooth'});
 
     searchQuery = '?' + encodeURIComponent(searchQuery);
 
@@ -155,7 +163,6 @@ function showTopLayerTweet(replyTweetBox = null, retweetBox = null) {
 
     $('#auxiliary-container').empty();
     $('#auxiliary-container').load('html/top-layer-tweet.html');
-
 
     topLayerReplyTweetBox = replyTweetBox;
     topLayerRetweetBox = retweetBox;
@@ -180,6 +187,8 @@ function showTweet(id) {
 
     $('#second-body').empty();
     $('#second-body').load('html/tweet-info.html');
+
+    window.scrollTo({top: 0, behavior: 'smooth'});
 
     window.history.pushState(null, "Top-Layer-Tweet", '?p=tweet-info&id=' + id);
 
