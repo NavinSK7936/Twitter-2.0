@@ -86,6 +86,7 @@ $(function() {
                     $('#tweet-info-parent-tweets-container').after(getActualTweetForTweetInfo(tweetbox, replyingTo, tweetboxes.length == 0 && tweetbox['user']['id'] == getCurrentUserIdInLS()));
 
 
+                    tweetInfoWhoCanReplyChoiceClikced(tweetbox['tweet']['who_can_reply'], tweetbox['tweet']['id']);
 
 
                     // To set retweets if exists

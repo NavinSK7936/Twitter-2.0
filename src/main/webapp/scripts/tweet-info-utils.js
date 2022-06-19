@@ -128,7 +128,7 @@ function getShareIconDivForTweetInfo(tweet_id) {
 }
 
 
-function getWhoCanReplyIcon(tweet_id) {
+function getWhoCanReplyIcon(tweet_id, who_can_reply) {
     return `
         <div style="display: flex; align-items: center; margin: 10px 0 -10px;">
             <div style="margin-left: 5px;">
